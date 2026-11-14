@@ -13,20 +13,19 @@
   font-display: swap;
 }
 
-/* Trei culori: hârtie, cerneală și un singur accent de lemn. */
+/* Un singur maro pentru tot site-ul, crem pentru text și un accent de lemn.
+   --paper = fundalul, --ink = textul. Tema e închisă de la bază, așa că browserele nu o mai întunecă forțat. */
 :root {
-  /* „only light” împiedică browserele (Chrome, Samsung Internet) să întunece forțat site-ul. */
-  color-scheme: only light;
-  --paper: #f5eee4;
-  --ink: #1f1612;
-  --accent: #a06a45;
-  /* Accentul e prea deschis pentru text mic pe crem; varianta închisă trece de WCAG AA (5,6:1). */
-  --accent-text: #85502f;
+  color-scheme: dark;
+  --paper: #1f1612;
+  --ink: #f5eee4;
+  --accent: #c08a5e;
+  --accent-text: #d9b08a;
   --oak: #d9b08a;
   --muted: color-mix(in oklab, var(--ink) 62%, var(--paper));
   --line: color-mix(in oklab, var(--ink) 14%, transparent);
-  --cream: var(--paper);
-  --espresso: var(--ink);
+  --cream: #f5eee4;
+  --espresso: #1f1612;
   --serif: "Cormorant Garamond", Georgia, serif;
   --sans: "DM Sans", Arial, sans-serif;
   --edge: clamp(20px, 5vw, 88px);
@@ -137,11 +136,11 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .hero h1 .word > span { display: inline-block; will-change: transform; }
 .hero-label {
   display: inline-flex; margin-bottom: 18px; padding: 7px 14px 7px 15px; border-radius: 999px;
-  color: var(--paper); background: #1f1612b3; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  color: var(--cream); background: #1f1612b3; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   font: 700 .74rem/1.3 var(--sans); letter-spacing: .2em; text-transform: uppercase;
 }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: clamp(24px, 3.4vw, 44px); }
-.hero-bottom { position: relative; background: var(--cream); color: var(--espresso); border-bottom: 1px solid var(--line); }
+.hero-bottom { position: relative; background: var(--paper); color: var(--ink); border-bottom: 1px solid var(--line); }
 .hero-details { display: flex; min-height: 56px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 14px; padding-block: 11px; font-size: .79rem; }
 .hero-status { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .hero-status:hover, .hero-address:hover, .hero-story:hover { text-decoration: underline; text-underline-offset: 4px; }
@@ -178,8 +177,10 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 
 /* 03 Meniul */
 .sample-note { color: var(--muted); font-size: .88rem; }
-.menu-board { display: grid; gap: 34px; }
-.menu-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--edge) * -1); padding-inline: var(--edge); }
+.menu-board { display: flex; flex-direction: column; gap: 26px; }
+.menu-tabs { order: 1; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--edge) * -1); padding-inline: var(--edge); }
+.menu-visual { order: 2; }
+.menu-panels { order: 3; }
 .menu-tab { position: relative; flex: none; display: flex; align-items: baseline; gap: 10px; min-height: 48px; padding: 10px 18px; background: transparent; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); text-align: left; transition: color .25s var(--ease-out), background-color .25s var(--ease-out), border-color .25s var(--ease-out); }
 .menu-tab[aria-selected="true"] { color: var(--paper); background: var(--ink); border-color: var(--ink); }
 .tab-index, .tab-count { font-size: .7rem; font-variant-numeric: tabular-nums; letter-spacing: .08em; }
@@ -189,26 +190,71 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .menu-tabs:not([hidden]) ~ .menu-panels .menu-panel-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .menu-panels .menu-panel + .menu-panel { margin-top: 48px; }
 .menu-tabs:not([hidden]) ~ .menu-panels .menu-panel + .menu-panel { margin-top: 0; }
-.dish { padding-block: 20px; border-bottom: 1px solid var(--line); }
-.dish:first-child { border-top: 1px solid var(--line); }
-.dish-line { display: flex; align-items: baseline; gap: 12px; }
-.dish h4 { font: 600 clamp(1.45rem, 2.2vw, 1.95rem)/1.1 var(--serif); letter-spacing: -.01em; }
-.dish-leader { flex: 1; min-width: 24px; border-bottom: 1px dotted color-mix(in oklab, var(--ink) 35%, transparent); translate: 0 -5px; }
-.price { font-weight: 600; font-size: .95rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.dish p { margin-top: 6px; max-width: 46ch; color: var(--muted); font-size: .93rem; }
-.favorite { display: inline-block; margin-left: 10px; color: var(--accent-text); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.menu-visual { display: none; }
 
-/* 05 Păreri */
-.reviews-rating { color: var(--muted); }
-.reviews-rating strong { margin-right: 4px; color: var(--ink); font: 600 1.6rem/1 var(--serif); }
-.reviews-grid { display: grid; gap: clamp(36px, 4vw, 56px); }
-.review { display: flex; flex-direction: column; gap: 18px; }
-.review-summary, .review blockquote { font: 500 clamp(1.45rem, 2.2vw, 1.95rem)/1.25 var(--serif); }
-.review-author { color: var(--muted); font-size: .85rem; }
-@media (hover: hover) { .review-author:hover { color: var(--ink); } }
-.reviews-foot { display: flex; flex-wrap: wrap; gap: 14px 32px; align-items: baseline; justify-content: space-between; margin-top: clamp(48px, 6vw, 80px); padding-top: 22px; border-top: 1px solid var(--line); }
-.reviews-note { color: var(--muted); font-size: .85rem; }
+/* Fotografia categoriei, cu numele scris peste ea. */
+.menu-visual { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 6px; background: color-mix(in oklab, var(--ink) 6%, var(--paper)); }
+.menu-tabs[hidden] ~ .menu-visual { display: none; }
+.menu-visual-item { position: absolute; inset: 0; opacity: 0; scale: 1.06; transition: opacity .6s var(--ease-out), scale 1.2s var(--ease-out); }
+.menu-visual-item.is-active { opacity: 1; scale: 1; }
+.menu-visual-item img { width: 100%; height: 100%; object-fit: cover; }
+.menu-visual-item::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, #1f1612e6 0%, #1f161266 38%, #1f161200 65%); }
+.menu-visual-caption { position: absolute; z-index: 1; left: clamp(18px, 2.4vw, 30px); right: 18px; bottom: clamp(16px, 2.2vw, 28px); display: grid; gap: 4px; color: var(--cream); }
+.menu-visual-caption strong { font: 600 clamp(2rem, 3.4vw, 3.2rem)/.95 var(--serif); letter-spacing: -.02em; }
+.menu-visual-caption > span { font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: color-mix(in oklab, var(--cream) 75%, transparent); }
+.menu-visual-caption .menu-visual-index { color: var(--oak); }
+
+/* Preparatele: număr, nume, linie punctată și prețul într-o etichetă. */
+.dish { position: relative; display: grid; grid-template-columns: 34px 1fr; gap: 6px; padding: 22px 14px 22px 0; border-bottom: 1px solid var(--line); transition: background-color .3s var(--ease-out); }
+.dish:first-child { border-top: 1px solid var(--line); }
+.dish::before { content: ""; position: absolute; left: -14px; top: 22px; bottom: 22px; width: 2px; background: var(--accent); transform: scaleY(0); transition: transform .35s var(--ease-out); }
+@media (hover: hover) {
+  .dish:hover { background: linear-gradient(90deg, color-mix(in oklab, var(--accent) 9%, transparent), transparent 80%); }
+  .dish:hover::before { transform: scaleY(1); }
+  .dish:hover .price { color: var(--espresso); background: var(--oak); border-color: var(--oak); }
+}
+.dish-number { padding-top: 9px; color: var(--accent-text); font-size: .72rem; font-weight: 600; letter-spacing: .1em; font-variant-numeric: tabular-nums; }
+.dish-line { display: flex; align-items: center; gap: 12px; }
+.dish h4 { font: 600 clamp(1.5rem, 2.3vw, 2.05rem)/1.1 var(--serif); letter-spacing: -.01em; }
+.dish-leader { flex: 1; min-width: 20px; border-bottom: 1px dotted color-mix(in oklab, var(--ink) 30%, transparent); }
+.price { flex: none; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; font-weight: 600; font-size: .9rem; white-space: nowrap; font-variant-numeric: tabular-nums; transition: color .25s var(--ease-out), background-color .25s var(--ease-out), border-color .25s var(--ease-out); }
+.dish p { margin-top: 6px; max-width: 46ch; color: var(--muted); font-size: .93rem; }
+.favorite { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 4px 10px; border-radius: 999px; color: var(--espresso); background: var(--oak); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+/* 04 Păreri: carduri mari care se derulează spre dreapta. */
+.reviews { padding-bottom: calc(var(--section) * .8); }
+.reviews-side { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 18px 32px; }
+.reviews-rating { display: flex; align-items: baseline; gap: 10px; color: var(--muted); }
+.reviews-rating strong { color: var(--ink); font: 600 clamp(3rem, 5vw, 4.4rem)/.9 var(--serif); letter-spacing: -.03em; }
+.reviews-nav { display: flex; gap: 8px; }
+.reviews-nav button { display: grid; place-items: center; width: 52px; height: 52px; padding: 0; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 50%; font-size: 1.1rem; transition: background-color .2s var(--ease-out), color .2s var(--ease-out), border-color .2s var(--ease-out), transform .16s var(--ease-out), opacity .2s; }
+.reviews-nav button:active { transform: scale(.94); }
+.reviews-nav button:disabled { opacity: .35; cursor: default; }
+@media (hover: hover) { .reviews-nav button:not(:disabled):hover { color: var(--paper); background: var(--ink); border-color: var(--ink); } }
+.reviews-track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(84vw, 520px); gap: clamp(14px, 2vw, 24px);
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+  padding: 6px max(var(--edge), (100vw - 1360px) / 2) 24px;
+  scroll-padding-inline: max(var(--edge), (100vw - 1360px) / 2);
+}
+.reviews-track::-webkit-scrollbar { display: none; }
+.reviews-track:focus-visible { outline-offset: -4px; }
+.review-card {
+  position: relative; display: flex; flex-direction: column; gap: 28px; min-height: 360px; padding: clamp(26px, 3vw, 44px);
+  scroll-snap-align: start; overflow: hidden; border: 1px solid var(--line); border-radius: 6px;
+  background:
+    radial-gradient(90% 70% at 100% 0%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 70%),
+    color-mix(in oklab, var(--ink) 4%, var(--paper));
+  transition: border-color .3s var(--ease-out), translate .3s var(--ease-out);
+}
+.review-card::after { content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .5s var(--ease-out); }
+@media (hover: hover) { .review-card:hover { border-color: color-mix(in oklab, var(--accent) 50%, transparent); translate: 0 -4px; } .review-card:hover::after { transform: scaleX(1); } }
+.review-index { color: var(--accent-text); font-size: .74rem; font-weight: 600; letter-spacing: .16em; font-variant-numeric: tabular-nums; }
+.review-text { font: 500 clamp(1.55rem, 2.4vw, 2.1rem)/1.22 var(--serif); letter-spacing: -.01em; }
+.review-person { display: flex; align-items: center; gap: 14px; margin-top: auto; }
+.review-avatar { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; color: var(--espresso); background: var(--oak); font: 700 .85rem/1 var(--sans); letter-spacing: .04em; }
+.review-name { font-weight: 600; }
+.review-name a { text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; transition: text-decoration-color .2s; }
+.review-name a:hover { text-decoration-color: currentColor; }
 
 /* 06 Locații: două carduri egale, fiecare cu harta lui. */
 .locations-grid { display: grid; gap: clamp(16px, 2vw, 28px); }
@@ -254,7 +300,6 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .wood-grid { grid-template-columns: repeat(3, 1fr); align-items: start; }
   .wood-figure.w1 { margin-top: clamp(40px, 8vw, 120px); }
   .wood-figure.w2 { margin-top: clamp(20px, 4vw, 60px); }
-  .reviews-grid { grid-template-columns: repeat(3, 1fr); }
   .locations-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1.3fr 1fr 1fr; }
 }
@@ -276,7 +321,8 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .wood-head .eyebrow, .section-intro .eyebrow { grid-column: 1 / -1; }
 
   /* Meniul: categorii, preparate și o fotografie care se schimbă odată cu categoria. */
-  .menu-board { grid-template-columns: minmax(180px, .8fr) minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(32px, 4vw, 72px); align-items: start; }
+  .menu-board { display: grid; grid-template-columns: minmax(180px, .8fr) minmax(0, 1.6fr) minmax(0, 1.05fr); gap: clamp(32px, 4vw, 72px); align-items: start; }
+  .menu-tabs, .menu-panels { order: 0; }
   .menu-tabs { position: sticky; top: calc(var(--header-height) + 32px); flex-direction: column; gap: 0; overflow: visible; margin: 0; padding: 0; border-top: 1px solid var(--line); }
   .menu-tab { display: grid; grid-template-columns: 34px 1fr auto; width: 100%; min-height: 0; padding: 18px 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
   .menu-tab[aria-selected="true"] { color: var(--ink); background: transparent; }
@@ -286,10 +332,7 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .menu-tab[aria-selected="true"]::before { transform: scaleX(1); }
   .menu-tab[aria-selected="true"] .tab-index { color: var(--accent-text); }
   .menu-tab[aria-selected="true"] .tab-name { translate: 6px 0; }
-  .menu-visual { position: sticky; top: calc(var(--header-height) + 32px); display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius); background: color-mix(in oklab, var(--ink) 8%, var(--paper)); }
-  .menu-visual-item { position: absolute; inset: 0; opacity: 0; scale: 1.08; transition: opacity .6s var(--ease-out), scale 1.2s var(--ease-out); }
-  .menu-visual-item.is-active { opacity: 1; scale: 1; }
-  .menu-visual-item img { width: 100%; height: 100%; object-fit: cover; }
+  .menu-visual { order: 0; position: sticky; top: calc(var(--header-height) + 32px); aspect-ratio: 4 / 5; }
   .site-footer { padding-bottom: 40px; }
 }
 @media (min-width: 900px) and (hover: hover) {
@@ -316,8 +359,8 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
    lamele de lemn pe secțiunile închise și o granulație ca de hârtie peste tot. */
 :root {
   --grid: color-mix(in oklab, var(--ink) 6%, transparent);
-  --glow: color-mix(in oklab, var(--oak) 34%, transparent);
-  --glow-deep: color-mix(in oklab, var(--accent) 14%, transparent);
+  --glow: color-mix(in oklab, var(--oak) 9%, transparent);
+  --glow-deep: color-mix(in oklab, var(--accent) 8%, transparent);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 body::before {
@@ -328,16 +371,9 @@ body::before {
 }
 body::after {
   content: ""; position: fixed; z-index: 40; inset: 0; pointer-events: none;
-  background: var(--grain); opacity: .22; mix-blend-mode: multiply;
+  background: var(--grain); opacity: .5; mix-blend-mode: soft-light;
 }
 .story, .menu-section, .reviews, .locations { position: relative; isolation: isolate; overflow-x: clip; }
-.story::before, .menu-section::before, .reviews::before, .locations::before {
-  content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
-}
-.story::before { background: radial-gradient(45vw 38vw at 92% 30%, var(--glow), transparent 70%), radial-gradient(30vw 26vw at 0% 100%, var(--glow-deep), transparent 70%); }
-.menu-section::before { background: radial-gradient(40vw 34vw at 4% 18%, var(--glow), transparent 70%), radial-gradient(36vw 30vw at 100% 85%, var(--glow-deep), transparent 70%); }
-.reviews::before { background: radial-gradient(38vw 30vw at 20% 40%, var(--glow-deep), transparent 70%), radial-gradient(34vw 28vw at 95% 100%, var(--glow), transparent 70%); }
-.locations::before { background: radial-gradient(44vw 36vw at 100% 10%, var(--glow), transparent 70%); }
 .wood, .site-footer {
   background:
     radial-gradient(70% 55% at 85% 0%, color-mix(in oklab, var(--accent) 26%, transparent), transparent 70%),
@@ -348,3 +384,28 @@ body::after {
 @media (max-width: 639px) {
   body::before { background-size: calc(100% / 2) 100%; }
 }
+
+/* ---- Temă închisă: corecții pentru elementele care aveau culori fixe ---- */
+.site-header { color: var(--cream); }
+.site-header.is-scrolled { color: var(--ink); background: color-mix(in oklab, var(--paper) 90%, transparent); }
+.button-light { color: var(--espresso); background: var(--cream); }
+.button-ghost { color: var(--cream); border-color: color-mix(in oklab, var(--cream) 60%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .button-light:hover { background: #fff; }
+  .button-ghost:hover { color: var(--espresso); background: var(--cream); border-color: var(--cream); }
+  .button-dark:hover { color: var(--espresso); background: var(--oak); }
+}
+.story-small { box-shadow: 0 30px 60px -20px #000c; }
+.wood, .site-footer {
+  color: var(--ink);
+  background:
+    repeating-linear-gradient(90deg, color-mix(in oklab, var(--ink) 3%, transparent) 0 1px, transparent 1px 16px),
+    var(--paper);
+  border-top: 1px solid var(--line);
+}
+.wood .eyebrow, .wood-figure figcaption, .footer-base, .footer-grid p, .footer-grid address, .contact-links { color: var(--muted); }
+.wood-head > p:last-child { color: var(--muted); }
+.wood-notes { border-top-color: var(--line); }
+.footer-base { border-top-color: var(--line); }
+.location-card { background: color-mix(in oklab, var(--ink) 4%, var(--paper)); }
+.map iframe, .location-map iframe { filter: grayscale(.6) brightness(.85) contrast(1.05); }

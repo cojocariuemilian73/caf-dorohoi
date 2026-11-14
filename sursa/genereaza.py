@@ -115,20 +115,30 @@ def menu_visual(category, index):
     if key not in DATA["imagini"]:
         return ""
     active = " is-active" if index == 0 else ""
-    return f'<div class="menu-visual-item{active}" data-category="{esc(category["id"])}">{image(key, sizes="25vw")}</div>'
+    count = len(category["produse"])
+    label = "preparat" if count == 1 else "preparate"
+    return (
+        f'<div class="menu-visual-item{active}" data-category="{esc(category["id"])}">'
+        f'{image(key, sizes="(min-width: 900px) 25vw, 100vw")}'
+        f'<span class="menu-visual-caption"><span class="menu-visual-index">{index + 1:02d}</span>'
+        f'<strong>{esc(category["nume"])}</strong><span>{count} {label}</span></span></div>'
+    )
 
 
 def menu_panel(category):
     category_id = esc(category["id"])
     rows = []
-    for product in category["produse"]:
+    for number, product in enumerate(category["produse"], start=1):
         price = product["pret"]
         amount = (f"{price:g}".replace(".", ",") + " lei") if price is not None else "La cerere"
-        featured = '<span class="favorite">Preferata casei</span>' if product.get("preferat") else ""
+        favorite = product.get("preferat")
+        badge = '<span class="favorite"><span aria-hidden="true">\u2605</span> Preferata casei</span>' if favorite else ""
         rows.append(
-            f'<li class="dish"><div class="dish-line"><h4>{esc(product["nume"])}</h4>'
+            f'<li class="dish{" is-favorite" if favorite else ""}">'
+            f'<span class="dish-number" aria-hidden="true">{number:02d}</span>'
+            f'<div class="dish-body"><div class="dish-line"><h4>{esc(product["nume"])}</h4>'
             f'<span class="dish-leader" aria-hidden="true"></span><span class="price">{amount}</span></div>'
-            f'<p>{esc(product["descriere"])}{featured}</p></li>'
+            f'<p>{esc(product["descriere"])}</p>{badge}</div></li>'
         )
     return (
         f'<section class="menu-panel" role="tabpanel" id="meniu-{category_id}" aria-labelledby="fila-{category_id}">'
@@ -136,15 +146,20 @@ def menu_panel(category):
     )
 
 
-def review(item):
-    # Recenziile se afișează exact cum sunt în date-site.json, cu linkul spre Google.
-    if "rezumat" in item:
-        author = esc(item["autor"])
-        return (
-            f'<article class="review"><p class="review-summary">{esc(item["rezumat"])}</p>'
-            f'<a class="review-author" href="{esc(item["url"])}">{author} · Google Maps</a></article>'
-        )
-    return f'<figure class="review"><blockquote>{esc(item["text"])}</blockquote><figcaption>{esc(item["autor"])}</figcaption></figure>'
+def review(item, index, total):
+    # Textele recenziilor rămân exact cum sunt în date-site.json.
+    name = item["autor"]
+    initials = "".join(part[0] for part in name.replace(".", "").split()[:2]).upper()
+    text = item.get("rezumat") or item.get("text")
+    author = esc(name)
+    if item.get("url"):
+        author = f'<a href="{esc(item["url"])}">{author}</a>'
+    return (
+        f'<article class="review-card"><span class="review-index">{index:02d} / {total:02d}</span>'
+        f'<p class="review-text">{esc(text)}</p>'
+        f'<footer class="review-person"><span class="review-avatar" aria-hidden="true">{esc(initials)}</span>'
+        f'<span class="review-name">{author}</span></footer></article>'
+    )
 
 
 def contact_links(links):
@@ -268,12 +283,9 @@ values = {
     "heroMobileHeight": DATA["imagini"]["hero"]["inaltimeMobil"],
     "reviewsUrl": esc(links["recenzii"] or map_search),
     "reviewsRating": (
-        f'<p class="reviews-rating"><strong>{esc(rating["scor"])} / 5</strong>'
-        f' din {esc(rating["numar"])} de păreri pe Google Maps</p>'
+        f'<p class="reviews-rating"><strong>{esc(rating["scor"])}</strong><span>din 5 · {esc(rating["numar"])} de păreri</span></p>'
         if rating else ""
     ),
-    "reviewsNote": '<p class="reviews-note">Am rezumat câteva recenzii de pe Google Maps. Le găsești întregi la link.</p>'
-    if any(item and "rezumat" in item for item in DATA["recenzii"]) else "",
     "addressD": esc(dorohoi["adresa"]),
     "addressB": esc(botosani["adresa"]),
     "landmark": esc(dorohoi["reper"]),
@@ -285,7 +297,9 @@ values = {
     "arrowDown": arrow("M12 4v15m-6-6 6 6 6-6"),
     "arrowOut": arrow("M6 18 18 6M7 6h11v11"),
     "menuNotice": '<p class="sample-note">Meniul de aici e orientativ. Prețurile exacte le afli la bar.</p>' if DATA["meniuExemplu"] else "",
-    "reviews": "".join(review(item) for item in DATA["recenzii"] if item),
+    "reviews": "".join(review(item, i, len([r for r in DATA["recenzii"] if r])) for i, item in enumerate([r for r in DATA["recenzii"] if r], start=1)),
+    "arrowLeft": arrow("M19 12H5m6-6-6 6 6 6"),
+    "arrowRight": arrow("M5 12h14m-6-6 6 6-6 6"),
     "contactLinks": contact_links(links),
     "contactButtons": contact_buttons(links),
     "phoneD": phone_link(dorohoi["telefon"]),

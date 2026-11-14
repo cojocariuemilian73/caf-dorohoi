@@ -6,7 +6,7 @@
   <title>{{title}}</title>
   <meta name="description" content="{{description}}">
   <meta name="theme-color" content="#1F1612">
-  <meta name="color-scheme" content="only light">
+  <meta name="color-scheme" content="dark">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ro_RO">
   <meta property="og:title" content="{{title}}">
@@ -122,14 +122,19 @@
 
     <section class="section reviews" id="recenzii" aria-labelledby="reviews-title">
       <div class="shell">
-        <div class="section-intro">
+        <div class="section-intro reviews-intro">
           <p class="eyebrow"><span>04</span> Păreri</p>
           <h2 id="reviews-title">Ce spun oaspeții.</h2>
-          {{reviewsRating}}
+          <div class="reviews-side">
+            {{reviewsRating}}
+            <div class="reviews-nav" hidden>
+              <button type="button" class="reviews-prev" aria-label="Recenzia anterioară" aria-controls="reviews-track">{{arrowLeft}}</button>
+              <button type="button" class="reviews-next" aria-label="Recenzia următoare" aria-controls="reviews-track">{{arrowRight}}</button>
+            </div>
+          </div>
         </div>
-        <div class="reviews-grid">{{reviews}}</div>
-        <div class="reviews-foot">{{reviewsNote}}<a class="text-link" href="{{reviewsUrl}}">Toate recenziile pe Google {{arrowOut}}</a></div>
       </div>
+      <div class="reviews-track" id="reviews-track" role="region" aria-label="Recenzii, derulează spre dreapta" tabindex="0" data-lenis-prevent-wheel>{{reviews}}</div>
     </section>
 
     <section class="section locations" id="locatii" aria-labelledby="locations-title">

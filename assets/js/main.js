@@ -130,6 +130,26 @@ function setupMenu() {
   show(tabs[0], { animate: false });
 }
 
+function setupReviews() {
+  const track = select(".reviews-track");
+  const nav = select(".reviews-nav");
+  if (!track || !nav) return;
+  const prev = select(".reviews-prev");
+  const next = select(".reviews-next");
+  const step = () => track.querySelector(".review-card").getBoundingClientRect().width + 20;
+  const update = () => {
+    const max = track.scrollWidth - track.clientWidth - 2;
+    nav.hidden = max <= 0;
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= max;
+  };
+  prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+  next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+  track.addEventListener("scroll", update, { passive: true });
+  addEventListener("resize", update);
+  update();
+}
+
 function loadMotion() {
   const motion = matchMedia("(prefers-reduced-motion: no-preference)");
   function enableMotion() {
@@ -158,4 +178,5 @@ setupNavigation();
 setupHours();
 setupMenu();
 setupHeader();
+setupReviews();
 loadMotion();
