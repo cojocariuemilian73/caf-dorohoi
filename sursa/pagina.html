@@ -22,6 +22,7 @@
   <link rel="preload" as="image" imagesrcset="{{heroDesktopAvif}}" imagesizes="100vw" type="image/avif" media="(min-width: 641px)">
   <link rel="preload" href="assets/fonts/cormorant-ro.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css?v={{vCss}}">
+  {{extraHead}}
   <script type="application/ld+json">{{schema}}</script>
   <script id="program-dorohoi" type="application/json">{{schedule}}</script>
   <script defer src="assets/js/main.js?v={{vJs}}" data-motion="assets/js/motion.js?v={{vMotion}}"></script>
@@ -93,6 +94,8 @@
       </div>
     </section>
 
+    {{extraAfterWood}}
+
     <section class="section menu-section" id="meniu" aria-labelledby="menu-title">
       <div class="shell">
         <div class="section-intro">
@@ -105,6 +108,8 @@
         </div>
       </div>
     </section>
+
+    {{extraAfterMenu}}
 
     <section class="section reviews" id="recenzii" aria-labelledby="reviews-title">
       <div class="shell">
@@ -122,6 +127,8 @@
       </div>
       <div class="reviews-track" id="reviews-track" role="region" aria-label="Recenzii, derulează spre dreapta" tabindex="0" data-lenis-prevent-wheel>{{reviews}}</div>
     </section>
+
+    {{extraOffers}}
 
     <section class="section locations" id="locatii" aria-labelledby="locations-title">
       <div class="shell">
@@ -186,5 +193,6 @@
     <a href="{{directionsD}}">Direcții <span aria-hidden="true">↗</span></a>
   </div>
 
+  {{extraScripts}}
 </body>
 </html>

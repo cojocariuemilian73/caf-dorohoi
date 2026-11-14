@@ -331,5 +331,79 @@
       "alt": "Croissante proaspete în vitrina CAF Dorohoi",
       "titlu": "În vitrină"
     }
+  },
+  "extra": {
+    "_nota": "Propuneri pentru patron. Apar doar pe demo.html (neindexat) până când CAF le aprobă; atunci pune \"activ\": true și apar și pe site.",
+    "activ": false,
+    "specialitati": {
+      "titlu": "Specialitățile casei",
+      "text": "Trei lucruri pe care le comandă oamenii din nou și din nou.",
+      "produse": [
+        "Cappuccino",
+        "Mojito fără alcool",
+        "Croissant"
+      ]
+    },
+    "lucru": {
+      "titlu": "Colțul de lucru",
+      "text": "Pereți de sticlă, lumină naturală toată ziua și mese mari de lemn. Vino cu laptopul sau cu cartea.",
+      "imagine": "lumina",
+      "detalii": [
+        {
+          "eticheta": "Lumină",
+          "valoare": "Naturală, pereți de sticlă"
+        },
+        {
+          "eticheta": "Wi-Fi",
+          "valoare": null
+        },
+        {
+          "eticheta": "Prize la masă",
+          "valoare": null
+        }
+      ]
+    },
+    "voucher": {
+      "titlu": "Primul espresso e din partea casei.",
+      "text": "Prima dată la CAF? Salvează voucherul pe telefon și arată-l la bar.",
+      "conditii": "Un voucher pe telefon, la prima vizită. Valabil 30 de zile."
+    },
+    "roata": {
+      "titlu": "Încearcă-ți norocul.",
+      "text": "O învârtire pe zi. Ce câștigi folosești la următoarea cafea.",
+      "premii": [
+        {
+          "nume": "Topping gratuit",
+          "scurt": "Topping"
+        },
+        {
+          "nume": "10% reducere",
+          "scurt": "−10%"
+        },
+        {
+          "nume": "Limonadă din partea casei",
+          "scurt": "Limonadă"
+        },
+        {
+          "nume": "Shot extra de espresso",
+          "scurt": "Shot extra"
+        },
+        {
+          "nume": "Croissant la jumătate de preț",
+          "scurt": "Croissant ½"
+        },
+        {
+          "nume": "15% reducere",
+          "scurt": "−15%"
+        }
+      ],
+      "valabilitate": "Valabil 7 zile, la următoarea vizită."
+    },
+    "fidelitate": {
+      "titlu": "A 6-a cafea e din partea casei.",
+      "text": "Cardul stă în telefon, nu în portofel. La fiecare cafea, barista îți pune o ștampilă.",
+      "stampile": 6,
+      "pinDemo": "1234"
+    }
   }
 }

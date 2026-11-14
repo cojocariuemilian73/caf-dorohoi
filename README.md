@@ -40,3 +40,11 @@ Câmpurile goale din `sursa/date-site.json` nu apar pe site. Instrucțiunile sun
 - Filmarea inaugurării. [DorohoiNews Stiri](https://www.youtube.com/watch?v=doRFsG95dz8)
 - Animații. [GSAP](https://gsap.com/) · [Lenis](https://github.com/darkroomengineering/lenis) · [React Bits Animated Content](https://www.reactbits.dev/animations/animated-content)
 - Cormorant Garamond și DM Sans sunt găzduite local. Licențele sunt în `assets/fonts/`.
+
+## Propuneri pentru patron (demo.html)
+`demo.html` = site-ul plus: Specialitățile casei, Colțul de lucru, voucher „primul espresso”, roata norocului și cardul de fidelitate.
+Pagina nu e legată din site și are `noindex`. Textele sunt în `date-site.json` → `extra`.
+Când CAF aprobă ofertele, pune `"extra": {"activ": true}` și apar și pe `index.html`.
+Atenție: voucherul, roata și ștampilele se țin doar pe telefonul clientului (localStorage), iar codul de ștampilă e în pagină.
+E bun pentru demonstrație; pentru folosire reală trebuie un mic server sau un serviciu de fidelitate.
+JS-ul se construiește cu `npm run build:extra` în `sursa/motion`.

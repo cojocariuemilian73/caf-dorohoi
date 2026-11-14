@@ -1,0 +1,82 @@
+/* Secțiunile propuse: specialități, colțul de lucru, voucher, roată, card de fidelitate. */
+
+/* Specialitățile casei: trei cărți mari, cea din mijloc coborâtă. */
+.special-list { display: grid; gap: clamp(28px, 4vw, 40px); }
+.special { display: grid; gap: 18px; }
+.special-photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 8px; background: color-mix(in oklab, var(--ink) 6%, var(--paper)); }
+.special-photo picture, .special-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.special-photo img { transition: scale .7s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .special:hover .special-photo img { scale: 1.04; } }
+.special-photo.is-type { display: grid; place-items: center; padding: 24px; background: color-mix(in oklab, var(--accent) 22%, var(--paper)); }
+.special-photo.is-type span { font: italic 500 clamp(2rem, 4vw, 3rem)/1 var(--serif); text-align: center; }
+.special-copy { display: grid; gap: 8px; }
+.special-copy h3 { font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1; }
+.special-copy p { color: var(--muted); max-width: 34ch; }
+.special-copy .price { color: var(--oak); font-weight: 600; }
+@media (min-width: 900px) {
+  .special-list { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+  .special:nth-child(2) { margin-top: clamp(48px, 8vw, 110px); }
+}
+
+/* Colțul de lucru: poza mare și câteva fapte simple. */
+.work-grid { display: grid; gap: clamp(28px, 5vw, 72px); align-items: center; }
+.work-photo .image-frame { aspect-ratio: 4 / 3; }
+.work-photo .image-frame picture, .work-photo .image-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.work-copy { display: grid; gap: 22px; }
+.work-facts { display: grid; border-top: 1px solid var(--line); }
+.work-facts > div { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.work-facts dt { color: var(--muted); }
+.work-facts dd { margin: 0; font-weight: 600; text-align: right; }
+.work-facts dd.todo { color: var(--accent-text); font-weight: 500; }
+@media (min-width: 900px) { .work-grid { grid-template-columns: 1.15fr 1fr; } }
+
+/* Oferte: trei plăci egale. */
+.offer-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(16px, 2vw, 24px); }
+.offer { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; justify-items: start; gap: 16px; padding: clamp(24px, 3vw, 36px); border: 1px solid var(--line); border-radius: 10px; background: color-mix(in oklab, var(--ink) 4%, var(--paper)); }
+.offer h3 { font-size: clamp(1.7rem, 2.6vw, 2.2rem); line-height: 1.05; }
+.offer > p { color: var(--muted); }
+.offer small { color: var(--muted); font-size: .78rem; }
+@media (min-width: 1000px) { .offer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Voucherul arată ca un bon rupt, cu cod QR. */
+.ticket { display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center; width: 100%; padding: 16px; border-radius: 10px; color: var(--espresso); background: var(--cream);
+  -webkit-mask: radial-gradient(circle 9px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 9px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle 9px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 9px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat; }
+.ticket[hidden] { display: none; }
+.ticket-qr svg { display: block; width: 96px; height: 96px; }
+.ticket-info { display: grid; gap: 4px; }
+.ticket-label { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #7a5a40; }
+.ticket-code { font: 700 1.25rem/1.1 var(--sans); letter-spacing: .06em; white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.ticket-until { font-size: .8rem; color: #5b4636; }
+
+/* Roata norocului. */
+.wheel-wrap { position: relative; justify-self: center; width: min(100%, 260px); aspect-ratio: 1; margin-block: 6px; }
+.wheel { width: 100%; height: 100%; transition: transform 4.2s cubic-bezier(.12, .7, .12, 1); }
+.wheel .slice.s0 { fill: #c08a5e; }
+.wheel .slice.s1 { fill: #3a2a20; }
+.wheel .slice.s2 { fill: #d9b08a; }
+.wheel text { font: 600 9.5px var(--sans); fill: #1f1612; }
+.wheel .slice.s1 + text { fill: #f5eee4; }
+.wheel-rim { fill: none; stroke: #f5eee4; stroke-width: 3; }
+.wheel-hub { fill: #1f1612; stroke: #f5eee4; stroke-width: 3; }
+.wheel-pin { position: absolute; z-index: 1; top: -6px; left: 50%; width: 0; height: 0; translate: -50% 0; border: 11px solid transparent; border-top: 20px solid var(--cream); border-bottom: 0; filter: drop-shadow(0 2px 3px #0008); }
+.wheel-result { display: grid; gap: 4px; min-height: 3.2em; color: var(--muted); }
+.wheel-result strong { font: 600 1.6rem/1.1 var(--serif); color: var(--ink); }
+.wheel-result span { font-size: .8rem; }
+.offer .button:disabled { opacity: .5; cursor: default; transform: none; }
+@media (prefers-reduced-motion: reduce) { .wheel { transition: none; } }
+
+/* Cardul de fidelitate: șase cești care se umplu. */
+.stamps { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; width: 100%; max-width: 320px; box-sizing: border-box; margin: 4px 0 0; padding: 0; list-style: none; }
+.stamps li { position: relative; aspect-ratio: 1; border: 1.5px dashed color-mix(in oklab, var(--ink) 30%, transparent); border-radius: 50%; transition: background-color .3s var(--ease-out), border-color .3s var(--ease-out); }
+.stamps li:last-child { border-color: var(--oak); }
+.stamps li::after { content: ""; position: absolute; inset: 24%; border-radius: 0 0 40% 40%; border: 2px solid transparent; border-top: 0; }
+.stamps li.is-stamped { background: var(--oak); border: 1.5px solid var(--oak); }
+.stamps li.is-stamped::after { border-color: var(--espresso); }
+.stamp-status { min-height: 1.6em; font-weight: 600; }
+.stamp-form { display: grid; gap: 8px; width: 100%; padding-top: 16px; border-top: 1px solid var(--line); }
+.stamp-form label { font-size: .8rem; color: var(--muted); }
+.stamp-form > div { display: flex; gap: 8px; }
+.stamp-form input { flex: 1; width: 100%; min-width: 0; min-height: 48px; padding: 0 14px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; font: inherit; letter-spacing: .2em; }
+.stamp-form input:focus-visible { outline: 2px solid var(--oak); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

@@ -325,9 +325,40 @@ values = {
     "vJs": hashlib.sha1((ROOT / "assets/js/main.js").read_bytes()).hexdigest()[:8],
     "vMotion": hashlib.sha1((ROOT / "assets/js/motion.js").read_bytes()).hexdigest()[:8],
 }
+from extra_sectiuni import build as build_extras
+
+extras = build_extras(DATA, esc, image, frame)
+extra_head = (
+    '<link rel="stylesheet" href="assets/css/extra.css?v='
+    + hashlib.sha1((ROOT / "assets/css/extra.css").read_bytes()).hexdigest()[:8] + '">'
+)
+extra_script = (
+    '<script defer src="assets/js/extra.js?v='
+    + hashlib.sha1((ROOT / "assets/js/extra.js").read_bytes()).hexdigest()[:8] + '"></script>'
+)
+
+
+def with_extras(base, on, demo=False):
+    out = dict(base)
+    out.update({
+        "extraHead": (('<meta name="robots" content="noindex">' if demo else "") + extra_head) if on else "",
+        "extraAfterWood": extras["afterWood"] if on else "",
+        "extraAfterMenu": extras["afterMenu"] if on else "",
+        "extraOffers": extras["beforeLocations"] if on else "",
+        "extraScripts": extra_script if on else "",
+    })
+    if demo:
+        out["canonical"] = ""
+    return out
+
+
 template = (SOURCE / "pagina.html").read_text(encoding="utf-8")
-page = re.sub(r"\{\{(\w+)\}\}", lambda match: str(values[match[1]]), template)
+live = with_extras(values, DATA["extra"]["activ"])
+page = re.sub(r"\{\{(\w+)\}\}", lambda match: str(live[match[1]]), template)
 (ROOT / "index.html").write_text(page, encoding="utf-8", newline="\n")
+# Varianta de prezentare pentru patron, cu toate propunerile (neindexată, fără link de pe site).
+demo = with_extras(values, True, demo=True)
+(ROOT / "demo.html").write_text(re.sub(r"\{\{(\w+)\}\}", lambda match: str(demo[match[1]]), template), encoding="utf-8", newline="\n")
 
 # --- Meniul pentru mese (meniu.html), deschis din codul QR de pe cartonaș ---
 def qr_item(product):
