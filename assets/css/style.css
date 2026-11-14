@@ -358,32 +358,15 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 /* Fundal cu straturi: coloane fine de revistă, lumini calde pe fiecare secțiune,
    lamele de lemn pe secțiunile închise și o granulație ca de hârtie peste tot. */
 :root {
-  --grid: color-mix(in oklab, var(--ink) 6%, transparent);
   --glow: color-mix(in oklab, var(--oak) 9%, transparent);
   --glow-deep: color-mix(in oklab, var(--accent) 8%, transparent);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-body::before {
-  content: ""; position: fixed; z-index: -1; inset: 0 auto 0 50%; translate: -50% 0;
-  width: min(100% - var(--edge) * 2, 1360px); pointer-events: none;
-  background: linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / calc(100% / 6) 100%;
-  border-right: 1px solid var(--grid);
 }
 body::after {
   content: ""; position: fixed; z-index: 40; inset: 0; pointer-events: none;
   background: var(--grain); opacity: .5; mix-blend-mode: soft-light;
 }
 .story, .menu-section, .reviews, .locations { position: relative; isolation: isolate; overflow-x: clip; }
-.wood, .site-footer {
-  background:
-    radial-gradient(70% 55% at 85% 0%, color-mix(in oklab, var(--accent) 26%, transparent), transparent 70%),
-    radial-gradient(50% 45% at 0% 100%, color-mix(in oklab, var(--oak) 10%, transparent), transparent 70%),
-    repeating-linear-gradient(90deg, color-mix(in oklab, var(--paper) 4%, transparent) 0 1px, transparent 1px 16px),
-    var(--ink);
-}
-@media (max-width: 639px) {
-  body::before { background-size: calc(100% / 2) 100%; }
-}
 
 /* ---- Temă închisă: corecții pentru elementele care aveau culori fixe ---- */
 .site-header { color: var(--cream); }
@@ -399,7 +382,6 @@ body::after {
 .wood, .site-footer {
   color: var(--ink);
   background:
-    repeating-linear-gradient(90deg, color-mix(in oklab, var(--ink) 3%, transparent) 0 1px, transparent 1px 16px),
     var(--paper);
   border-top: 1px solid var(--line);
 }

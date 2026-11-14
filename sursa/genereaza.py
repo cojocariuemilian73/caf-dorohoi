@@ -297,7 +297,7 @@ values = {
     "heroIllustration": '<figcaption class="hero-credit">Imagine ilustrativă</figcaption>' if illustrative else "",
     "arrowDown": arrow("M12 4v15m-6-6 6 6 6-6"),
     "arrowOut": arrow("M6 18 18 6M7 6h11v11"),
-    "menuNotice": '<p class="sample-note">Meniul de aici e orientativ. Prețurile exacte le afli la bar.</p>' if DATA["meniuExemplu"] else "",
+    "menuNotice": "",
     "reviews": "".join(review(item, i, len([r for r in DATA["recenzii"] if r])) for i, item in enumerate([r for r in DATA["recenzii"] if r], start=1)),
     "arrowLeft": arrow("M19 12H5m6-6-6 6 6 6"),
     "arrowRight": arrow("M5 12h14m-6-6 6 6-6 6"),
