@@ -155,7 +155,7 @@ function loadMotion() {
   function enableMotion() {
     if (!motion.matches || select("[data-motion-script]")) return;
     const script = document.createElement("script");
-    script.src = "assets/js/motion.js";
+    script.src = select("script[data-motion]")?.dataset.motion || "assets/js/motion.js";
     script.dataset.motionScript = "";
     document.head.append(script);
   }

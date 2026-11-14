@@ -1,5 +1,6 @@
 """Regenerează pagina statică după editarea fișierului date-site.json."""
 
+import hashlib
 import html
 import json
 import re
@@ -317,6 +318,10 @@ values = {
         f'<a href="{esc(source["url"])}">{esc(source["nume"])}</a>' for source in DATA["surseFoto"]
     ) + '</p>' if DATA["surseFoto"] else "",
     "year": date.today().year,
+    # Versiunea din adresă se schimbă odată cu fișierul, așa că browserele nu mai țin stilul vechi.
+    "vCss": hashlib.sha1((ROOT / "assets/css/style.css").read_bytes()).hexdigest()[:8],
+    "vJs": hashlib.sha1((ROOT / "assets/js/main.js").read_bytes()).hexdigest()[:8],
+    "vMotion": hashlib.sha1((ROOT / "assets/js/motion.js").read_bytes()).hexdigest()[:8],
 }
 template = (SOURCE / "pagina.html").read_text(encoding="utf-8")
 page = re.sub(r"\{\{(\w+)\}\}", lambda match: str(values[match[1]]), template)
