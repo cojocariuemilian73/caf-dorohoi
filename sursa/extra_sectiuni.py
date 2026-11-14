@@ -1,4 +1,4 @@
-"""Secțiunile propuse patronului: specialități, colțul de lucru, voucher, roata norocului și cardul de fidelitate.
+"""Propunerile pentru patron: voucher pe e-mail, roata norocului, card de fidelitate și specialitățile casei.
 
 Apar pe demo.html. Pe index.html apar doar când "extra.activ" e true în date-site.json.
 """
@@ -36,20 +36,6 @@ def build(data, esc, image, frame):
         f'<ul class="special-list">{"".join(cards)}</ul></div></section>'
     )
 
-    # --- Colțul de lucru ---
-    work = extra["lucru"]
-    facts = "".join(
-        f'<div><dt>{esc(item["eticheta"])}</dt><dd{" class=\"todo\"" if not item["valoare"] else ""}>'
-        f'{esc(item["valoare"] or "[DE COMPLETAT]")}</dd></div>'
-        for item in work["detalii"]
-    )
-    work_html = (
-        '<section class="section work" id="lucru" aria-labelledby="work-title"><div class="shell work-grid">'
-        f'<div class="work-photo">{frame(work["imagine"], "", "(min-width: 900px) 50vw, 100vw")}</div>'
-        f'<div class="work-copy"><h2 id="work-title">{esc(work["titlu"])}</h2><p class="lead">{esc(work["text"])}</p>'
-        f'<dl class="work-facts">{facts}</dl></div></div></section>'
-    )
-
     # --- Roata: felii egale, eticheta scrisă pe rază ---
     wheel = extra["roata"]
     prizes = wheel["premii"]
@@ -71,30 +57,24 @@ def build(data, esc, image, frame):
 
     voucher = extra["voucher"]
     loyalty = extra["fidelitate"]
+    mail = extra.get("email", {})
     stamps = "".join(f'<li><span class="sr-only">Ștampila {i}</span></li>' for i in range(1, loyalty["stampile"] + 1))
     config = {
         "prizes": [p["nume"] for p in prizes],
         "wheelValid": wheel["valabilitate"],
         "stamps": loyalty["stampile"],
         "pin": loyalty["pinDemo"],
+        "supabaseUrl": mail.get("supabaseUrl", ""),
+        "supabaseKey": mail.get("supabaseCheie", ""),
     }
     offers = (
         '<section class="section offers" id="oferte" aria-labelledby="offers-title"><div class="shell">'
         '<div class="section-intro"><h2 id="offers-title">Pentru tine, de la noi.</h2></div>'
         '<div class="offer-grid">'
-        # Voucher
-        f'<article class="offer offer-voucher"><h3>{esc(voucher["titlu"])}</h3><p>{esc(voucher["text"])}</p>'
-        '<button type="button" class="button button-dark" data-voucher>Vreau voucherul</button>'
-        '<div class="ticket" hidden><div class="ticket-qr" aria-hidden="true"></div>'
-        '<div class="ticket-info"><span class="ticket-label">Espresso din partea casei</span>'
-        '<strong class="ticket-code"></strong><span class="ticket-until"></span></div></div>'
-        f'<small>{esc(voucher["conditii"])}</small></article>'
-        # Roata
         f'<article class="offer offer-wheel"><h3>{esc(wheel["titlu"])}</h3><p>{esc(wheel["text"])}</p>'
         f'<div class="wheel-wrap"><span class="wheel-pin" aria-hidden="true"></span>{wheel_svg}</div>'
         '<button type="button" class="button button-dark" data-spin>Învârte roata</button>'
         '<p class="wheel-result" role="status"></p></article>'
-        # Fidelitate
         f'<article class="offer offer-loyalty"><h3>{esc(loyalty["titlu"])}</h3><p>{esc(loyalty["text"])}</p>'
         f'<ol class="stamps">{stamps}</ol><p class="stamp-status" role="status"></p>'
         '<form class="stamp-form"><label for="stamp-pin">Pentru barista: codul de ștampilă</label>'
@@ -105,4 +85,39 @@ def build(data, esc, image, frame):
         f'<script id="extra-config" type="application/json">{json.dumps(config, ensure_ascii=False)}</script>'
         '</section>'
     )
-    return {"afterWood": work_html, "afterMenu": specials, "beforeLocations": offers}
+
+    # --- Fereastra cu voucherul: e-mail, cod de confirmare, voucher ---
+    modal = (
+        '<dialog class="welcome" aria-labelledby="welcome-title">'
+        '<form method="dialog" class="welcome-close"><button aria-label="Închide">×</button></form>'
+        f'<div class="welcome-photo" aria-hidden="true">{image("vEspresso", sizes="(min-width: 700px) 320px, 100vw")}</div>'
+        '<div class="welcome-body">'
+        f'<h2 id="welcome-title">{esc(voucher["titlu"])}</h2>'
+        # Pasul 1: adresa de e-mail
+        '<form class="welcome-step" data-step="email" novalidate>'
+        f'<p>{esc(voucher["text"])}</p>'
+        '<label for="welcome-email">Adresa de e-mail</label>'
+        '<input id="welcome-email" type="email" autocomplete="email" required placeholder="nume@exemplu.ro">'
+        f'<label class="welcome-consent"><input type="checkbox" required> <span>{esc(voucher["acord"])}</span></label>'
+        '<button class="button button-dark">Trimite-mi codul</button>'
+        '<p class="welcome-error" role="alert"></p></form>'
+        # Pasul 2: codul primit
+        '<form class="welcome-step" data-step="code" hidden novalidate>'
+        '<p>Ți-am trimis un cod de 6 cifre la <strong class="welcome-to"></strong>. Scrie-l aici.</p>'
+        '<label for="welcome-code">Codul de confirmare</label>'
+        '<input id="welcome-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required>'
+        '<button class="button button-dark">Confirmă</button>'
+        '<p class="welcome-demo" hidden></p>'
+        '<button type="button" class="welcome-back">Altă adresă de e-mail</button>'
+        '<p class="welcome-error" role="alert"></p></form>'
+        # Pasul 3: voucherul
+        '<div class="welcome-step" data-step="voucher" hidden>'
+        '<p>Gata! Arată voucherul la bar, la prima vizită.</p>'
+        '<div class="ticket"><div class="ticket-qr" aria-hidden="true"></div>'
+        '<div class="ticket-info"><span class="ticket-label">Espresso din partea casei</span>'
+        '<strong class="ticket-code"></strong><span class="ticket-until"></span></div></div>'
+        f'<small>{esc(voucher["conditii"])}</small></div>'
+        '</div></dialog>'
+        '<button type="button" class="voucher-pill" hidden>Voucherul tău ☕</button>'
+    )
+    return {"offers": offers, "afterMenu": specials, "modal": modal}

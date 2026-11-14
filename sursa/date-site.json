@@ -344,29 +344,11 @@
         "Croissant"
       ]
     },
-    "lucru": {
-      "titlu": "Colțul de lucru",
-      "text": "Pereți de sticlă, lumină naturală toată ziua și mese mari de lemn. Vino cu laptopul sau cu cartea.",
-      "imagine": "lumina",
-      "detalii": [
-        {
-          "eticheta": "Lumină",
-          "valoare": "Naturală, pereți de sticlă"
-        },
-        {
-          "eticheta": "Wi-Fi",
-          "valoare": null
-        },
-        {
-          "eticheta": "Prize la masă",
-          "valoare": null
-        }
-      ]
-    },
     "voucher": {
       "titlu": "Primul espresso e din partea casei.",
-      "text": "Prima dată la CAF? Salvează voucherul pe telefon și arată-l la bar.",
-      "conditii": "Un voucher pe telefon, la prima vizită. Valabil 30 de zile."
+      "text": "Lasă-ne adresa de e-mail. Îți trimitem un cod de confirmare, iar după ce îl introduci primești voucherul pe telefon.",
+      "acord": "Sunt de acord să primesc e-mailuri de la CAF coffee&more. Mă pot dezabona oricând.",
+      "conditii": "Un voucher pe adresă de e-mail, la prima vizită. Valabil 30 de zile."
     },
     "roata": {
       "titlu": "Încearcă-ți norocul.",
@@ -404,6 +386,11 @@
       "text": "Cardul stă în telefon, nu în portofel. La fiecare cafea, barista îți pune o ștampilă.",
       "stampile": 6,
       "pinDemo": "1234"
+    },
+    "email": {
+      "_nota": "Serviciul care trimite codul pe e-mail (Supabase, gratuit). Gol = mod demonstrație: codul apare pe ecran.",
+      "supabaseUrl": "",
+      "supabaseCheie": ""
     }
   }
 }

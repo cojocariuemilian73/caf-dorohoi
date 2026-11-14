@@ -342,9 +342,9 @@ def with_extras(base, on, demo=False):
     out = dict(base)
     out.update({
         "extraHead": (('<meta name="robots" content="noindex">' if demo else "") + extra_head) if on else "",
-        "extraAfterWood": extras["afterWood"] if on else "",
+        "extraModal": extras["modal"] if on else "",
         "extraAfterMenu": extras["afterMenu"] if on else "",
-        "extraOffers": extras["beforeLocations"] if on else "",
+        "extraOffers": extras["offers"] if on else "",
         "extraScripts": extra_script if on else "",
     })
     if demo:

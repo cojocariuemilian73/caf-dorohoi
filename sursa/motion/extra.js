@@ -1,5 +1,5 @@
-// Voucherul, roata norocului și cardul de fidelitate.
-// Totul se ține pe telefonul clientului (localStorage). E o demonstrație: o versiune reală are nevoie de un server.
+// Voucherul pe e-mail, roata norocului și cardul de fidelitate.
+// Codul pe e-mail trece prin Supabase; roata și ștampilele se țin pe telefon (localStorage), deci sunt pentru demonstrație.
 import qrcode from "qrcode-generator";
 
 const config = JSON.parse(document.getElementById("extra-config")?.textContent || "null");
@@ -21,29 +21,125 @@ const code = () => {
   return [...bytes].map((b) => letters[b % letters.length]).join("");
 };
 
-function setupVoucher() {
-  const button = document.querySelector("[data-voucher]");
-  const ticket = document.querySelector(".ticket");
-  if (!button || !ticket) return;
+function setupWelcome() {
+  const dialog = document.querySelector("dialog.welcome");
+  const pill = document.querySelector(".voucher-pill");
+  if (!dialog || !config) return;
+  const steps = Object.fromEntries([...dialog.querySelectorAll(".welcome-step")].map((el) => [el.dataset.step, el]));
+  const live = Boolean(config.supabaseUrl && config.supabaseKey);
+  let email = "";
+  let demoCode = "";
 
-  function show(voucher) {
+  function go(name) {
+    for (const [key, el] of Object.entries(steps)) el.hidden = key !== name;
+    steps[name].querySelector("input")?.focus();
+  }
+  function fail(step, message) {
+    steps[step].querySelector(".welcome-error").textContent = message;
+  }
+  function open() {
+    if (!dialog.open) dialog.showModal();
+  }
+
+  function showVoucher(voucher) {
     const qr = qrcode(0, "M");
     qr.addData(`CAF VOUCHER ESPRESSO ${voucher.code} PANA LA ${voucher.until}`);
     qr.make();
+    const ticket = steps.voucher;
     ticket.querySelector(".ticket-qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
     ticket.querySelector(".ticket-code").textContent = "CAF-" + voucher.code;
     ticket.querySelector(".ticket-until").textContent = "Valabil până pe " + human(voucher.until);
-    ticket.hidden = false;
-    button.hidden = true;
+    go("voucher");
+    pill.hidden = false;
   }
 
-  const saved = store.get("caf-voucher");
-  if (saved) show(saved);
-  button.addEventListener("click", () => {
-    const voucher = { code: code(), until: isoDay(day(30)) };
-    store.set("caf-voucher", voucher);
-    show(voucher);
+  // Supabase trimite codul și îl verifică pe server; fără chei, pagina rulează în mod demonstrație.
+  async function auth(path, body) {
+    const response = await fetch(config.supabaseUrl.replace(/\/$/, "") + "/auth/v1/" + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: config.supabaseKey },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.msg || data.error_description || "eroare");
+    return data;
+  }
+
+  steps.email.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const input = steps.email.querySelector("input[type=email]");
+    const consent = steps.email.querySelector("input[type=checkbox]");
+    fail("email", "");
+    if (!input.checkValidity() || !input.value.trim()) return fail("email", "Scrie o adresă de e-mail validă.");
+    if (!consent.checked) return fail("email", "Bifează acordul, ca să-ți putem trimite codul.");
+    email = input.value.trim().toLowerCase();
+    const button = steps.email.querySelector("button");
+    button.disabled = true;
+    try {
+      if (live) {
+        await auth("otp", { email, create_user: true });
+      } else {
+        demoCode = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1e6).padStart(6, "0");
+        const note = steps.code.querySelector(".welcome-demo");
+        note.textContent = `Mod demonstrație: în varianta finală codul vine pe e-mail. Codul tău este ${demoCode}.`;
+        note.hidden = false;
+      }
+      steps.code.querySelector(".welcome-to").textContent = email;
+      go("code");
+    } catch {
+      fail("email", "Nu am putut trimite codul acum. Încearcă din nou în câteva minute.");
+    } finally {
+      button.disabled = false;
+    }
   });
+
+  steps.code.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const token = steps.code.querySelector("input").value.trim();
+    fail("code", "");
+    if (!/^\d{6}$/.test(token)) return fail("code", "Codul are 6 cifre.");
+    const button = steps.code.querySelector("button");
+    button.disabled = true;
+    try {
+      if (live) {
+        const session = await auth("verify", { type: "email", email, token });
+        // Un singur voucher pe adresă: contul trebuie să fie nou.
+        const created = Date.parse(session.user?.created_at || 0);
+        if (Date.now() - created > 30 * 60 * 1000) {
+          return fail("code", "Pe adresa asta s-a dat deja un voucher. Ne vedem la o cafea!");
+        }
+      } else if (token !== demoCode) {
+        return fail("code", "Codul nu se potrivește. Verifică e-mailul.");
+      }
+      const voucher = { code: code(), until: isoDay(day(30)), email };
+      store.set("caf-voucher", voucher);
+      showVoucher(voucher);
+    } catch {
+      fail("code", "Codul nu e bun sau a expirat. Cere altul.");
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  dialog.querySelector(".welcome-back").addEventListener("click", () => go("email"));
+  dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener("close", () => {
+    if (!store.get("caf-voucher")) store.set("caf-voucher-amanat", Date.now());
+  });
+  pill.addEventListener("click", open);
+  // Butonul apare doar după prima secțiune, ca să nu acopere butoanele de sus.
+  const togglePill = () => pill.classList.toggle("is-visible", scrollY > innerHeight * .7);
+  addEventListener("scroll", togglePill, { passive: true });
+  togglePill();
+
+  const saved = store.get("caf-voucher");
+  if (saved) {
+    showVoucher(saved);
+    return;
+  }
+  // Fereastra apare singură la intrare; dacă a închis-o, nu mai insistăm o săptămână.
+  const later = store.get("caf-voucher-amanat");
+  if (!later || Date.now() - later > 7 * 864e5) setTimeout(open, 1800);
 }
 
 function setupWheel() {
@@ -129,6 +225,6 @@ function setupLoyalty() {
   render();
 }
 
-setupVoucher();
+setupWelcome();
 setupWheel();
 setupLoyalty();

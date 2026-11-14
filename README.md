@@ -42,7 +42,8 @@ Câmpurile goale din `sursa/date-site.json` nu apar pe site. Instrucțiunile sun
 - Cormorant Garamond și DM Sans sunt găzduite local. Licențele sunt în `assets/fonts/`.
 
 ## Propuneri pentru patron (demo.html)
-`demo.html` = site-ul plus: Specialitățile casei, Colțul de lucru, voucher „primul espresso”, roata norocului și cardul de fidelitate.
+`demo.html` = site-ul plus: fereastră la intrare cu voucher „primul espresso” pe e-mail (cod de confirmare), roata norocului și cardul de fidelitate (după Poveste), Specialitățile casei (după Meniu).
+Codul pe e-mail: completează `extra.email.supabaseUrl` și `supabaseCheie` (cheia publică „anon”) din proiectul Supabase; fără ele, codul apare pe ecran (mod demonstrație).
 Pagina nu e legată din site și are `noindex`. Textele sunt în `date-site.json` → `extra`.
 Când CAF aprobă ofertele, pune `"extra": {"activ": true}` și apar și pe `index.html`.
 Atenție: voucherul, roata și ștampilele se țin doar pe telefonul clientului (localStorage), iar codul de ștampilă e în pagină.
