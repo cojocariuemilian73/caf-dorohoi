@@ -1,6 +1,6 @@
 # CAF coffee&more · Dorohoi
 
-Deschide `index.html` în browser pentru previzualizare. Pagina, imaginile, fonturile și animațiile funcționează local. Harta are nevoie de internet. Prima secțiune rulează filmarea din `assets/video/`: montajul orizontal pentru ecrane late și cel vertical pentru telefoane. Pentru a testa local, rulează `python -m http.server 8080 --bind 127.0.0.1` din acest folder și deschide `http://127.0.0.1:8080/`.
+Deschide `index.html` în browser pentru previzualizare. Pagina, imaginile, fonturile și animațiile funcționează local. Harta are nevoie de internet. Pentru a testa local, rulează `python -m http.server 8080 --bind 127.0.0.1` din acest folder și deschide `http://127.0.0.1:8080/`.
 
 ## Actualizare
 
@@ -8,7 +8,7 @@ Datele editabile sunt în `sursa/date-site.json`. După modificări, rulează `p
 
 O categorie cu o cheie `fotografie` din `imagini` apare și la „Cafea și ceva bun”, cu link spre categoria ei.
 
-Sursele animațiilor sunt în `sursa/motion/`. Pentru a recompila, rulează `npm ci` și `npm run build` din acel folder. Site-ul include deja fișierul compilat. Lenis îndulcește derularea cu mouse-ul. GSAP animă titlul principal cuvânt cu cuvânt, filmarea la derulare și deschiderea fotografiilor. Componenta Animated Content de la React Bits aduce titlurile secțiunilor rând cu rând. Preferința pentru mișcare redusă oprește efectele și filmarea, iar butonul Pauză o oprește oricând.
+Sursele animațiilor sunt în `sursa/motion/`. Pentru a recompila, rulează `npm ci` și `npm run build` din acel folder. Site-ul include deja fișierul compilat. Lenis îndulcește derularea cu mouse-ul. GSAP animă titlul principal cuvânt cu cuvânt, fotografia de copertă la derulare și deschiderea fotografiilor. Componenta Animated Content de la React Bits aduce titlurile secțiunilor rând cu rând. Preferința pentru mișcare redusă oprește efectele.
 
 ## Înainte de lansare
 

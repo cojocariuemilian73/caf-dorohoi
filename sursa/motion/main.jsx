@@ -25,17 +25,16 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
   const hero = document.querySelector(".hero-main");
   const heading = document.querySelector("#hero-title");
   const headingText = heading.textContent;
-  const video = document.querySelector(".hero-video");
+  const cover = document.querySelector(".hero-media img");
 
   // 1. Intrarea: filmul se apropie, cuvintele urcă din mască, apoi restul.
   const words = splitWords(heading);
   const intro = gsap.timeline({ defaults: { ease: EASE } });
   intro
-    .fromTo(video, { scale: 1.12, opacity: 0 }, { scale: 1, opacity: 1, duration: 2.2 }, 0)
+    .fromTo(cover, { scale: 1.14, opacity: 0 }, { scale: 1.04, opacity: 1, duration: 2.4 }, 0)
     .fromTo(".hero-label", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 1 }, .15)
     .fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 1.3, stagger: .07 }, .25)
     .fromTo(".hero-actions > *", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: .08 }, .8)
-    .fromTo(".hero-foot", { opacity: 0 }, { opacity: 1, duration: 1 }, 1.1)
     .fromTo(".site-header", { yPercent: -100 }, { yPercent: 0, duration: 1.1 }, .3);
 
   // 2. La derulare, filmul coboară mai încet decât pagina, iar textul se estompează.
@@ -44,8 +43,7 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
   });
   parallax
     .to(".hero-media", { yPercent: 22, ease: "none" }, 0)
-    .to(".hero-copy", { yPercent: -18, opacity: 0, ease: "none" }, 0)
-    .to(".hero-foot", { opacity: 0, ease: "none", duration: .4 }, 0);
+    .to(".hero-copy", { yPercent: -18, opacity: 0, ease: "none" }, 0);
 
   // 3. Titlurile secțiunilor apar rând cu rând, cu Animated Content de la React Bits.
   document.querySelectorAll("main h2:not(.eyebrow)").forEach((title) => {
@@ -134,6 +132,6 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
     heading.textContent = headingText;
     heading.removeAttribute("aria-label");
     document.documentElement.classList.remove("has-depth");
-    gsap.set("main .image-frame, main .image-frame img, .hero-media, .hero-copy, .hero-foot, .site-header, .hero-video", { clearProps: "all" });
+    gsap.set("main .image-frame, main .image-frame img, .hero-media, .hero-copy, .site-header, .hero-media img", { clearProps: "all" });
   };
 });

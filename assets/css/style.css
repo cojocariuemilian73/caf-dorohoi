@@ -112,39 +112,24 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .hero-main {
   position: relative; isolation: isolate; overflow: hidden;
   display: grid; align-content: end; justify-items: start;
-  min-height: 100svh; padding: calc(var(--header-height) + 32px) var(--edge) 142px;
+  min-height: 100svh; padding: calc(var(--header-height) + 32px) var(--edge) 96px;
 }
 .hero-media { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: var(--espresso); }
 .hero-media::after {
   content: ""; position: absolute; inset: 0;
   background:
     linear-gradient(180deg, #20161199 0%, #20161100 30%),
-    linear-gradient(0deg, #201611e6 0%, #201611a6 32%, #20161100 70%);
+    radial-gradient(70% 60% at 0% 100%, #201611cc, #20161100 75%),
+    linear-gradient(0deg, #201611f0 0%, #201611b3 36%, #20161100 72%);
 }
-.hero-video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+.hero-photo { display: block; height: 100%; }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
 .hero-copy { max-width: min(100%, 1040px); }
 .hero h1 { font-size: clamp(3.4rem, 9vw, 8.6rem); line-height: .88; letter-spacing: -.045em; text-wrap: balance; }
 .hero h1 .word { display: inline-block; white-space: nowrap; overflow: clip; vertical-align: top; padding: .16em .04em .08em; margin: -.16em -.04em -.08em; }
 .hero h1 .word > span { display: inline-block; will-change: transform; }
 .hero-label { margin-bottom: 18px; color: var(--oak); font: 700 .74rem/1.3 var(--sans); letter-spacing: .2em; text-transform: uppercase; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: clamp(24px, 3.4vw, 44px); }
-.hero-foot {
-  position: absolute; inset: auto var(--edge) calc(66px + env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  font-size: .74rem; color: #f6eee4cc;
-}
-.hero-credit { display: inline-flex; gap: 6px; align-items: center; }
-.hero-credit:hover { color: var(--cream); text-decoration: underline; text-underline-offset: 4px; }
-.hero-toggle {
-  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px;
-  color: var(--cream); background: #2016114d; border: 1px solid #f6eee459; border-radius: 999px;
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  font-size: .74rem; font-weight: 700;
-  transition: background-color .2s var(--ease-out), transform .16s var(--ease-out);
-}
-.hero-toggle:active { transform: scale(.97); }
-.hero-toggle .icon-play, .hero-toggle[data-state="paused"] .icon-pause { display: none; }
-.hero-toggle[data-state="paused"] .icon-play { display: block; }
-@media (hover: hover) and (pointer: fine) { .hero-toggle:hover { background: #20161199; } }
 .hero-bottom { position: relative; background: var(--cream); color: var(--espresso); border-bottom: 1px solid var(--line); }
 .hero-details { display: flex; min-height: 56px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 14px; padding-block: 11px; font-size: .79rem; }
 .hero-status { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
@@ -206,7 +191,6 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 /* 04 Spațiul */
 .gallery-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(10px, 1.6vw, 24px); }
 .gallery-item { position: relative; grid-column: span 3; aspect-ratio: 4 / 5; }
-.gallery-item.g0 { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
 .gallery-item::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, #0007, #0000 40%); opacity: 0; transition: opacity .3s var(--ease-out); }
 .gallery-caption { position: absolute; z-index: 1; left: 14px; bottom: 12px; color: var(--paper); font-size: .78rem; font-weight: 600; opacity: 0; translate: 0 6px; transition: opacity .3s var(--ease-out), translate .3s var(--ease-out); }
 @media (hover: hover) { .gallery-item:hover .gallery-caption, .gallery-item:hover::after { opacity: 1; translate: 0 0; } }
@@ -292,7 +276,6 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .is-scrolled .header-directions:hover { color: var(--paper); background: var(--ink); border-color: var(--ink); }
   .site-header:not(.is-scrolled) .header-directions:hover { color: var(--ink); background: var(--paper); border-color: var(--paper); }
   .hero-main { padding-bottom: clamp(100px, 14vh, 150px); }
-  .hero-foot { bottom: 24px; }
   .story-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
   .wood-head, .section-intro { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); align-items: end; column-gap: 8%; }
   .wood-head .eyebrow, .section-intro .eyebrow { grid-column: 1 / -1; }
@@ -322,4 +305,50 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation-duration: 0s !important; }
   .button:active { transform: none; }
+}
+
+/* Fundal cu straturi: coloane fine de revistă, lumini calde pe fiecare secțiune,
+   lamele de lemn pe secțiunile închise și o granulație ca de hârtie peste tot. */
+:root {
+  --grid: color-mix(in oklab, var(--ink) 6%, transparent);
+  --glow: color-mix(in oklab, var(--oak) 34%, transparent);
+  --glow-deep: color-mix(in oklab, var(--accent) 14%, transparent);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::before {
+  content: ""; position: fixed; z-index: -1; inset: 0 auto 0 50%; translate: -50% 0;
+  width: min(100% - var(--edge) * 2, 1360px); pointer-events: none;
+  background: linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / calc(100% / 6) 100%;
+  border-right: 1px solid var(--grid);
+}
+body::after {
+  content: ""; position: fixed; z-index: 40; inset: 0; pointer-events: none;
+  background: var(--grain); opacity: .22; mix-blend-mode: multiply;
+}
+.story, .menu-section, .gallery-section, .reviews, .locations { position: relative; isolation: isolate; overflow-x: clip; }
+.story::before, .menu-section::before, .gallery-section::before, .reviews::before, .locations::before {
+  content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
+}
+.story::before { background: radial-gradient(45vw 38vw at 92% 30%, var(--glow), transparent 70%), radial-gradient(30vw 26vw at 0% 100%, var(--glow-deep), transparent 70%); }
+.menu-section::before { background: radial-gradient(40vw 34vw at 4% 18%, var(--glow), transparent 70%), radial-gradient(36vw 30vw at 100% 85%, var(--glow-deep), transparent 70%); }
+.gallery-section::before { background: radial-gradient(50vw 40vw at 70% 0%, var(--glow), transparent 70%); }
+.reviews::before { background: radial-gradient(38vw 30vw at 20% 40%, var(--glow-deep), transparent 70%), radial-gradient(34vw 28vw at 95% 100%, var(--glow), transparent 70%); }
+.locations::before { background: radial-gradient(44vw 36vw at 100% 10%, var(--glow), transparent 70%); }
+/* Monograma CAF, doar conturată, în spatele meniului și al părerilor. */
+.menu-section::after, .reviews::after {
+  content: "CAF"; position: absolute; z-index: -1; pointer-events: none;
+  font: 700 clamp(14rem, 34vw, 34rem)/.75 var(--sans); letter-spacing: -.09em;
+  color: transparent; -webkit-text-stroke: 1px color-mix(in oklab, var(--ink) 9%, transparent);
+}
+.menu-section::after { right: -2vw; top: clamp(40px, 6vw, 90px); }
+.reviews::after { left: -3vw; bottom: -2vw; }
+.wood, .site-footer {
+  background:
+    radial-gradient(70% 55% at 85% 0%, color-mix(in oklab, var(--accent) 26%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 0% 100%, color-mix(in oklab, var(--oak) 10%, transparent), transparent 70%),
+    repeating-linear-gradient(90deg, color-mix(in oklab, var(--paper) 4%, transparent) 0 1px, transparent 1px 16px),
+    var(--ink);
+}
+@media (max-width: 639px) {
+  body::before { background-size: calc(100% / 2) 100%; }
 }

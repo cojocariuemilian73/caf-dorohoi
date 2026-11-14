@@ -45,11 +45,7 @@
   "video": {
     "youtube": "doRFsG95dz8",
     "titlu": "Cafeneaua CAF Dorohoi",
-    "credit": "DorohoiNews Stiri",
-    "lat": "assets/video/caf-hero-lat.mp4",
-    "latPoster": "assets/video/caf-hero-lat.webp",
-    "mobil": "assets/video/caf-hero-mobil.mp4",
-    "mobilPoster": "assets/video/caf-hero-mobil.webp"
+    "credit": "DorohoiNews Stiri"
   },
   "meniuExemplu": true,
   "meniu": [
@@ -176,7 +172,10 @@
       "latime": 1600,
       "inaltime": 1000,
       "alt": "Terasa vitrată CAF Dorohoi, cu mese din lemn și lămpi suspendate",
-      "titlu": "Terasa vitrată"
+      "titlu": "Terasa vitrată",
+      "mobil": "caf-coperta-mobil.webp",
+      "latimeMobil": 660,
+      "inaltimeMobil": 870
     },
     "share": {
       "fisier": "caf-distribuire.jpg",

@@ -205,10 +205,11 @@ values = {
     "mapUrl": esc(map_url),
     "videoUrl": f"https://www.youtube.com/watch?v={video_id}",
     "videoCredit": esc(video["credit"]),
-    "heroVideoLat": esc(video["lat"]),
-    "heroVideoMobil": esc(video["mobil"]),
-    "heroPosterLat": esc(video["latPoster"]),
-    "heroPosterMobil": esc(video["mobilPoster"]),
+    "heroImage": image("hero", hero=True),
+    "heroDesktop": esc(IMG + DATA["imagini"]["hero"]["fisier"]),
+    "heroMobile": esc(IMG + DATA["imagini"]["hero"]["mobil"]),
+    "heroMobileWidth": DATA["imagini"]["hero"]["latimeMobil"],
+    "heroMobileHeight": DATA["imagini"]["hero"]["inaltimeMobil"],
     "reviewsUrl": esc(links["recenzii"] or map_search),
     "reviewsRating": (
         f'<p class="reviews-rating"><strong>{esc(rating["scor"])} / 5</strong>'
@@ -228,7 +229,7 @@ values = {
     "arrowDown": arrow("M12 4v15m-6-6 6 6 6-6"),
     "arrowOut": arrow("M6 18 18 6M7 6h11v11"),
     "menuNotice": '<p class="sample-note">Meniul de aici e orientativ. Prețurile exacte le afli la bar.</p>' if DATA["meniuExemplu"] else "",
-    "galleryInitial": esc(IMG + DATA["imagini"]["hero"]["fisier"]),
+    "galleryInitial": esc(IMG + DATA["imagini"]["fereastra"]["fisier"]),
     "reviews": "".join(review(item) for item in DATA["recenzii"] if item),
     "contactLinks": contact_links(links),
     "storyLarge": frame("atelier", " story-large"),
@@ -237,7 +238,7 @@ values = {
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
     "menuVisuals": "".join(menu_visual(row, i) for i, row in enumerate(DATA["meniu"])),
-    "gallery": "".join(gallery_tile(key, i) for i, key in enumerate(("hero", "fereastra", "exterior", "terasaSeara", "vLapte"))),
+    "gallery": "".join(gallery_tile(key, i) for i, key in enumerate(("fereastra", "exterior", "terasaSeara", "vLapte"), start=1)),
     "socialLink": f'<a class="text-link" href="{esc(social)}">Urmărește-ne pe {social_label} {arrow("M6 18 18 6M7 6h11v11")}</a>' if social else "",
     "photoCredits": '<p class="photo-credits">Fotografii din ' + " · ".join(
         f'<a href="{esc(source["url"])}">{esc(source["nume"])}</a>' for source in DATA["surseFoto"]
