@@ -36,7 +36,7 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
   // 4. Restul conținutului apare în grupuri, la fel de discret.
   const groups = [
     ".story-text > :not(h2)", ".story-images .image-frame", ".section-intro > p:not(.eyebrow)", ".wood-head > p",
-    ".wood-figure", ".wood-notes li", ".menu-tabs", ".review-card",
+    ".wood-notes li", ".menu-tabs", ".review-card",
     ".location-card", ".footer-grid > *"
   ];
   groups.forEach((selector) => {
@@ -58,6 +58,34 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
     });
   });
 
+  // 5b. Atelierul: secțiunea stă pe loc, iar fotografiile trec de la dreapta la stânga.
+  const wide = gsap.matchMedia();
+  wide.add("(min-width: 900px)", () => {
+    const rail = document.querySelector(".wood-rail");
+    const strip = document.querySelector(".wood-strip");
+    if (!rail || !strip) return;
+    document.documentElement.classList.add("has-rail");
+    const distance = () => Math.max(0, strip.scrollWidth - rail.clientWidth);
+    const slide = gsap.to(strip, {
+      x: () => -distance(), ease: "none",
+      scrollTrigger: {
+        trigger: ".wood-pin", start: "top top", end: () => "+=" + distance() * 1.1,
+        pin: true, scrub: .6, invalidateOnRefresh: true
+      }
+    });
+    // Fiecare poză alunecă puțin în ramă, în sens invers, ca să pară adâncă.
+    strip.querySelectorAll(".wood-figure img").forEach((image) => {
+      gsap.fromTo(image, { xPercent: 5 }, {
+        xPercent: -5, ease: "none",
+        scrollTrigger: { trigger: image.closest(".wood-figure"), containerAnimation: slide, start: "left right", end: "right left", scrub: true }
+      });
+    });
+    return () => {
+      document.documentElement.classList.remove("has-rail");
+      gsap.set(".wood-strip, .wood-figure img", { clearProps: "all" });
+    };
+  });
+
   // 6. Derulare lină cu Lenis, doar pe dispozitivele cu mouse.
   const desktop = gsap.matchMedia();
   desktop.add("(pointer: fine) and (hover: hover)", () => {
@@ -76,6 +104,7 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
 
   return () => {
     desktop.revert();
+    wide.revert();
     for (const { root, title, html } of roots) {
       root.unmount();
       title.innerHTML = html;
