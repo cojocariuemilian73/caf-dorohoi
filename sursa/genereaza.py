@@ -40,7 +40,7 @@ def maps(action, query):
 
 def schedule_label(schedule):
     if not schedule:
-        return "Programul îl găsești pe Google Maps"
+        return "Program [DE COMPLETAT]"
     lines = []
     for entry in schedule:
         days = entry["zile"]
@@ -49,24 +49,41 @@ def schedule_label(schedule):
     return " · ".join(lines)
 
 
-def image(key, *, hero=False):
+def variants(file_name, width, ext):
+    """Lista srcset pentru fișierele create de optimizeaza_imagini.py (doar cele existente)."""
+    stem = file_name.rsplit(".", 1)[0]
+    items = []
+    for size in (480, 960):
+        if (ROOT / IMG / f"{stem}-{size}{ext}").exists():
+            items.append(f"{IMG}{stem}-{size}{ext} {size}w")
+    if (ROOT / IMG / f"{stem}{ext}").exists():
+        items.append(f"{IMG}{stem}{ext} {width}w")
+    return ", ".join(items)
+
+
+def image(key, *, hero=False, sizes="(min-width: 900px) 45vw, 100vw"):
     item = DATA["imagini"][key]
     alt = item["alt"]
     if DATA["fotografiiIlustrative"]:
         alt = "Imagine ilustrativă. " + alt
     loading = 'fetchpriority="high"' if hero else 'loading="lazy" decoding="async"'
-    return (
-        f'<img src="{esc(IMG + item["fisier"])}" width="{item["latime"]}"'
-        f' height="{item["inaltime"]}" alt="{esc(alt)}" {loading}>'
+    avif = variants(item["fisier"], item["latime"], ".avif")
+    webp = variants(item["fisier"], item["latime"], ".webp") if item["fisier"].endswith(".webp") else ""
+    img = (
+        f'<img src="{esc(IMG + item["fisier"])}"' + (f' srcset="{esc(webp)}" sizes="{sizes}"' if webp else "")
+        + f' width="{item["latime"]}" height="{item["inaltime"]}" alt="{esc(alt)}" {loading}>'
     )
+    if not avif:
+        return img
+    return f'<picture><source type="image/avif" srcset="{esc(avif)}" sizes="{sizes}">{img}</picture>'
 
 
-def frame(key, extra=""):
-    return f'<div class="image-frame depth{extra}">{image(key)}</div>'
+def frame(key, extra="", sizes="(min-width: 900px) 45vw, 100vw"):
+    return f'<div class="image-frame depth{extra}">{image(key, sizes=sizes)}</div>'
 
 
 def figure(key, extra=""):
-    return f'<figure class="wood-figure{extra}">{frame(key)}<figcaption>{esc(DATA["imagini"][key]["titlu"])}</figcaption></figure>'
+    return f'<figure class="wood-figure{extra}">{frame(key, sizes="(min-width: 640px) 30vw, 100vw")}<figcaption>{esc(DATA["imagini"][key]["titlu"])}</figcaption></figure>'
 
 
 def gallery_tile(key, index):
@@ -77,7 +94,7 @@ def gallery_tile(key, index):
     return (
         f'<a class="gallery-item g{index} image-frame depth" href="{esc(IMG + item["fisier"])}" '
         f'data-caption="{esc(caption)}" aria-label="Mărește imaginea. {esc(caption)}">'
-        f'{image(key)}<span class="gallery-caption">{esc(caption)}</span></a>'
+        f'{image(key, sizes="(min-width: 640px) 60vw, 50vw")}<span class="gallery-caption">{esc(caption)}</span></a>'
     )
 
 
@@ -98,7 +115,7 @@ def menu_visual(category, index):
     if key not in DATA["imagini"]:
         return ""
     active = " is-active" if index == 0 else ""
-    return f'<div class="menu-visual-item{active}" data-category="{esc(category["id"])}">{image(key)}</div>'
+    return f'<div class="menu-visual-item{active}" data-category="{esc(category["id"])}">{image(key, sizes="25vw")}</div>'
 
 
 def menu_panel(category):
@@ -120,22 +137,78 @@ def menu_panel(category):
 
 
 def review(item):
+    # Recenziile se afișează exact cum sunt în date-site.json, cu linkul spre Google.
     if "rezumat" in item:
+        author = esc(item["autor"])
         return (
             f'<article class="review"><p class="review-summary">{esc(item["rezumat"])}</p>'
-            f'<a class="review-author" href="{esc(item["url"])}">{esc(item["autor"])}, pe Google Maps</a></article>'
+            f'<a class="review-author" href="{esc(item["url"])}">{author} · Google Maps</a></article>'
         )
     return f'<figure class="review"><blockquote>{esc(item["text"])}</blockquote><figcaption>{esc(item["autor"])}</figcaption></figure>'
 
 
 def contact_links(links):
     channels = []
-    for key in ("instagram", "facebook", "email"):
-        value = links[key]
-        if value:
-            href = "mailto:" + value if key == "email" else value
-            channels.append(f'<a href="{esc(href)}">{key.capitalize()}</a>')
+    if links.get("whatsapp"):
+        channels.append(f'<a href="https://wa.me/{esc(re.sub(r"[^0-9]", "", links["whatsapp"]))}">WhatsApp</a>')
+    if links.get("email"):
+        channels.append(f'<a href="mailto:{esc(links["email"])}">E-mail</a>')
+    for key in ("instagram", "facebook"):
+        if links.get(key):
+            channels.append(f'<a href="{esc(links[key])}">{key.capitalize()}</a>')
     return '<ul class="contact-links">' + "".join(f"<li>{channel}</li>" for channel in channels) + "</ul>"
+
+
+def contact_buttons(links):
+    """Butoanele de lângă telefon. Apar doar când datele sunt completate."""
+    buttons = []
+    if links.get("whatsapp"):
+        number = re.sub(r"[^0-9]", "", links["whatsapp"])
+        buttons.append(f'<a class="chip" href="https://wa.me/{esc(number)}">WhatsApp</a>')
+    if links.get("email"):
+        buttons.append(f'<a class="chip" href="mailto:{esc(links["email"])}">E-mail</a>')
+    return "".join(buttons)
+
+
+def phone_link(number):
+    if not number:
+        return '<span class="todo">Telefon [DE COMPLETAT]</span>'
+    return f'<a class="location-phone" href="tel:{re.sub(r"[^0-9+]", "", number)}">{esc(number)}</a>'
+
+
+def map_embed(place):
+    if place.get("latitudine") is not None:
+        query = f'{place["latitudine"]},{place["longitudine"]}'
+    else:
+        query = place["cautareHarta"]
+    return f"https://www.google.com/maps?q={quote(query)}&z=16&output=embed&hl=ro"
+
+
+def shop_schema(place, *, primary):
+    shop = {
+        "@type": "CafeOrCoffeeShop",
+        "name": f'{DATA["brand"]} {place["oras"]}',
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": place["adresa"],
+            "addressLocality": place["oras"],
+            "addressRegion": "Botoșani",
+            "addressCountry": "RO",
+        },
+        "hasMap": maps("search", place["cautareHarta"]),
+    }
+    if primary:
+        shop["description"] = DATA["description"]
+    if place.get("telefon"):
+        shop["telephone"] = place["telefon"]
+    if place.get("latitudine") is not None:
+        shop["geo"] = {"@type": "GeoCoordinates", "latitude": place["latitudine"], "longitude": place["longitudine"]}
+    if place.get("program"):
+        shop["openingHoursSpecification"] = [
+            {"@type": "OpeningHoursSpecification", "dayOfWeek": row["zile"], "opens": row["deschide"], "closes": row["inchide"]}
+            for row in place["program"]
+        ]
+    return shop
 
 
 dorohoi = DATA["dorohoi"]
@@ -152,37 +225,17 @@ map_search = maps("search", dorohoi["cautareHarta"])
 map_query = quote(dorohoi["cautareHarta"])
 map_url = links["harta"] or f"https://www.google.com/maps?q={map_query}&z=17&output=embed"
 share = DATA["imagini"]["share"]
-schema = {
-    "@context": "https://schema.org",
-    "@type": "CafeOrCoffeeShop",
-    "name": DATA["brand"],
-    "description": DATA["description"],
-    "telephone": dorohoi["telefon"],
-    "address": {
-        "@type": "PostalAddress",
-        "streetAddress": dorohoi["adresa"],
-        "addressLocality": dorohoi["oras"],
-        "addressRegion": dorohoi["judet"],
-        "addressCountry": "RO",
-    },
-    "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": dorohoi["latitudine"],
-        "longitude": dorohoi["longitudine"],
-    },
-    "openingHoursSpecification": [
-        {"@type": "OpeningHoursSpecification", "dayOfWeek": row["zile"], "opens": row["deschide"], "closes": row["inchide"]}
-        for row in dorohoi["program"]
-    ],
-    "hasMap": map_search,
-}
+main_shop = shop_schema(dorohoi, primary=True)
+second_shop = shop_schema(botosani, primary=False)
+schema = {"@context": "https://schema.org", "@graph": [main_shop, second_shop]}
 if site_url:
-    schema.update(url=site_url, hasMenu=site_url + "#meniu")
-    if not illustrative:
-        schema["image"] = urljoin(site_url, IMG + share["fisier"])
-profiles = [links[key] for key in ("instagram", "facebook") if links[key]]
+    for shop in (main_shop, second_shop):
+        shop.update(url=site_url, hasMenu=site_url + "#meniu")
+        if not illustrative:
+            shop["image"] = urljoin(site_url, IMG + share["fisier"])
+profiles = [links[key] for key in ("instagram", "facebook") if links.get(key)]
 if profiles:
-    schema["sameAs"] = profiles
+    main_shop["sameAs"] = profiles
 
 nav = (("poveste", "Poveste"), ("meniu", "Meniu"), ("spatiul", "Spațiul"), ("locatii", "Locații"), ("contact", "Contact"))
 values = {
@@ -205,7 +258,10 @@ values = {
     "mapUrl": esc(map_url),
     "videoUrl": f"https://www.youtube.com/watch?v={video_id}",
     "videoCredit": esc(video["credit"]),
-    "heroImage": image("hero", hero=True),
+    "heroImage": image("hero", hero=True, sizes="100vw").removeprefix("<picture>").removesuffix("</picture>"),
+    "heroDesktopAvif": esc(variants(DATA["imagini"]["hero"]["fisier"], DATA["imagini"]["hero"]["latime"], ".avif")),
+    "heroMobileAvif": esc(variants(DATA["imagini"]["hero"]["mobil"], DATA["imagini"]["hero"]["latimeMobil"], ".avif")),
+    "heroMobileSet": esc(variants(DATA["imagini"]["hero"]["mobil"], DATA["imagini"]["hero"]["latimeMobil"], ".webp")),
     "heroDesktop": esc(IMG + DATA["imagini"]["hero"]["fisier"]),
     "heroMobile": esc(IMG + DATA["imagini"]["hero"]["mobil"]),
     "heroMobileWidth": DATA["imagini"]["hero"]["latimeMobil"],
@@ -232,8 +288,13 @@ values = {
     "galleryInitial": esc(IMG + DATA["imagini"]["fereastra"]["fisier"]),
     "reviews": "".join(review(item) for item in DATA["recenzii"] if item),
     "contactLinks": contact_links(links),
-    "storyLarge": frame("atelier", " story-large"),
-    "storySmall": frame("cafea", " story-small"),
+    "contactButtons": contact_buttons(links),
+    "phoneD": phone_link(dorohoi["telefon"]),
+    "phoneB": phone_link(botosani.get("telefon")),
+    "mapD": esc(links["harta"] or map_embed(dorohoi)),
+    "mapB": esc(map_embed(botosani)),
+    "storyLarge": frame("atelier", " story-large", "(min-width: 900px) 40vw, 80vw"),
+    "storySmall": frame("cafea", " story-small", "(min-width: 900px) 24vw, 45vw"),
     "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(("fibra", "lumina", "terasa"))),
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),

@@ -10,6 +10,19 @@ O categorie cu o cheie `fotografie` din `imagini` apare și la „Cafea și ceva
 
 Sursele animațiilor sunt în `sursa/motion/`. Pentru a recompila, rulează `npm ci` și `npm run build` din acel folder. Site-ul include deja fișierul compilat. Lenis îndulcește derularea cu mouse-ul. GSAP animă titlul principal cuvânt cu cuvânt, fotografia de copertă la derulare și deschiderea fotografiilor. Componenta Animated Content de la React Bits aduce titlurile secțiunilor rând cu rând. Preferința pentru mișcare redusă oprește efectele.
 
+## Fotografii
+
+Fotografiile sunt în `assets/img/caf/`. După ce adaugi sau schimbi una, rulează `pip install pillow`, apoi `python sursa/optimizeaza_imagini.py` și `python sursa/genereaza.py`. Primul script creează variantele de 480 și 960 px și fișierele AVIF. Generatorul le găsește singur și scrie `srcset`.
+
+## De completat
+
+Câmpurile goale din `sursa/date-site.json` nu apar pe site. Instrucțiunile sunt și în cheia `_instructiuni` din același fișier.
+
+- `linkuri.whatsapp`: numărul de WhatsApp, de exemplu `40756764805`. Butonul apare lângă telefon.
+- `linkuri.email` și `linkuri.instagram`.
+- `botosani.telefon`, `botosani.program`, `botosani.latitudine` și `botosani.longitudine`. Până atunci, site-ul arată [DE COMPLETAT].
+- `meniu`: produsele și prețurile reale. Apoi pune `meniuExemplu` pe `false`.
+
 ## Înainte de lansare
 
 1. Fotografiile actuale arată locația CAF de pe Bulevardul Victoriei. Confirmă acordul pentru republicarea fotografiilor din presă înainte de lansare sau folosește fișierele autorizate furnizate de CAF. Dacă schimbi fotografiile, actualizează `imagini`, `surseFoto` și imaginea de distribuire.

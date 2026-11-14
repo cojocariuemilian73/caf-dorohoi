@@ -108,7 +108,7 @@ function setupMenu() {
     // Preparatele intră pe rând, ca și cum ar fi puse pe masă.
     select("#meniu-" + id).querySelectorAll(".dish").forEach((dish, index) => {
       dish.animate(
-        [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }],
+        [{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }],
         { duration: 520, delay: index * 60, easing: "cubic-bezier(.23, 1, .32, 1)", fill: "backwards" }
       );
     });
@@ -180,7 +180,10 @@ function loadMotion() {
     document.head.append(script);
   }
 
-  requestAnimationFrame(() => requestAnimationFrame(enableMotion));
+  // Animațiile nu sunt necesare pentru prima afișare: se încarcă după pagină, când browserul e liber.
+  const idle = window.requestIdleCallback || ((callback) => setTimeout(callback, 200));
+  if (document.readyState === "complete") idle(enableMotion);
+  else addEventListener("load", () => idle(enableMotion), { once: true });
   motion.addEventListener("change", enableMotion);
 }
 

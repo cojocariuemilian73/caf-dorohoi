@@ -17,8 +17,8 @@
   <meta name="twitter:card" content="summary_large_image">
   {{canonical}}
   <link rel="icon" href="assets/img/caf/favicon.png" type="image/png" sizes="64x64">
-  <link rel="preload" as="image" href="{{heroMobile}}" media="(max-width: 640px)">
-  <link rel="preload" as="image" href="{{heroDesktop}}" media="(min-width: 641px)">
+  <link rel="preload" as="image" imagesrcset="{{heroMobileAvif}}" imagesizes="100vw" type="image/avif" media="(max-width: 640px)">
+  <link rel="preload" as="image" imagesrcset="{{heroDesktopAvif}}" imagesizes="100vw" type="image/avif" media="(min-width: 641px)">
   <link rel="preload" href="assets/fonts/cormorant-ro.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
   <script type="application/ld+json">{{schema}}</script>
@@ -49,7 +49,8 @@
       <div class="hero-main">
         <div class="hero-media">
           <picture class="hero-photo">
-            <source media="(max-width: 640px)" srcset="{{heroMobile}}" width="{{heroMobileWidth}}" height="{{heroMobileHeight}}">
+            <source media="(max-width: 640px)" type="image/avif" srcset="{{heroMobileAvif}}" sizes="100vw" width="{{heroMobileWidth}}" height="{{heroMobileHeight}}">
+            <source media="(max-width: 640px)" type="image/webp" srcset="{{heroMobileSet}}" sizes="100vw" width="{{heroMobileWidth}}" height="{{heroMobileHeight}}">
             {{heroImage}}
           </picture>
         </div>
@@ -148,23 +149,32 @@
           <h2 id="locations-title">Ne vedem la CAF.</h2>
         </div>
         <div class="locations-grid">
-          <article class="location">
-            <h3>Dorohoi</h3>
-            <address>{{addressD}}<span>{{landmark}}</span></address>
-            <p>{{scheduleLabelD}}</p>
-            <a class="location-phone" href="{{tel}}">{{phone}}</a>
-            <a class="button button-dark" href="{{directionsD}}">Cum ajungi {{arrowOut}}</a>
+          <article class="location-card" aria-labelledby="loc-dorohoi">
+            <h3 id="loc-dorohoi">Dorohoi</h3>
+            <dl class="location-facts">
+              <div><dt>Adresă</dt><dd>{{addressD}}, Dorohoi<span>{{landmark}}</span></dd></div>
+              <div><dt>Program</dt><dd>{{scheduleLabelD}}</dd></div>
+              <div><dt>Telefon</dt><dd>{{phoneD}}<span class="chips">{{contactButtons}}</span></dd></div>
+            </dl>
+            <a class="button button-dark" href="{{directionsD}}">Direcții {{arrowOut}}</a>
+            <figure class="location-map" data-lenis-prevent>
+              <iframe src="{{mapD}}" title="Hartă: CAF Dorohoi, {{addressD}}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <figcaption>Hartă · CAF Dorohoi</figcaption>
+            </figure>
           </article>
-          <article class="location">
-            <h3>Botoșani</h3>
-            <address>{{addressB}}</address>
-            <p>{{scheduleLabelB}}</p>
-            <a class="button button-outline" href="{{directionsB}}">Cum ajungi {{arrowOut}}</a>
+          <article class="location-card" aria-labelledby="loc-botosani">
+            <h3 id="loc-botosani">Botoșani</h3>
+            <dl class="location-facts">
+              <div><dt>Adresă</dt><dd>{{addressB}}, Botoșani</dd></div>
+              <div><dt>Program</dt><dd>{{scheduleLabelB}}</dd></div>
+              <div><dt>Telefon</dt><dd>{{phoneB}}</dd></div>
+            </dl>
+            <a class="button button-dark" href="{{directionsB}}">Direcții {{arrowOut}}</a>
+            <figure class="location-map" data-lenis-prevent>
+              <iframe src="{{mapB}}" title="Hartă: CAF Botoșani, {{addressB}}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <figcaption>Hartă · CAF Botoșani</figcaption>
+            </figure>
           </article>
-        </div>
-        <div class="map" data-lenis-prevent>
-          <iframe src="{{mapUrl}}" title="Google Maps · CAF Dorohoi, Bulevardul Victoriei"
-            loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       </div>
     </section>

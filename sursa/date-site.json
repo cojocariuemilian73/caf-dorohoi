@@ -1,4 +1,12 @@
 {
+  "_instructiuni": [
+    "Câmpurile goale (\"\") nu apar pe site. Completează-le și rulează: python sursa/genereaza.py",
+    "Meniu: adaugă produse în lista 'produse' a unei categorii, în forma {\"nume\": \"...\", \"descriere\": \"...\", \"pret\": 0}. 'pret': null afișează «La cerere». 'preferat': true pune eticheta «Preferata casei».",
+    "Meniu: o categorie nouă are 'id' (fără spații/diacritice), 'nume', 'imagine' (o cheie din 'imagini') și 'produse'. Apare automat ca filă nouă.",
+    "Când meniul e confirmat, pune 'meniuExemplu': false.",
+    "Botoșani: completează 'telefon', 'program', 'latitudine' și 'longitudine'. Până atunci site-ul arată [DE COMPLETAT].",
+    "Contact: 'whatsapp' = numărul în format internațional (ex. 40756764805), 'email', 'instagram' = linkul profilului."
+  ],
   "brand": "CAF coffee&more",
   "description": "CAF coffee&more, cafenea pe Bulevardul Victoriei din Dorohoi. Cappuccino, croissante și limonade, într-un interior lucrat în lemn de atelierul ArtLegno.",
   "publicUrl": "https://cojocariuemilian73.github.io/caf-dorohoi/",
@@ -33,14 +41,18 @@
     "oras": "Botoșani",
     "adresa": "Calea Națională nr. 61",
     "cautareHarta": "CAF coffee&more, Calea Națională 61, Botoșani",
-    "program": []
+    "program": [],
+    "telefon": "",
+    "latitudine": null,
+    "longitudine": null
   },
   "linkuri": {
     "recenzii": "https://www.google.com/maps/place/CAF+coffee%26more/@47.9424599,26.406446,17z/data=!4m8!3m7!1s0x47348b006e70985d:0xfefb369d6e00d1fc!8m2!3d47.9424599!4d26.406446!9m1!1b1!16s%2Fg%2F11m64rjsg9",
     "harta": "https://www.google.com/maps?cid=18373339154571383292&output=embed&hl=ro",
     "instagram": "",
     "facebook": "https://www.facebook.com/profile.php?id=61580931566262",
-    "email": ""
+    "email": "",
+    "whatsapp": ""
   },
   "video": {
     "youtube": "doRFsG95dz8",
