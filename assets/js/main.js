@@ -72,9 +72,9 @@ function setupHours() {
     const open = today.some(({ start, end }) => now >= start && (end < start || now < end))
       || yesterday.some(({ start, end }) => end < start && now < end);
     const state = open ? "Deschis acum" : "Închis acum";
-    if (status.textContent !== state) status.textContent = state;
-    dot.dataset.state = open ? "open" : "closed";
-    hours.textContent = today.length ? "Azi " + today.map(({ label }) => label).join(" / ") : "";
+    if (status && status.textContent !== state) status.textContent = state;
+    if (dot) dot.dataset.state = open ? "open" : "closed";
+    if (hours) hours.textContent = today.length ? "Azi " + today.map(({ label }) => label).join(" / ") : "";
     if (copyrightYear.textContent !== year) copyrightYear.textContent = year;
   }
 

@@ -84,7 +84,7 @@ def frame(key, extra="", sizes="(min-width: 900px) 45vw, 100vw"):
 
 
 def figure(key, extra=""):
-    return f'<figure class="wood-figure{extra}">{frame(key, sizes="(min-width: 640px) 30vw, 100vw")}<figcaption>{esc(DATA["imagini"][key]["titlu"])}</figcaption></figure>'
+    return f'<figure class="wood-figure{extra}">{frame(key, sizes="(min-width: 640px) 30vw, 100vw")}</figure>'
 
 
 def gallery_tile(key, index):
@@ -305,7 +305,7 @@ values = {
     "mapD": esc(links["harta"] or map_embed(dorohoi)),
     "mapB": esc(map_embed(botosani)),
     "storyLarge": frame("atelier", " story-large", "(min-width: 900px) 40vw, 80vw"),
-    "storySmall": frame("espresso", " story-small", "(min-width: 900px) 24vw, 45vw"),
+    "storySmall": frame("vPahare", " story-small", "(min-width: 900px) 24vw, 45vw"),
     "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(("fibra", "lumina", "terasa"))),
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
