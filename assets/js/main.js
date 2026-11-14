@@ -161,21 +161,45 @@ function setupGallery() {
   });
 }
 
-function setupFilm() {
-  const link = select(".film-play");
-  link.addEventListener("click", (event) => {
-    // YouTube needs an HTTP referrer to play inside an embedded player.
-    if (location.protocol === "file:" || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    const frame = document.createElement("iframe");
-    frame.title = link.dataset.videoTitle;
-    frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
-    frame.allowFullscreen = true;
-    frame.referrerPolicy = "strict-origin-when-cross-origin";
-    frame.src = link.dataset.videoEmbed;
-    link.replaceWith(frame);
-    frame.focus({ preventScroll: true });
+function setupHeroVideo() {
+  const video = select(".hero-video");
+  const toggle = select(".hero-toggle");
+  if (!video) return;
+  const label = toggle.querySelector(".toggle-label");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  // Telefoanele ținute vertical primesc montajul vertical, restul pe cel orizontal.
+  const tall = matchMedia("(max-aspect-ratio: 4/5)").matches;
+  if (tall) video.poster = video.dataset.posterTall;
+  video.src = tall ? video.dataset.srcTall : video.dataset.srcLat;
+  video.preload = "auto";
+
+  function render() {
+    const paused = video.paused;
+    toggle.setAttribute("aria-pressed", String(paused));
+    toggle.setAttribute("aria-label", paused ? "Pornește filmarea" : "Oprește filmarea");
+    label.textContent = paused ? "Redă" : "Pauză";
+    toggle.dataset.state = paused ? "paused" : "playing";
+  }
+
+  toggle.hidden = false;
+  toggle.addEventListener("click", () => {
+    if (video.paused) video.play().catch(() => {});
+    else video.pause();
   });
+  video.addEventListener("play", render);
+  video.addEventListener("pause", render);
+  if (reduce.matches) video.pause();
+  else video.play().catch(render);
+  // Filmul se oprește când nu se vede, ca să nu consume baterie.
+  new IntersectionObserver(([entry]) => {
+    if (toggle.dataset.user === "paused") return;
+    if (!entry.isIntersecting) video.pause();
+    else if (!reduce.matches) video.play().catch(() => {});
+  }).observe(video);
+  toggle.addEventListener("click", () => {
+    toggle.dataset.user = video.paused ? "" : "paused";
+  }, { capture: true });
+  render();
 }
 
 function loadMotion() {
@@ -203,6 +227,6 @@ setupNavigation();
 setupHours();
 setupMenu();
 setupGallery();
-setupFilm();
+setupHeroVideo();
 setupHeader();
 loadMotion();

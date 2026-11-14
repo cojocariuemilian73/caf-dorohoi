@@ -46,14 +46,17 @@
     "youtube": "doRFsG95dz8",
     "titlu": "Cafeneaua CAF Dorohoi",
     "credit": "DorohoiNews Stiri",
-    "poster": "exterior"
+    "lat": "assets/video/caf-hero-lat.mp4",
+    "latPoster": "assets/video/caf-hero-lat.webp",
+    "mobil": "assets/video/caf-hero-mobil.mp4",
+    "mobilPoster": "assets/video/caf-hero-mobil.webp"
   },
   "meniuExemplu": true,
   "meniu": [
     {
       "id": "cafea",
       "nume": "Cafea",
-      "fotografie": "cafea",
+      "fotografie": "vCappuccino",
       "produse": [
         {
           "nume": "Cappuccino",
@@ -76,7 +79,6 @@
     {
       "id": "reci",
       "nume": "Băuturi reci",
-      "fotografie": "bauturi",
       "produse": [
         {
           "nume": "Mojito fără alcool",
@@ -110,7 +112,7 @@
     {
       "id": "desert",
       "nume": "Patiserie & desert",
-      "fotografie": "patiserie",
+      "fotografie": "vCroissante",
       "produse": [
         {
           "nume": "Croissant",
@@ -160,17 +162,19 @@
     {
       "nume": "Dorohoi News · terasa",
       "url": "https://www.dorohoinews.ro/informatii_utile-5022-Oaza-ta-de-relaxare-se-transforma--CAF-Dorohoi-deschide-GELATERIE-ARTIZANALA-cu-specific-italian!.html"
+    },
+    {
+      "nume": "DorohoiNews Stiri · filmare",
+      "url": "https://www.youtube.com/watch?v=doRFsG95dz8"
     }
   ],
   "imagini": {
     "hero": {
       "fisier": "caf-coperta.webp",
-      "mobil": "caf-coperta-mobil.webp",
       "latime": 1600,
       "inaltime": 1000,
-      "latimeMobil": 660,
-      "inaltimeMobil": 870,
-      "alt": "Terasa vitrată CAF Dorohoi, cu mese din lemn și lămpi suspendate"
+      "alt": "Terasa vitrată CAF Dorohoi, cu mese din lemn și lămpi suspendate",
+      "titlu": "Terasa vitrată"
     },
     "share": {
       "fisier": "caf-distribuire.jpg",
@@ -199,13 +203,6 @@
       "alt": "Peretele placat cu lamele de lemn de la CAF Dorohoi",
       "titlu": "Lamelele de lemn"
     },
-    "imbinare": {
-      "fisier": "caf-mese.webp",
-      "latime": 680,
-      "inaltime": 680,
-      "alt": "Mese de lemn în sala CAF Dorohoi",
-      "titlu": "Mesele"
-    },
     "lumina": {
       "fisier": "caf-iluminat.webp",
       "latime": 680,
@@ -219,27 +216,6 @@
       "inaltime": 680,
       "alt": "Lapte turnat într-o ceașcă de cafea, la CAF Dorohoi",
       "titlu": "La espressor"
-    },
-    "patiserie": {
-      "fisier": "caf-patiserie.webp",
-      "latime": 680,
-      "inaltime": 560,
-      "alt": "Felii de prăjitură de la CAF Dorohoi, așezate pe un platou",
-      "titlu": "Prăjituri"
-    },
-    "bar": {
-      "fisier": "caf-bar.webp",
-      "latime": 800,
-      "inaltime": 600,
-      "alt": "Barul văzut printre panourile traforate din sala CAF Dorohoi",
-      "titlu": "Spre bar"
-    },
-    "bauturi": {
-      "fisier": "caf-bauturi.webp",
-      "latime": 680,
-      "inaltime": 680,
-      "alt": "Băuturi răcoritoare expuse pe tejgheaua CAF Dorohoi",
-      "titlu": "Băuturi reci"
     },
     "exterior": {
       "fisier": "caf-fatada.webp",
@@ -262,13 +238,6 @@
       "alt": "Espresso preparat la CAF Dorohoi",
       "titlu": "La espressor"
     },
-    "vitrina": {
-      "fisier": "caf-vitrina.webp",
-      "latime": 680,
-      "inaltime": 560,
-      "alt": "Gustări și deserturi în vitrina CAF Dorohoi",
-      "titlu": "În vitrină"
-    },
     "terasaSeara": {
       "fisier": "caf-terasa-seara.webp",
       "latime": 800,
@@ -276,12 +245,47 @@
       "alt": "Terasa luminată lângă intrarea în CAF Dorohoi",
       "titlu": "Terasa seara"
     },
-    "ferestre": {
-      "fisier": "caf-ferestre.webp",
+    "vCappuccino": {
+      "fisier": "caf-v-cappuccino.webp",
       "latime": 800,
-      "inaltime": 600,
-      "alt": "Mese înalte la ferestrele mari ale cafenelei CAF Dorohoi",
-      "titlu": "Mesele de lângă geam"
+      "inaltime": 1000,
+      "alt": "Cappuccino pe tava din lemn cu logo CAF",
+      "titlu": "Cappuccino"
+    },
+    "vCroissante": {
+      "fisier": "caf-v-croissante.webp",
+      "latime": 800,
+      "inaltime": 1000,
+      "alt": "Croissante pudrate cu zahăr în vitrina CAF Dorohoi",
+      "titlu": "Croissante"
+    },
+    "vPahare": {
+      "fisier": "caf-v-pahare.webp",
+      "latime": 800,
+      "inaltime": 800,
+      "alt": "Cafea la pachet în pahar negru CAF",
+      "titlu": "La pachet"
+    },
+    "vLapte": {
+      "fisier": "caf-v-lapte.webp",
+      "latime": 800,
+      "inaltime": 800,
+      "alt": "Lapte spumat la espressorul CAF",
+      "titlu": "Spuma de lapte"
+    },
+    "vEspresso": {
+      "fisier": "caf-v-espresso.webp",
+      "latime": 800,
+      "inaltime": 800,
+      "alt": "Espresso preparat la aparatul CAF Dorohoi",
+      "titlu": "La espressor"
+    },
+    "vVitrina": {
+      "fisier": "caf-v-vitrina.webp",
+      "latime": 800,
+      "inaltime": 800,
+      "alt": "Croissante proaspete în vitrina CAF Dorohoi",
+      "titlu": "În vitrină"
     }
   }
 }

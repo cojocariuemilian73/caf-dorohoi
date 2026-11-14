@@ -189,7 +189,7 @@ if profiles:
     schema["sameAs"] = profiles
 
 nav = (("poveste", "Poveste"), ("meniu", "Meniu"), ("spatiul", "Spațiul"), ("locatii", "Locații"), ("contact", "Contact"))
-social_keys = ("espresso", "terasaSeara", "vitrina", "fereastra", "lumina", "ferestre")
+social_keys = ("vPahare", "vLapte", "vCappuccino", "vCroissante", "terasaSeara", "cafea")
 social_images = "".join(
     f'<a class="image-frame" href="{esc(social)}" aria-label="Deschide profilul CAF pe {social_label}">{image(key)}</a>'
     if social else f'<div class="image-frame">{image(key)}</div>'
@@ -218,7 +218,10 @@ values = {
     "videoEmbed": f"https://www.youtube-nocookie.com/embed/{video_id}?autoplay=1&amp;playsinline=1&amp;rel=0",
     "videoTitle": esc(video["titlu"]),
     "videoCredit": esc(video["credit"]),
-    "videoPoster": image(video["poster"]),
+    "heroVideoLat": esc(video["lat"]),
+    "heroVideoMobil": esc(video["mobil"]),
+    "heroPosterLat": esc(video["latPoster"]),
+    "heroPosterMobil": esc(video["mobilPoster"]),
     "reviewsUrl": esc(links["recenzii"] or map_search),
     "reviewsRating": (
         f'<p class="reviews-rating"><strong>{esc(rating["scor"])} din 5</strong>'
@@ -234,11 +237,6 @@ values = {
     "tel": "tel:" + re.sub(r"[^\d+]", "", dorohoi["telefon"]),
     "scheduleLabelD": esc(schedule_label(dorohoi["program"])),
     "scheduleLabelB": esc(schedule_label(botosani["program"])),
-    "heroImage": image("hero", hero=True),
-    "heroDesktop": esc(IMG + DATA["imagini"]["hero"]["fisier"]),
-    "heroMobile": esc(IMG + DATA["imagini"]["hero"]["mobil"]),
-    "heroMobileWidth": DATA["imagini"]["hero"]["latimeMobil"],
-    "heroMobileHeight": DATA["imagini"]["hero"]["inaltimeMobil"],
     "heroIllustration": '<figcaption class="hero-credit">Imagine ilustrativă</figcaption>' if illustrative else "",
     "illustrationSuffix": " · Imagine ilustrativă" if illustrative else "",
     "storyImage": image("atelier"),
@@ -246,15 +244,15 @@ values = {
     "arrowDown": arrow("M12 4v15m-6-6 6 6 6-6"),
     "arrowOut": arrow("M6 18 18 6M7 6h11v11"),
     "favorites": favorites_section(),
-    "woodImages": "".join(figure(key) for key in ("fibra", "imbinare", "lumina")),
+    "woodImages": "".join(figure(key) for key in ("fibra", "lumina", "terasa")),
     "woodNote": '<p class="caption">Imagini ilustrative</p>' if illustrative else "",
     "menuNotice": '<p class="sample-note">Exemplu de meniu și prețuri. Oferta actuală se confirmă la cafenea.</p>' if DATA["meniuExemplu"] else "",
     "menuNavigation": "".join(f'<a href="#meniu-{esc(row["id"])}">{esc(row["nume"])}</a>' for row in DATA["meniu"]),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
-    "menuImage": image("espresso"),
-    "menuCaption": esc(DATA["imagini"]["espresso"]["titlu"]),
-    "gallery": "".join(gallery_tile(key) for key in ("bar", "fereastra", "terasa", "exterior", "vitrina", "ferestre")),
-    "galleryInitial": esc(IMG + DATA["imagini"]["bar"]["fisier"]),
+    "menuImage": image("vEspresso"),
+    "menuCaption": esc(DATA["imagini"]["vEspresso"]["titlu"]),
+    "gallery": "".join(gallery_tile(key) for key in ("hero", "fereastra", "exterior", "terasaSeara", "vVitrina", "espresso")),
+    "galleryInitial": esc(IMG + DATA["imagini"]["hero"]["fisier"]),
     "galleryNote": '<p class="caption">Imagini ilustrative · [COMPLETEAZĂ] Fotografii reale ale cafenelei</p>' if illustrative else "",
     "reviews": "".join(review(item) for item in DATA["recenzii"] if item),
     "instagramImages": social_images,

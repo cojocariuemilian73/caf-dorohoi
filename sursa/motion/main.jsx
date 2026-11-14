@@ -6,84 +6,122 @@ import AnimatedContent from "./AnimatedContent.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Curbe ease-out puternice: mișcarea pornește repede și se așază lin.
+const EASE = "expo.out";
+const SOFT = "power3.out";
+
+function splitWords(heading) {
+  const words = heading.textContent.trim().split(/\s+/);
+  heading.setAttribute("aria-label", heading.textContent.trim());
+  heading.innerHTML = words
+    .map((word) => `<span class="word" aria-hidden="true"><span>${word}</span></span>`)
+    .join(" ");
+  return heading.querySelectorAll(".word > span");
+}
+
 const preferences = gsap.matchMedia();
 preferences.add("(prefers-reduced-motion: no-preference)", () => {
-  const cover = document.querySelector(".hero-media img");
-  const headline = document.querySelector(".hero-copy");
-  const filmTitle = document.querySelector("#film-title");
-  const filmName = filmTitle.textContent;
-  let filmRoot;
+  const roots = [];
+  const hero = document.querySelector(".hero-main");
+  const heading = document.querySelector("#hero-title");
+  const headingText = heading.textContent;
+  const video = document.querySelector(".hero-video");
 
-  if (scrollY < innerHeight / 2) {
-    gsap.timeline()
-      .fromTo(cover, { scale: 1.05 }, {
-        scale: 1, duration: 1.15, ease: "power2.out", clearProps: "transform"
-      })
-      .fromTo(headline, { y: 12, opacity: .78 }, {
-        y: 0, opacity: 1, duration: .75, ease: "power3.out", clearProps: "transform,opacity"
-      }, .06);
-  }
+  // 1. Intrarea: filmul se apropie, cuvintele urcă din mască, apoi restul.
+  const words = splitWords(heading);
+  const intro = gsap.timeline({ defaults: { ease: EASE } });
+  intro
+    .fromTo(video, { scale: 1.12, opacity: 0 }, { scale: 1, opacity: 1, duration: 2.2 }, 0)
+    .fromTo(".hero-label", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 1 }, .15)
+    .fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 1.3, stagger: .07 }, .25)
+    .fromTo(".hero-actions > *", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: .08 }, .8)
+    .fromTo(".hero-foot", { opacity: 0 }, { opacity: 1, duration: 1 }, 1.1)
+    .fromTo(".site-header", { yPercent: -100 }, { yPercent: 0, duration: 1.1 }, .3);
 
-  // Observe each image once, after the browser has laid out its section.
-  const observer = new IntersectionObserver((entries) => {
-    const images = [];
-    for (const { target, isIntersecting } of entries) {
-      if (!isIntersecting) continue;
-      observer.unobserve(target);
-      if (target === filmTitle) {
-        filmRoot = createRoot(filmTitle);
-        filmRoot.render(
-          <AnimatedContent as="span" trigger="mount" distance={11} initialOpacity={.65} duration={.65}>
-            {filmName}
-          </AnimatedContent>
-        );
-      } else {
-        images.push(target);
-      }
-    }
-    if (!images.length) return;
-    gsap.fromTo(images, { opacity: .65, scale: 1.035 }, {
-      opacity: 1, scale: 1, stagger: { each: .06, amount: .18 }, duration: .7,
-      ease: "power3.out", clearProps: "transform,opacity", overwrite: "auto"
-    });
-  }, { threshold: .12 });
+  // 2. La derulare, filmul coboară mai încet decât pagina, iar textul se estompează.
+  const parallax = gsap.timeline({
+    scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true }
+  });
+  parallax
+    .to(".hero-media", { yPercent: 22, ease: "none" }, 0)
+    .to(".hero-copy", { yPercent: -18, opacity: 0, ease: "none" }, 0)
+    .to(".hero-foot", { opacity: 0, ease: "none", duration: .4 }, 0);
 
-  document.querySelectorAll("main .image-frame img").forEach((image) => observer.observe(image));
-  observer.observe(filmTitle);
+  // 3. Titlurile secțiunilor apar rând cu rând, cu Animated Content de la React Bits.
+  document.querySelectorAll("main h2:not(.eyebrow)").forEach((title) => {
+    const html = title.innerHTML;
+    const lines = html.split(/<br\s*\/?>/i).map((line) => line.trim()).filter(Boolean);
+    const root = createRoot(title);
+    root.render(
+      <AnimatedContent as="span" style={{ display: "block" }} distance={42} blur={8} duration={1.1}
+        ease={EASE} stagger={.09} initialOpacity={0} threshold={.12}>
+        {lines.map((line, index) => (
+          <span key={index} style={{ display: "block" }} dangerouslySetInnerHTML={{ __html: line }} />
+        ))}
+      </AnimatedContent>
+    );
+    roots.push({ root, title, html });
+  });
 
-  const filmTrigger = ScrollTrigger.create({
-    trigger: ".film-figure",
-    start: "top 85%",
+  // 4. Fotografiile se deschid de jos în sus, cu un mic zoom care se așază.
+  const frames = gsap.utils.toArray("main .image-frame").filter((frame) => frame.querySelector("img"));
+  gsap.set(frames, { clipPath: "inset(100% 0% 0% 0%)" });
+  gsap.set(frames.map((frame) => frame.querySelector("img")), { scale: 1.18 });
+  ScrollTrigger.batch(frames, {
+    start: "top 88%",
     once: true,
-    onEnter: () => {
-      const action = document.querySelector(".film-action");
-      if (action) gsap.fromTo(action, { scale: .94 }, {
-        scale: 1, duration: .55, ease: "power3.out", clearProps: "transform"
+    onEnter: (batch) => {
+      gsap.to(batch, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.25, ease: "expo.inOut", stagger: .1, clearProps: "clipPath" });
+      gsap.to(batch.map((frame) => frame.querySelector("img")), {
+        scale: 1, duration: 1.6, ease: EASE, stagger: .1, clearProps: "transform,scale"
       });
     }
   });
 
+  // 5. Paralaxă discretă pe fotografiile mari.
+  gsap.utils.toArray(".story-pair .image-frame, .gallery-item:first-child, .menu-figure .image-frame").forEach((frame, index) => {
+    gsap.fromTo(frame, { yPercent: index % 2 ? 6 : -4 }, {
+      yPercent: index % 2 ? -6 : 4, ease: "none",
+      scrollTrigger: { trigger: frame, start: "top bottom", end: "bottom top", scrub: true }
+    });
+  });
+
+  // 6. Liste, recenzii și locații intră în cascadă.
+  const groups = [".story-copy > :not(h2)", ".wood-notes li", ".menu-panel:not([hidden]) li", ".review", ".location", ".favorite-caption", ".footer-grid > *"];
+  groups.forEach((selector) => {
+    ScrollTrigger.batch(selector, {
+      start: "top 90%",
+      once: true,
+      onEnter: (batch) => gsap.fromTo(batch, { y: 28, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 1, ease: SOFT, stagger: .08, clearProps: "transform,opacity"
+      })
+    });
+  });
+
+  // 7. Derulare lină cu Lenis pe dispozitivele cu mouse.
   const desktop = gsap.matchMedia();
   desktop.add("(pointer: fine) and (hover: hover)", () => {
-    const lenis = new Lenis({ lerp: .13, smoothWheel: true, autoRaf: false, stopInertiaOnNavigate: true });
+    const lenis = new Lenis({ lerp: .1, smoothWheel: true, autoRaf: false, stopInertiaOnNavigate: true, anchors: { offset: -80 } });
     const tick = (time) => lenis.raf(time * 1000);
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
     return () => {
       gsap.ticker.remove(tick);
       lenis.destroy();
     };
   });
 
+  addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+
   return () => {
-    observer.disconnect();
-    filmTrigger.kill();
-    if (filmRoot) {
-      filmRoot.unmount();
-      filmTitle.textContent = filmName;
-    }
     desktop.revert();
-    gsap.killTweensOf("main .image-frame img, .film-action");
-    gsap.set("main .image-frame img, .film-action", { clearProps: "opacity,transform" });
+    for (const { root, title, html } of roots) {
+      root.unmount();
+      title.innerHTML = html;
+    }
+    heading.textContent = headingText;
+    heading.removeAttribute("aria-label");
+    gsap.set("main .image-frame, main .image-frame img, .hero-media, .hero-copy, .hero-foot, .site-header, .hero-video", { clearProps: "all" });
   };
 });
