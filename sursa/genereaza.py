@@ -329,11 +329,50 @@ template = (SOURCE / "pagina.html").read_text(encoding="utf-8")
 page = re.sub(r"\{\{(\w+)\}\}", lambda match: str(values[match[1]]), template)
 (ROOT / "index.html").write_text(page, encoding="utf-8", newline="\n")
 
+# --- Meniul pentru mese (meniu.html), deschis din codul QR de pe cartonaș ---
+def qr_item(product):
+    price = product["pret"]
+    amount = (f"{price:g}".replace(".", ",") + " lei") if price is not None else "La cerere"
+    key = product.get("imagine")
+    if key in DATA["imagini"]:
+        thumb = f'<div class="qm-thumb">{image(key, sizes="76px")}</div>'
+    else:
+        thumb = f'<div class="qm-thumb is-letter" aria-hidden="true">{esc(product["nume"][0])}</div>'
+    fav = '<span class="qm-fav">Preferata casei</span>' if product.get("preferat") else ""
+    return (
+        f'<li class="qm-item">{thumb}<h3>{esc(product["nume"])}{fav}</h3>'
+        f'<span class="price">{amount}</span><p>{esc(product["descriere"])}</p></li>'
+    )
+
+
+menu_values = dict(values)
+menu_values.update({
+    "vMenuCss": hashlib.sha1((ROOT / "assets/css/meniu.css").read_bytes()).hexdigest()[:8],
+    "cover": image("terasaSeara", hero=True, sizes="100vw"),
+    "chips": "".join(f'<a class="qm-chip" href="#{esc(c["id"])}">{esc(c["nume"])}</a>' for c in DATA["meniu"]),
+    "sections": "".join(
+        f'<section class="qm-section" id="{esc(c["id"])}"><h2>{esc(c["nume"])}</h2>'
+        f'<ul class="qm-list">{"".join(qr_item(p) for p in c["produse"])}</ul></section>'
+        for c in DATA["meniu"]
+    ),
+})
+menu_template = (SOURCE / "meniu.html").read_text(encoding="utf-8")
+(ROOT / "meniu.html").write_text(re.sub(r"\{\{(\w+)\}\}", lambda m: str(menu_values[m[1]]), menu_template), encoding="utf-8", newline="\n")
+
+# Cartonașul de masă pentru tipar (print/card-masa.html); codul QR îl face sursa/qr.py.
+qr_path = ROOT / "assets/img/qr-meniu.svg"
+if qr_path.exists():
+    card_values = dict(menu_values, qr=qr_path.read_text(encoding="utf-8"))
+    card_template = (SOURCE / "card-masa.html").read_text(encoding="utf-8")
+    (ROOT / "print").mkdir(exist_ok=True)
+    (ROOT / "print/card-masa.html").write_text(re.sub(r"\{\{(\w+)\}\}", lambda m: str(card_values[m[1]]), card_template), encoding="utf-8", newline="\n")
+
+
 robots = "User-agent: *\nAllow: /\n"
 if site_url:
     robots += f"Sitemap: {site_url}sitemap.xml\n"
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-    sitemap += f"<url><loc>{esc(site_url)}</loc></url></urlset>\n"
+    sitemap += f"<url><loc>{esc(site_url)}</loc></url><url><loc>{esc(site_url)}meniu.html</loc></url></urlset>\n"
     (ROOT / "sitemap.xml").write_text(sitemap, encoding="utf-8", newline="\n")
 else:
     (ROOT / "sitemap.xml").unlink(missing_ok=True)
