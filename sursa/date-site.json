@@ -1,0 +1,287 @@
+{
+  "brand": "CAF coffee&more",
+  "description": "CAF coffee&more, cafenea în Dorohoi. Cappuccino, croissante și băuturi răcoritoare într-un interior lucrat în lemn de echipa ArtLegno.",
+  "publicUrl": "https://cojocariuemilian73.github.io/caf-dorohoi/",
+  "atelier": "ArtLegno Porte&Scale",
+  "deschidere": "7 martie 2025",
+  "dorohoi": {
+    "oras": "Dorohoi",
+    "adresa": "Bulevardul Victoriei",
+    "judet": "Botoșani",
+    "reper": "Vizavi de Penny",
+    "telefon": "+40 756 764 805",
+    "latitudine": 47.94246,
+    "longitudine": 26.40645,
+    "cautareHarta": "CAF coffee&more, Bulevardul Victoriei, Dorohoi",
+    "program": [
+      {
+        "zile": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "deschide": "07:00",
+        "inchide": "22:00"
+      }
+    ]
+  },
+  "botosani": {
+    "oras": "Botoșani",
+    "adresa": "Calea Națională nr. 61",
+    "cautareHarta": "CAF coffee&more, Calea Națională 61, Botoșani",
+    "program": []
+  },
+  "linkuri": {
+    "recenzii": "https://www.google.com/maps/place/CAF+coffee%26more/@47.9424599,26.406446,17z/data=!4m8!3m7!1s0x47348b006e70985d:0xfefb369d6e00d1fc!8m2!3d47.9424599!4d26.406446!9m1!1b1!16s%2Fg%2F11m64rjsg9",
+    "harta": "https://www.google.com/maps?cid=18373339154571383292&output=embed&hl=ro",
+    "instagram": "",
+    "facebook": "https://www.facebook.com/profile.php?id=61580931566262",
+    "email": ""
+  },
+  "video": {
+    "youtube": "doRFsG95dz8",
+    "titlu": "Cafeneaua CAF Dorohoi",
+    "credit": "DorohoiNews Stiri",
+    "poster": "exterior"
+  },
+  "meniuExemplu": true,
+  "meniu": [
+    {
+      "id": "cafea",
+      "nume": "Cafea",
+      "fotografie": "cafea",
+      "produse": [
+        {
+          "nume": "Cappuccino",
+          "descriere": "Espresso și lapte fin spumat.",
+          "pret": 14,
+          "preferat": true
+        },
+        {
+          "nume": "Espresso",
+          "descriere": "Scurt, cu aromă concentrată.",
+          "pret": 9
+        },
+        {
+          "nume": "Flat white",
+          "descriere": "Espresso dublu cu lapte și spumă fină.",
+          "pret": 16
+        }
+      ]
+    },
+    {
+      "id": "reci",
+      "nume": "Băuturi reci",
+      "fotografie": "bauturi",
+      "produse": [
+        {
+          "nume": "Mojito fără alcool",
+          "descriere": "Mentă, lime și gheață.",
+          "pret": 20,
+          "preferat": true
+        },
+        {
+          "nume": "Iced latte",
+          "descriere": "Espresso și lapte, peste gheață.",
+          "pret": 17
+        }
+      ]
+    },
+    {
+      "id": "fresh",
+      "nume": "Fresh & limonade",
+      "produse": [
+        {
+          "nume": "Limonadă cu mentă",
+          "descriere": "Lămâie, mentă proaspătă și gheață.",
+          "pret": 18
+        },
+        {
+          "nume": "Fresh de portocale",
+          "descriere": "Portocale proaspăt stoarse.",
+          "pret": 19
+        }
+      ]
+    },
+    {
+      "id": "desert",
+      "nume": "Patiserie & desert",
+      "fotografie": "patiserie",
+      "produse": [
+        {
+          "nume": "Croissant",
+          "descriere": "Foi rumene și un miez moale.",
+          "pret": 12,
+          "preferat": true
+        },
+        {
+          "nume": "Prăjitura zilei",
+          "descriere": "Întreabă la bar ce avem azi.",
+          "pret": 19
+        }
+      ]
+    }
+  ],
+  "evaluareGoogle": {
+    "scor": "4,5",
+    "numar": 34
+  },
+  "recenzii": [
+    {
+      "autor": "Ionela N.",
+      "rezumat": "Revine pentru cappuccino, croissante și mojito fără alcool. Muzica îi face vizitele mai plăcute.",
+      "url": "https://maps.app.goo.gl/1eVqh4crBPEJqsji9"
+    },
+    {
+      "autor": "Laura C.",
+      "rezumat": "A apreciat cafeaua aromată și personalul amabil. Recomandă locul pentru o pauză sau pentru cafeaua de dimineață.",
+      "url": "https://maps.app.goo.gl/z57aT1opXzHjHqce8"
+    },
+    {
+      "autor": "Luci P.",
+      "rezumat": "A remarcat atmosfera primitoare, atenția la detalii și felul în care sunt prezentate produsele.",
+      "url": "https://maps.app.goo.gl/VypeJHbRGg7URjAi6"
+    }
+  ],
+  "fotografiiIlustrative": false,
+  "surseFoto": [
+    {
+      "nume": "Botoșăneanul",
+      "url": "https://www.botosaneanul.ro/o-poveste-pornita-de-la-botosani-3-ani-de-caf-cu-stil-trei-cafenele-sub-acelasi-brand-in-trei-orase"
+    },
+    {
+      "nume": "Dorohoi News · inaugurare",
+      "url": "https://www.dorohoinews.ro/informatii_utile-4707-CAF-Dorohoi-%E2%80%93-Savureaza-o-cafea-sau-o-gustare-si-relaxeaza-te-la-cea-mai-noua-cafenea-din-oras-%E2%80%93-VIDEO---FOTO.html"
+    },
+    {
+      "nume": "Dorohoi News · terasa",
+      "url": "https://www.dorohoinews.ro/informatii_utile-5022-Oaza-ta-de-relaxare-se-transforma--CAF-Dorohoi-deschide-GELATERIE-ARTIZANALA-cu-specific-italian!.html"
+    }
+  ],
+  "imagini": {
+    "hero": {
+      "fisier": "caf-coperta.webp",
+      "mobil": "caf-coperta-mobil.webp",
+      "latime": 1600,
+      "inaltime": 1000,
+      "latimeMobil": 660,
+      "inaltimeMobil": 870,
+      "alt": "Terasa vitrată CAF Dorohoi, cu mese din lemn și lămpi suspendate"
+    },
+    "share": {
+      "fisier": "caf-distribuire.jpg",
+      "latime": 1200,
+      "inaltime": 630,
+      "alt": "Terasa cafenelei CAF din Dorohoi, de pe Bulevardul Victoriei"
+    },
+    "atelier": {
+      "fisier": "caf-amenajare.webp",
+      "latime": 768,
+      "inaltime": 960,
+      "alt": "Panou decorativ din lemn lângă o banchetă la CAF Dorohoi",
+      "titlu": "Interior amenajat de ArtLegno"
+    },
+    "fereastra": {
+      "fisier": "caf-fereastra.webp",
+      "latime": 680,
+      "inaltime": 850,
+      "alt": "Masă rotundă și fotolii lângă geamurile cafenelei CAF Dorohoi",
+      "titlu": "La fereastră"
+    },
+    "fibra": {
+      "fisier": "caf-lamele.webp",
+      "latime": 680,
+      "inaltime": 680,
+      "alt": "Peretele placat cu lamele de lemn de la CAF Dorohoi",
+      "titlu": "Lamelele de lemn"
+    },
+    "imbinare": {
+      "fisier": "caf-mese.webp",
+      "latime": 680,
+      "inaltime": 680,
+      "alt": "Mese de lemn în sala CAF Dorohoi",
+      "titlu": "Mesele"
+    },
+    "lumina": {
+      "fisier": "caf-iluminat.webp",
+      "latime": 680,
+      "inaltime": 680,
+      "alt": "Iluminatul cald de la tavanul zonei vitrate",
+      "titlu": "Lumina de seară"
+    },
+    "cafea": {
+      "fisier": "caf-cafea.webp",
+      "latime": 680,
+      "inaltime": 680,
+      "alt": "Lapte turnat într-o ceașcă de cafea, la CAF Dorohoi",
+      "titlu": "La espressor"
+    },
+    "patiserie": {
+      "fisier": "caf-patiserie.webp",
+      "latime": 680,
+      "inaltime": 560,
+      "alt": "Felii de prăjitură de la CAF Dorohoi, așezate pe un platou",
+      "titlu": "Prăjituri"
+    },
+    "bar": {
+      "fisier": "caf-bar.webp",
+      "latime": 800,
+      "inaltime": 600,
+      "alt": "Barul văzut printre panourile traforate din sala CAF Dorohoi",
+      "titlu": "Spre bar"
+    },
+    "bauturi": {
+      "fisier": "caf-bauturi.webp",
+      "latime": 680,
+      "inaltime": 680,
+      "alt": "Băuturi răcoritoare expuse pe tejgheaua CAF Dorohoi",
+      "titlu": "Băuturi reci"
+    },
+    "exterior": {
+      "fisier": "caf-fatada.webp",
+      "latime": 800,
+      "inaltime": 600,
+      "alt": "Fațada iluminată a cafenelei CAF Dorohoi de pe Bulevardul Victoriei",
+      "titlu": "Din stradă"
+    },
+    "terasa": {
+      "fisier": "caf-terasa.webp",
+      "latime": 800,
+      "inaltime": 600,
+      "alt": "Terasa CAF Dorohoi, cu scaune împletite și panouri din lemn",
+      "titlu": "Terasa"
+    },
+    "espresso": {
+      "fisier": "caf-espresso.webp",
+      "latime": 680,
+      "inaltime": 680,
+      "alt": "Espresso preparat la CAF Dorohoi",
+      "titlu": "La espressor"
+    },
+    "vitrina": {
+      "fisier": "caf-vitrina.webp",
+      "latime": 680,
+      "inaltime": 560,
+      "alt": "Gustări și deserturi în vitrina CAF Dorohoi",
+      "titlu": "În vitrină"
+    },
+    "terasaSeara": {
+      "fisier": "caf-terasa-seara.webp",
+      "latime": 800,
+      "inaltime": 600,
+      "alt": "Terasa luminată lângă intrarea în CAF Dorohoi",
+      "titlu": "Terasa seara"
+    },
+    "ferestre": {
+      "fisier": "caf-ferestre.webp",
+      "latime": 800,
+      "inaltime": 600,
+      "alt": "Mese înalte la ferestrele mari ale cafenelei CAF Dorohoi",
+      "titlu": "Mesele de lângă geam"
+    }
+  }
+}
