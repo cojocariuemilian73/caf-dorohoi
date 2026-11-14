@@ -379,3 +379,4 @@ body {
     var(--paper);
 }
 .wood, .site-footer { background: transparent; }
+.wood { border-top: 0; }
