@@ -370,3 +370,12 @@ body::after {
 .footer-base { border-top-color: var(--line); }
 .location-card { background: color-mix(in oklab, var(--ink) 4%, var(--paper)); }
 .map iframe, .location-map iframe { filter: grayscale(.6) brightness(.85) contrast(1.05); }
+
+/* Nervuri de lemn pe margini: linii fine care ocolesc noduri, ca în atelier. */
+body {
+  background:
+    url("../img/nervuri-stanga.svg") left top / clamp(140px, 26vw, 420px) auto repeat-y,
+    url("../img/nervuri-dreapta.svg") right 0 top 640px / clamp(140px, 26vw, 420px) auto repeat-y,
+    var(--paper);
+}
+.wood, .site-footer { background: transparent; }
