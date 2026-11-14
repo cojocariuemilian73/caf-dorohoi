@@ -117,7 +117,7 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .hero-main {
   position: relative; isolation: isolate; overflow: hidden;
   display: grid; align-content: end; justify-items: start;
-  min-height: 100svh; padding: calc(var(--header-height) + 32px) var(--edge) 96px;
+  min-height: 100svh; padding: calc(var(--header-height) + 32px) var(--edge) 88px;
 }
 .hero-media { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: var(--espresso); }
 .hero-media::after {
@@ -306,7 +306,7 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .header-directions { display: inline-flex; justify-self: end; gap: 12px; align-items: center; padding: 9px 16px; border: 1px solid currentColor; border-radius: 999px; font-size: .84rem; font-weight: 600; transition: color .2s var(--ease-out), background-color .2s var(--ease-out), border-color .2s var(--ease-out); }
   .is-scrolled .header-directions:hover { color: var(--paper); background: var(--ink); border-color: var(--ink); }
   .site-header:not(.is-scrolled) .header-directions:hover { color: var(--ink); background: var(--paper); border-color: var(--paper); }
-  .hero-main { padding-bottom: clamp(100px, 14vh, 150px); }
+  .hero-main { padding-bottom: clamp(48px, 7vh, 72px); }
   .story-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
   .section-intro { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); align-items: end; column-gap: 8%; }
   .wood-head .eyebrow, .section-intro .eyebrow { grid-column: 1 / -1; }
