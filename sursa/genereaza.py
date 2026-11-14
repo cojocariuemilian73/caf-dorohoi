@@ -151,13 +151,12 @@ def review(item, index, total):
     # Textele recenziilor rămân exact cum sunt în date-site.json.
     name = item["autor"]
     initials = "".join(part[0] for part in name.replace(".", "").split()[:2]).upper()
-    text = item.get("rezumat") or item.get("text")
+    text = item.get("text") or item.get("rezumat")
     author = esc(name)
     if item.get("url"):
         author = f'<a href="{esc(item["url"])}">{author}</a>'
     return (
-        f'<article class="review-card"><span class="review-index">{index:02d} / {total:02d}</span>'
-        f'<p class="review-text">{esc(text)}</p>'
+        f'<article class="review-card"><p class="review-text">{esc(text)}</p>'
         f'<footer class="review-person"><span class="review-avatar" aria-hidden="true">{esc(initials)}</span>'
         f'<span class="review-name">{author}</span></footer></article>'
     )
@@ -299,6 +298,7 @@ values = {
     "arrowOut": arrow("M6 18 18 6M7 6h11v11"),
     "menuNotice": "",
     "reviews": "".join(review(item, i, len([r for r in DATA["recenzii"] if r])) for i, item in enumerate([r for r in DATA["recenzii"] if r], start=1)),
+    "writeReview": esc(links.get("scrieRecenzie") or links["recenzii"] or map_search),
     "arrowLeft": arrow("M19 12H5m6-6-6 6 6 6"),
     "arrowRight": arrow("M5 12h14m-6-6 6 6-6 6"),
     "contactLinks": contact_links(links),

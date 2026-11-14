@@ -5,7 +5,8 @@
     "Meniu: o categorie nouă are 'id' (fără spații/diacritice), 'nume', 'imagine' (o cheie din 'imagini') și 'produse'. Apare automat ca filă nouă.",
     "Când meniul e confirmat, pune 'meniuExemplu': false.",
     "Botoșani: completează 'telefon', 'program', 'latitudine' și 'longitudine'. Până atunci site-ul arată [DE COMPLETAT].",
-    "Contact: 'whatsapp' = numărul în format internațional (ex. 40756764805), 'email', 'instagram' = linkul profilului."
+    "Contact: 'whatsapp' = numărul în format internațional (ex. 40756764805), 'email', 'instagram' = linkul profilului.",
+    "Recenzii: fiecare are {\"autor\": \"...\", \"text\": \"textul exact, copiat de pe Google\", \"url\": \"linkul recenziei\"}. Pune câte vrei; se derulează spre dreapta. Câmpul vechi \"rezumat\" se folosește doar dacă lipsește \"text\"."
   ],
   "brand": "CAF coffee&more",
   "description": "CAF coffee&more, cafenea pe Bulevardul Victoriei din Dorohoi. Cappuccino, croissante și limonade, într-un interior lucrat în lemn de atelierul ArtLegno.",
@@ -52,7 +53,8 @@
     "instagram": "",
     "facebook": "https://www.facebook.com/profile.php?id=61580931566262",
     "email": "",
-    "whatsapp": ""
+    "whatsapp": "",
+    "scrieRecenzie": "https://search.google.com/local/writereview?placeid=ChIJXZhwbgCLNEcR_NEAbp02-_4"
   },
   "video": {
     "youtube": "doRFsG95dz8",
