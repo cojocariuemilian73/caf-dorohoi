@@ -86,39 +86,48 @@ function setupHours() {
 }
 
 function setupMenu() {
-  const links = selectAll(".menu-nav a");
+  const list = select(".menu-tabs");
+  if (!list) return;
+  const tabs = selectAll(".menu-tab");
   const panels = selectAll(".menu-panel");
-  if (!links.length) return;
+  const visuals = selectAll(".menu-visual-item");
+  const calm = matchMedia("(prefers-reduced-motion: reduce)");
+  list.hidden = false;
 
-  function selectPanel(id) {
-    for (const panel of panels) panel.hidden = "#" + panel.id !== id;
-    for (const link of links) {
-      if (link.hash === id) link.setAttribute("aria-current", "true");
-      else link.removeAttribute("aria-current");
+  function show(tab, { focus = false, animate = true } = {}) {
+    const id = tab.dataset.category;
+    for (const other of tabs) {
+      const active = other === tab;
+      other.setAttribute("aria-selected", String(active));
+      other.tabIndex = active ? 0 : -1;
     }
-  }
-
-  function syncHash() {
-    const active = links.find((link) => link.hash === location.hash);
-    if (active) selectPanel(active.hash);
-  }
-
-  selectPanel(links[0].hash);
-  syncHash();
-  addEventListener("hashchange", syncHash);
-  for (const card of selectAll("[data-menu-category]")) {
-    card.addEventListener("click", (event) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      selectPanel("#" + card.dataset.menuCategory);
+    for (const panel of panels) panel.hidden = panel.id !== "meniu-" + id;
+    for (const visual of visuals) visual.classList.toggle("is-active", visual.dataset.category === id);
+    if (focus) tab.focus();
+    if (!animate || calm.matches) return;
+    // Preparatele intră pe rând, ca și cum ar fi puse pe masă.
+    select("#meniu-" + id).querySelectorAll(".dish").forEach((dish, index) => {
+      dish.animate(
+        [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }],
+        { duration: 520, delay: index * 60, easing: "cubic-bezier(.23, 1, .32, 1)", fill: "backwards" }
+      );
     });
   }
-  for (const link of links) {
-    link.addEventListener("click", (event) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => show(tab));
+    tab.addEventListener("keydown", (event) => {
+      const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+      let next;
+      if (event.key in keys) next = tabs[(index + keys[event.key] + tabs.length) % tabs.length];
+      else if (event.key === "Home") next = tabs[0];
+      else if (event.key === "End") next = tabs.at(-1);
+      if (!next) return;
       event.preventDefault();
-      selectPanel(link.hash);
+      show(next, { focus: true });
     });
-  }
+  });
+  show(tabs[0], { animate: false });
 }
 
 function setupGallery() {

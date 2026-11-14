@@ -66,28 +66,38 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
   // 4. Fotografiile se deschid de jos în sus, cu un mic zoom care se așază.
   const frames = gsap.utils.toArray("main .image-frame").filter((frame) => frame.querySelector("img"));
   gsap.set(frames, { clipPath: "inset(100% 0% 0% 0%)" });
-  gsap.set(frames.map((frame) => frame.querySelector("img")), { scale: 1.18 });
   ScrollTrigger.batch(frames, {
     start: "top 88%",
     once: true,
-    onEnter: (batch) => {
-      gsap.to(batch, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.25, ease: "expo.inOut", stagger: .1, clearProps: "clipPath" });
-      gsap.to(batch.map((frame) => frame.querySelector("img")), {
-        scale: 1, duration: 1.6, ease: EASE, stagger: .1, clearProps: "transform,scale"
-      });
-    }
+    onEnter: (batch) => gsap.to(batch, {
+      clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "expo.inOut", stagger: .1, clearProps: "clipPath"
+    })
   });
 
-  // 5. Paralaxă discretă pe fotografiile mari.
-  gsap.utils.toArray(".story-pair .image-frame, .gallery-item:first-child, .menu-figure .image-frame").forEach((frame, index) => {
-    gsap.fromTo(frame, { yPercent: index % 2 ? 6 : -4 }, {
-      yPercent: index % 2 ? -6 : 4, ease: "none",
-      scrollTrigger: { trigger: frame, start: "top bottom", end: "bottom top", scrub: true }
+  // 5. Adâncime: fotografia alunecă în ramă, iar ramele stau pe planuri diferite.
+  document.documentElement.classList.add("has-depth");
+  gsap.utils.toArray(".depth img").forEach((image) => {
+    gsap.fromTo(image, { yPercent: -7 }, {
+      yPercent: 7, ease: "none",
+      scrollTrigger: { trigger: image.parentElement, start: "top bottom", end: "bottom top", scrub: true }
+    });
+  });
+  const layers = [[".story-small", -26], [".story-large", 6], [".wood-figure.w1", -10], [".wood-figure.w0", 4], [".gallery-item.g1", -8], [".gallery-item.g4", -12]];
+  // Pe ecranele mici, straturile rămân aliniate, ca să nu se suprapună.
+  const wide = gsap.matchMedia();
+  wide.add("(min-width: 900px)", () => {
+    layers.forEach(([selector, distance]) => {
+      const element = document.querySelector(selector);
+      if (!element) return;
+      gsap.fromTo(element, { y: -distance * 2 }, {
+        y: distance * 2, ease: "none",
+        scrollTrigger: { trigger: element, start: "top bottom", end: "bottom top", scrub: true }
+      });
     });
   });
 
-  // 6. Liste, recenzii și locații intră în cascadă.
-  const groups = [".story-copy > :not(h2)", ".wood-notes li", ".menu-panel:not([hidden]) li", ".review", ".location", ".favorite-caption", ".footer-grid > *"];
+  // 6. Textele, preparatele, recenziile și locațiile intră în cascadă.
+  const groups = [".story-text > :not(h2)", ".section-intro > p:not(.eyebrow)", ".wood-head > p", ".wood-notes li", ".menu-panel:not([hidden]) .dish", ".review", ".reviews-foot", ".location", ".footer-grid > *"];
   groups.forEach((selector) => {
     ScrollTrigger.batch(selector, {
       start: "top 90%",
@@ -116,12 +126,14 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
 
   return () => {
     desktop.revert();
+    wide.revert();
     for (const { root, title, html } of roots) {
       root.unmount();
       title.innerHTML = html;
     }
     heading.textContent = headingText;
     heading.removeAttribute("aria-label");
+    document.documentElement.classList.remove("has-depth");
     gsap.set("main .image-frame, main .image-frame img, .hero-media, .hero-copy, .hero-foot, .site-header, .hero-video", { clearProps: "all" });
   };
 });

@@ -51,7 +51,7 @@
           <video class="hero-video" muted loop playsinline preload="none" poster="{{heroPosterLat}}" data-poster-tall="{{heroPosterMobil}}" data-src-lat="{{heroVideoLat}}" data-src-tall="{{heroVideoMobil}}" aria-hidden="true" tabindex="-1"></video>
         </div>
         <div class="hero-copy">
-          <p class="hero-label">CAF coffee&amp;more · Dorohoi</p>
+          <p class="hero-label">Dorohoi · Bulevardul Victoriei</p>
           <h1 id="hero-title">Cafea bună, <span class="nowrap">într-un</span> loc făcut cu mâna.</h1>
           <div class="hero-actions">
             <a class="button button-light" href="#meniu">Vezi meniul {{arrowDown}}</a>
@@ -76,113 +76,102 @@
       </div>
     </section>
 
-    <section class="section shell story" id="poveste" aria-labelledby="story-title">
-      <div class="story-pair">
-        <div class="image-frame">{{storyDetail}}</div>
-        <div class="image-frame">{{storyImage}}</div>
-      </div>
-      <div class="story-copy">
-        <h2 id="story-title">Din atelier,<br> la o cafea.</h2>
-        <p>CAF a pornit din atelierul {{atelier}}, unde se fac uși, scări și parchet din lemn. După prima cafenea din Botoșani, am deschis ușa din Dorohoi pe {{deschidere}}. Aici, lucrul cu lemnul a continuat la bar, la mese și în detaliile pe care le descoperi când te așezi.</p>
-        <a class="text-link" href="#atelier">Descoperă atelierul {{arrowDown}}</a>
+    <section class="section story" id="poveste" aria-labelledby="story-title">
+      <div class="shell story-grid">
+        <div class="story-text">
+          <p class="eyebrow"><span>01</span> Povestea</p>
+          <h2 id="story-title">Am pornit<br> de la lemn.</h2>
+          <p class="lead">Înainte să fie cafenea, CAF a fost un atelier. La {{atelier}} se fac uși, scări și parchet, așa că, atunci când am deschis prima cafenea în Botoșani, am lucrat-o cu mâinile noastre.</p>
+          <p>La Dorohoi am ajuns pe {{deschidere}}. Barul, mesele și pereții au ieșit tot din atelier. Dacă te uiți de aproape, se vede în fibră.</p>
+          <a class="text-link" href="#atelier">Vezi lemnul de aproape {{arrowDown}}</a>
+        </div>
+        <div class="story-images">
+          {{storyLarge}}
+          {{storySmall}}
+        </div>
       </div>
     </section>
 
     <section class="section wood" id="atelier" aria-labelledby="wood-title">
       <div class="shell">
         <div class="wood-head">
-          <div>
-            <h2 id="wood-title">Fiecare masă<br> are o poveste.</h2>
-          </div>
-          <p>De la bar și mese până la placarea pereților, echipa ArtLegno a lucrat interiorul în atelierul propriu. Fibra rămâne la vedere, iar fiecare îmbinare a fost gândită pentru locul ei.</p>
+          <p class="eyebrow"><span>02</span> Atelierul</p>
+          <h2 id="wood-title">Fiecare masă<br> are o poveste.</h2>
+          <p>Barul, mesele și placarea pereților le-am făcut în același atelier. Am lăsat lemnul la vedere, pentru că ne place cum arată și cum se simte sub mână.</p>
         </div>
         <div class="wood-grid">{{woodImages}}</div>
-        {{woodNote}}
         <ul class="wood-notes">
-          <li><strong>100%</strong><span>Lucrat în atelier propriu</span></li>
-          <li><strong>Lemn masiv</strong></li>
-          <li><strong>Detaliu cu detaliu</strong><span>De la bar până la ultima îmbinare</span></li>
+          <li>Lucrat în atelierul nostru</li>
+          <li>Lemn masiv</li>
+          <li>Gândit detaliu cu detaliu</li>
         </ul>
       </div>
     </section>
 
-    {{favorites}}
-
     <section class="section menu-section" id="meniu" aria-labelledby="menu-title">
       <div class="shell">
-        <div class="section-head">
-          <h2 id="menu-title">Meniul CAF</h2>
+        <div class="section-intro">
+          <p class="eyebrow"><span>03</span> Meniul</p>
+          <h2 id="menu-title">Ce bem azi?</h2>
           {{menuNotice}}
         </div>
-        <div class="menu-layout">
-          <div class="menu-content">
-            <nav class="menu-nav" aria-label="Categorii din meniu">{{menuNavigation}}</nav>
-            {{menuPanels}}
-          </div>
-          <figure class="menu-figure">
-            <div class="image-frame">{{menuImage}}</div>
-            <figcaption>{{menuCaption}}{{illustrationSuffix}}</figcaption>
-          </figure>
+        <div class="menu-board">
+          <div class="menu-tabs" role="tablist" aria-label="Categorii din meniu" hidden>{{menuTabs}}</div>
+          <div class="menu-panels">{{menuPanels}}</div>
+          <div class="menu-visual" aria-hidden="true">{{menuVisuals}}</div>
         </div>
       </div>
     </section>
 
-    <section class="section shell gallery-section" id="spatiul" aria-labelledby="gallery-title">
-      <div class="section-head gallery-head">
-        <h2 id="gallery-title">Spațiul</h2>
-        <p>Loc de întâlniri, de lucru sau de liniște. La o cafea, cu muzică bună în fundal.</p>
+    <section class="section gallery-section" id="spatiul" aria-labelledby="gallery-title">
+      <div class="shell">
+        <div class="section-intro">
+          <p class="eyebrow"><span>04</span> Spațiul</p>
+          <h2 id="gallery-title">Un loc în care<br> rămâi puțin.</h2>
+          <p>Vino cu prietenii, cu laptopul sau doar cu o carte. Muzica e mereu în fundal, iar pe geamurile mari intră multă lumină.</p>
+        </div>
+        <div class="gallery-grid">{{gallery}}</div>
       </div>
-      <div class="gallery-grid">{{gallery}}</div>
-      {{galleryNote}}
     </section>
 
     <section class="section reviews" id="recenzii" aria-labelledby="reviews-title">
       <div class="shell">
-        <div class="section-head">
-          <div>
-            <h2 id="reviews-title">Ce spun oaspeții</h2>
-            {{reviewsRating}}
-          </div>
-          <a class="text-link" href="{{reviewsUrl}}">Vezi recenziile pe Google <span aria-hidden="true">↗</span></a>
+        <div class="section-intro">
+          <p class="eyebrow"><span>05</span> Păreri</p>
+          <h2 id="reviews-title">Ce spun oaspeții.</h2>
+          {{reviewsRating}}
         </div>
-        {{reviewsNote}}
         <div class="reviews-grid">{{reviews}}</div>
+        <div class="reviews-foot">{{reviewsNote}}<a class="text-link" href="{{reviewsUrl}}">Toate recenziile pe Google {{arrowOut}}</a></div>
       </div>
     </section>
 
-    <section class="section shell locations" id="locatii" aria-labelledby="locations-title">
-      <div class="section-head locations-head">
-        <h2 id="locations-title">Ne vedem la CAF.</h2>
-        <a class="text-link" href="{{mapSearch}}">Deschide Google Maps {{arrowOut}}</a>
+    <section class="section locations" id="locatii" aria-labelledby="locations-title">
+      <div class="shell">
+        <div class="section-intro">
+          <p class="eyebrow"><span>06</span> Unde ne găsești</p>
+          <h2 id="locations-title">Ne vedem la CAF.</h2>
+        </div>
+        <div class="locations-grid">
+          <article class="location">
+            <h3>Dorohoi</h3>
+            <address>{{addressD}}<span>{{landmark}}</span></address>
+            <p>{{scheduleLabelD}}</p>
+            <a class="location-phone" href="{{tel}}">{{phone}}</a>
+            <a class="button button-dark" href="{{directionsD}}">Cum ajungi {{arrowOut}}</a>
+          </article>
+          <article class="location">
+            <h3>Botoșani</h3>
+            <address>{{addressB}}</address>
+            <p>{{scheduleLabelB}}</p>
+            <a class="button button-outline" href="{{directionsB}}">Cum ajungi {{arrowOut}}</a>
+          </article>
+        </div>
+        <div class="map" data-lenis-prevent>
+          <iframe src="{{mapUrl}}" title="Google Maps · CAF Dorohoi, Bulevardul Victoriei"
+            loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
       </div>
-      <div class="locations-grid">
-        <article class="location location-primary">
-          <h3>CAF Dorohoi</h3>
-          <address>{{addressD}}, Dorohoi <span>{{landmark}}</span></address>
-          <p>{{scheduleLabelD}}</p>
-          <a class="location-phone" href="{{tel}}">{{phone}}</a>
-          <a class="button button-dark" href="{{directionsD}}">Direcții <span aria-hidden="true">↗</span></a>
-        </article>
-        <article class="location">
-          <h3>CAF Botoșani</h3>
-          <address>{{addressB}}, Botoșani</address>
-          <p>{{scheduleLabelB}}</p>
-          <a class="button button-outline" href="{{directionsB}}">Direcții <span aria-hidden="true">↗</span></a>
-        </article>
-      </div>
-      <div class="map" data-lenis-prevent>
-        <iframe src="{{mapUrl}}" title="Google Maps · CAF Dorohoi, Bulevardul Victoriei"
-          loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-    </section>
-
-    <section class="social shell" aria-labelledby="social-title">
-      <div class="section-head">
-        <h2 id="social-title">Urmărește-ne</h2>
-        {{socialLink}}
-      </div>
-      <div class="social-grid">{{instagramImages}}</div>
-      {{socialNote}}
     </section>
   </main>
 
@@ -191,15 +180,16 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a class="wordmark" href="#sus"><span>CAF</span><small>coffee&amp;more</small></a>
-          <p>Un proiect {{atelier}}</p>
+          <p>O cafenea făcută de atelierul {{atelier}}.</p>
+          {{socialLink}}
         </div>
         <div>
-          <h2 class="eyebrow">Vino la CAF</h2>
+          <h2 class="eyebrow">Treci pe la noi</h2>
           <address><a href="{{directionsD}}">{{addressD}}, Dorohoi <span aria-hidden="true">↗</span></a></address>
           <p>{{scheduleLabelD}}</p>
         </div>
         <div>
-          <h2 class="eyebrow">Contact</h2>
+          <h2 class="eyebrow">Scrie-ne sau sună</h2>
           <a class="footer-phone" href="{{tel}}">{{phone}}</a>
           {{contactLinks}}
         </div>

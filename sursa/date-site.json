@@ -1,6 +1,6 @@
 {
   "brand": "CAF coffee&more",
-  "description": "CAF coffee&more, cafenea în Dorohoi. Cappuccino, croissante și băuturi răcoritoare într-un interior lucrat în lemn de echipa ArtLegno.",
+  "description": "CAF coffee&more, cafenea pe Bulevardul Victoriei din Dorohoi. Cappuccino, croissante și limonade, într-un interior lucrat în lemn de atelierul ArtLegno.",
   "publicUrl": "https://cojocariuemilian73.github.io/caf-dorohoi/",
   "atelier": "ArtLegno Porte&Scale",
   "deschidere": "7 martie 2025",
@@ -56,25 +56,25 @@
     {
       "id": "cafea",
       "nume": "Cafea",
-      "fotografie": "vCappuccino",
       "produse": [
         {
           "nume": "Cappuccino",
-          "descriere": "Espresso și lapte fin spumat.",
+          "descriere": "Espresso cu lapte spumat fin. Merge oricând, dar dimineața parcă e mai bun.",
           "pret": 14,
           "preferat": true
         },
         {
           "nume": "Espresso",
-          "descriere": "Scurt, cu aromă concentrată.",
+          "descriere": "Scurt și intens, pentru o pauză rapidă.",
           "pret": 9
         },
         {
           "nume": "Flat white",
-          "descriere": "Espresso dublu cu lapte și spumă fină.",
+          "descriere": "Espresso dublu și puțin lapte catifelat.",
           "pret": 16
         }
-      ]
+      ],
+      "imagine": "vCappuccino"
     },
     {
       "id": "reci",
@@ -82,16 +82,17 @@
       "produse": [
         {
           "nume": "Mojito fără alcool",
-          "descriere": "Mentă, lime și gheață.",
+          "descriere": "Mentă, lime și multă gheață.",
           "pret": 20,
           "preferat": true
         },
         {
           "nume": "Iced latte",
-          "descriere": "Espresso și lapte, peste gheață.",
+          "descriere": "Espresso și lapte rece, turnate peste gheață.",
           "pret": 17
         }
-      ]
+      ],
+      "imagine": "terasa"
     },
     {
       "id": "fresh",
@@ -104,28 +105,29 @@
         },
         {
           "nume": "Fresh de portocale",
-          "descriere": "Portocale proaspăt stoarse.",
+          "descriere": "Portocale stoarse pe loc.",
           "pret": 19
         }
-      ]
+      ],
+      "imagine": "fereastra"
     },
     {
       "id": "desert",
       "nume": "Patiserie & desert",
-      "fotografie": "vCroissante",
       "produse": [
         {
           "nume": "Croissant",
-          "descriere": "Foi rumene și un miez moale.",
+          "descriere": "Rumen pe dinafară, moale pe dinăuntru.",
           "pret": 12,
           "preferat": true
         },
         {
           "nume": "Prăjitura zilei",
-          "descriere": "Întreabă la bar ce avem azi.",
+          "descriere": "Se schimbă des. Întreabă la bar ce avem azi.",
           "pret": 19
         }
-      ]
+      ],
+      "imagine": "vCroissante"
     }
   ],
   "evaluareGoogle": {

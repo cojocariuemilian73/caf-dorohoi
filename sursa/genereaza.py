@@ -40,7 +40,7 @@ def maps(action, query):
 
 def schedule_label(schedule):
     if not schedule:
-        return "Program [COMPLETEAZĂ]"
+        return "Programul îl găsești pe Google Maps"
     lines = []
     for entry in schedule:
         days = entry["zile"]
@@ -61,46 +61,45 @@ def image(key, *, hero=False):
     )
 
 
-def figure(key):
-    return f'<figure><div class="image-frame">{image(key)}</div><figcaption>{esc(DATA["imagini"][key]["titlu"])}</figcaption></figure>'
+def frame(key, extra=""):
+    return f'<div class="image-frame depth{extra}">{image(key)}</div>'
 
 
-def gallery_tile(key):
+def figure(key, extra=""):
+    return f'<figure class="wood-figure{extra}">{frame(key)}<figcaption>{esc(DATA["imagini"][key]["titlu"])}</figcaption></figure>'
+
+
+def gallery_tile(key, index):
     item = DATA["imagini"][key]
     caption = item["titlu"]
     if DATA["fotografiiIlustrative"]:
         caption += " · Imagine ilustrativă"
     return (
-        f'<a class="gallery-item image-frame" href="{esc(IMG + item["fisier"])}" '
+        f'<a class="gallery-item g{index} image-frame depth" href="{esc(IMG + item["fisier"])}" '
         f'data-caption="{esc(caption)}" aria-label="Mărește imaginea. {esc(caption)}">'
-        f'{image(key)}<span aria-hidden="true">↗</span></a>'
+        f'{image(key)}<span class="gallery-caption">{esc(caption)}</span></a>'
     )
 
 
-def favorite_card(category):
+def menu_tab(category, index):
     category_id = esc(category["id"])
     return (
-        f'<a class="favorite-card" href="#meniu" data-menu-category="meniu-{category_id}">'
-        f'<div class="image-frame">{image(category["fotografie"])}</div>'
-        f'<div class="favorite-caption"><h3>{esc(category["nume"])}</h3>'
-        '<span aria-hidden="true">↗</span></div></a>'
+        f'<button type="button" class="menu-tab" role="tab" id="fila-{category_id}" '
+        f'aria-controls="meniu-{category_id}" aria-selected="{"true" if index == 0 else "false"}" '
+        f'tabindex="{0 if index == 0 else -1}" data-category="{category_id}">'
+        f'<span class="tab-index">{index + 1:02d}</span>'
+        f'<span class="tab-name">{esc(category["nume"])}</span>'
+        f'<span class="tab-count">{len(category["produse"])}</span></button>'
     )
 
 
-def favorites_section():
-    cards = [
-        favorite_card(category)
-        for category in DATA["meniu"]
-        if category.get("fotografie") in DATA["imagini"]
-    ]
-    if not cards:
+def menu_visual(category, index):
+    key = category.get("imagine")
+    if key not in DATA["imagini"]:
         return ""
-    note = '<p class="caption">Imagini ilustrative</p>' if DATA["fotografiiIlustrative"] else ""
-    return (
-        '<section class="section shell favorites" aria-labelledby="favorites-title">'
-        '<div class="section-head"><h2 id="favorites-title">Cafea și ceva bun</h2>'
-        f'{note}</div><div class="favorites-grid">{"".join(cards)}</div></section>'
-    )
+    active = " is-active" if index == 0 else ""
+    return f'<div class="menu-visual-item{active}" data-category="{esc(category["id"])}">{image(key)}</div>'
+
 
 def menu_panel(category):
     category_id = esc(category["id"])
@@ -110,35 +109,32 @@ def menu_panel(category):
         amount = (f"{price:g}".replace(".", ",") + " lei") if price is not None else "La cerere"
         featured = '<span class="favorite">Preferata casei</span>' if product.get("preferat") else ""
         rows.append(
-            f'<li><div><div class="product-name"><h4>{esc(product["nume"])}</h4>{featured}</div>'
-            f'<p>{esc(product["descriere"])}</p></div><span class="price">{amount}</span></li>'
+            f'<li class="dish"><div class="dish-line"><h4>{esc(product["nume"])}</h4>'
+            f'<span class="dish-leader" aria-hidden="true"></span><span class="price">{amount}</span></div>'
+            f'<p>{esc(product["descriere"])}{featured}</p></li>'
         )
     return (
-        f'<section class="menu-panel" id="meniu-{category_id}" aria-labelledby="titlu-{category_id}">'
-        f'<h3 id="titlu-{category_id}">{esc(category["nume"])}</h3><ul>{"".join(rows)}</ul></section>'
+        f'<section class="menu-panel" role="tabpanel" id="meniu-{category_id}" aria-labelledby="fila-{category_id}">'
+        f'<h3 class="menu-panel-title">{esc(category["nume"])}</h3><ul>{"".join(rows)}</ul></section>'
     )
 
 
 def review(item):
     if "rezumat" in item:
-        author = esc(item["autor"])
         return (
             f'<article class="review"><p class="review-summary">{esc(item["rezumat"])}</p>'
-            f'<a class="review-author" href="{esc(item["url"])}">{author} · Google Maps</a></article>'
+            f'<a class="review-author" href="{esc(item["url"])}">{esc(item["autor"])}, pe Google Maps</a></article>'
         )
-    return f'<figure class="review"><span aria-hidden="true">„</span><blockquote>{esc(item["text"])}</blockquote><figcaption>{esc(item["autor"])}</figcaption></figure>'
+    return f'<figure class="review"><blockquote>{esc(item["text"])}</blockquote><figcaption>{esc(item["autor"])}</figcaption></figure>'
 
 
 def contact_links(links):
     channels = []
     for key in ("instagram", "facebook", "email"):
         value = links[key]
-        label = key.capitalize()
         if value:
             href = "mailto:" + value if key == "email" else value
-            channels.append(f'<a href="{esc(href)}">{label}</a>')
-        else:
-            channels.append(f'<span>{label} [COMPLETEAZĂ]</span>')
+            channels.append(f'<a href="{esc(href)}">{key.capitalize()}</a>')
     return '<ul class="contact-links">' + "".join(f"<li>{channel}</li>" for channel in channels) + "</ul>"
 
 
@@ -189,13 +185,6 @@ if profiles:
     schema["sameAs"] = profiles
 
 nav = (("poveste", "Poveste"), ("meniu", "Meniu"), ("spatiul", "Spațiul"), ("locatii", "Locații"), ("contact", "Contact"))
-social_keys = ("vPahare", "vLapte", "vCappuccino", "vCroissante", "terasaSeara", "cafea")
-social_images = "".join(
-    f'<a class="image-frame" href="{esc(social)}" aria-label="Deschide profilul CAF pe {social_label}">{image(key)}</a>'
-    if social else f'<div class="image-frame">{image(key)}</div>'
-    for key in social_keys
-)
-
 values = {
     "title": esc(f'{DATA["brand"]} — Cafenea în Dorohoi'),
     "brand": esc(DATA["brand"]),
@@ -215,8 +204,6 @@ values = {
     "mapSearch": esc(map_search),
     "mapUrl": esc(map_url),
     "videoUrl": f"https://www.youtube.com/watch?v={video_id}",
-    "videoEmbed": f"https://www.youtube-nocookie.com/embed/{video_id}?autoplay=1&amp;playsinline=1&amp;rel=0",
-    "videoTitle": esc(video["titlu"]),
     "videoCredit": esc(video["credit"]),
     "heroVideoLat": esc(video["lat"]),
     "heroVideoMobil": esc(video["mobil"]),
@@ -224,11 +211,11 @@ values = {
     "heroPosterMobil": esc(video["mobilPoster"]),
     "reviewsUrl": esc(links["recenzii"] or map_search),
     "reviewsRating": (
-        f'<p class="reviews-rating"><strong>{esc(rating["scor"])} din 5</strong>'
-        f' · {esc(rating["numar"])} de evaluări pe Google Maps</p>'
+        f'<p class="reviews-rating"><strong>{esc(rating["scor"])} / 5</strong>'
+        f' din {esc(rating["numar"])} de păreri pe Google Maps</p>'
         if rating else ""
     ),
-    "reviewsNote": '<p class="reviews-note">Selecție de recenzii rezumate</p>'
+    "reviewsNote": '<p class="reviews-note">Am rezumat câteva recenzii de pe Google Maps. Le găsești întregi la link.</p>'
     if any(item and "rezumat" in item for item in DATA["recenzii"]) else "",
     "addressD": esc(dorohoi["adresa"]),
     "addressB": esc(botosani["adresa"]),
@@ -238,27 +225,20 @@ values = {
     "scheduleLabelD": esc(schedule_label(dorohoi["program"])),
     "scheduleLabelB": esc(schedule_label(botosani["program"])),
     "heroIllustration": '<figcaption class="hero-credit">Imagine ilustrativă</figcaption>' if illustrative else "",
-    "illustrationSuffix": " · Imagine ilustrativă" if illustrative else "",
-    "storyImage": image("atelier"),
-    "storyDetail": image("cafea"),
     "arrowDown": arrow("M12 4v15m-6-6 6 6 6-6"),
     "arrowOut": arrow("M6 18 18 6M7 6h11v11"),
-    "favorites": favorites_section(),
-    "woodImages": "".join(figure(key) for key in ("fibra", "lumina", "terasa")),
-    "woodNote": '<p class="caption">Imagini ilustrative</p>' if illustrative else "",
-    "menuNotice": '<p class="sample-note">Exemplu de meniu și prețuri. Oferta actuală se confirmă la cafenea.</p>' if DATA["meniuExemplu"] else "",
-    "menuNavigation": "".join(f'<a href="#meniu-{esc(row["id"])}">{esc(row["nume"])}</a>' for row in DATA["meniu"]),
-    "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
-    "menuImage": image("vEspresso"),
-    "menuCaption": esc(DATA["imagini"]["vEspresso"]["titlu"]),
-    "gallery": "".join(gallery_tile(key) for key in ("hero", "fereastra", "exterior", "terasaSeara", "vVitrina", "espresso")),
+    "menuNotice": '<p class="sample-note">Meniul de aici e orientativ. Prețurile exacte le afli la bar.</p>' if DATA["meniuExemplu"] else "",
     "galleryInitial": esc(IMG + DATA["imagini"]["hero"]["fisier"]),
-    "galleryNote": '<p class="caption">Imagini ilustrative · [COMPLETEAZĂ] Fotografii reale ale cafenelei</p>' if illustrative else "",
     "reviews": "".join(review(item) for item in DATA["recenzii"] if item),
-    "instagramImages": social_images,
-    "socialLink": f'<a class="text-link" href="{esc(social)}">{social_label} <span aria-hidden="true">↗</span></a>' if social else '<p class="caption">Instagram [COMPLETEAZĂ]</p>',
-    "socialNote": '<p class="caption">Imagini ilustrative</p>' if illustrative else "",
     "contactLinks": contact_links(links),
+    "storyLarge": frame("atelier", " story-large"),
+    "storySmall": frame("cafea", " story-small"),
+    "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(("fibra", "lumina", "terasa"))),
+    "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
+    "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
+    "menuVisuals": "".join(menu_visual(row, i) for i, row in enumerate(DATA["meniu"])),
+    "gallery": "".join(gallery_tile(key, i) for i, key in enumerate(("hero", "fereastra", "exterior", "terasaSeara", "vLapte"))),
+    "socialLink": f'<a class="text-link" href="{esc(social)}">Urmărește-ne pe {social_label} {arrow("M6 18 18 6M7 6h11v11")}</a>' if social else "",
     "photoCredits": '<p class="photo-credits">Fotografii din ' + " · ".join(
         f'<a href="{esc(source["url"])}">{esc(source["nume"])}</a>' for source in DATA["surseFoto"]
     ) + '</p>' if DATA["surseFoto"] else "",
