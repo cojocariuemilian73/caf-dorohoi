@@ -148,15 +148,24 @@ def menu_panel(category):
 
 
 def review(item, index, total):
-    # Textele recenziilor rămân exact cum sunt în date-site.json.
+    # Textul se afișează exact cum l-a scris autorul.
     name = item["autor"]
     initials = "".join(part[0] for part in name.replace(".", "").split()[:2]).upper()
     text = item.get("text") or item.get("rezumat")
+    size = " is-long" if len(text) > 170 else " is-short" if len(text) < 40 else ""
+    stars = int(item.get("stele") or 0)
+    star = "★"
+    rating = (
+        f'<span class="review-stars" role="img" aria-label="{stars} din 5 stele">'
+        + star * stars + '<span class="dim">' + star * (5 - stars) + '</span></span>'
+        if stars else ""
+    )
     author = esc(name)
     if item.get("url"):
         author = f'<a href="{esc(item["url"])}">{author}</a>'
     return (
-        f'<article class="review-card"><p class="review-text">{esc(text)}</p>'
+        f'<article class="review-card{size}">{rating}'
+        f'<p class="review-text">{esc(text)}</p>'
         f'<footer class="review-person"><span class="review-avatar" aria-hidden="true">{esc(initials)}</span>'
         f'<span class="review-name">{author}</span></footer></article>'
     )

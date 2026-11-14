@@ -6,7 +6,7 @@
     "Când meniul e confirmat, pune 'meniuExemplu': false.",
     "Botoșani: completează 'telefon', 'program', 'latitudine' și 'longitudine'. Până atunci site-ul arată [DE COMPLETAT].",
     "Contact: 'whatsapp' = numărul în format internațional (ex. 40756764805), 'email', 'instagram' = linkul profilului.",
-    "Recenzii: fiecare are {\"autor\": \"...\", \"text\": \"textul exact, copiat de pe Google\", \"url\": \"linkul recenziei\"}. Pune câte vrei; se derulează spre dreapta. Câmpul vechi \"rezumat\" se folosește doar dacă lipsește \"text\"."
+    "Recenzii: fiecare are {\"autor\": \"...\", \"stele\": 5, \"text\": \"textul exact\"} și, opțional, \"url\" spre recenzia originală. Pune câte vrei; se derulează spre dreapta."
   ],
   "brand": "CAF coffee&more",
   "description": "CAF coffee&more, cafenea pe Bulevardul Victoriei din Dorohoi. Cappuccino, croissante și limonade, într-un interior lucrat în lemn de atelierul ArtLegno.",
@@ -146,19 +146,44 @@
   },
   "recenzii": [
     {
-      "autor": "Ionela N.",
-      "rezumat": "Revine pentru cappuccino, croissante și mojito fără alcool. Muzica îi face vizitele mai plăcute.",
-      "url": "https://maps.app.goo.gl/1eVqh4crBPEJqsji9"
+      "autor": "Patrick Andrei",
+      "stele": 5,
+      "text": "Great coffee"
     },
     {
-      "autor": "Laura C.",
-      "rezumat": "A apreciat cafeaua aromată și personalul amabil. Recomandă locul pentru o pauză sau pentru cafeaua de dimineață.",
-      "url": "https://maps.app.goo.gl/z57aT1opXzHjHqce8"
+      "autor": "Sorin Mancas",
+      "stele": 5,
+      "text": "super ok"
     },
     {
-      "autor": "Luci P.",
-      "rezumat": "A remarcat atmosfera primitoare, atenția la detalii și felul în care sunt prezentate produsele.",
-      "url": "https://maps.app.goo.gl/VypeJHbRGg7URjAi6"
+      "autor": "Marius Balauca",
+      "stele": 5,
+      "text": "Great coffee and nice staff!"
+    },
+    {
+      "autor": "Lupu Alexandra",
+      "stele": 5,
+      "text": "A very beautiful cafe, with a warm and welcoming atmosphere. The coffee is delicious, and the staff is very kind and attentive to the customers. Everything is well organized. I highly recommend this place and I will always come back with pleasure!!♥️"
+    },
+    {
+      "autor": "Ionela Negru",
+      "stele": 5,
+      "text": "A gorgeous cafe, with a modern and elegant design, where every detail is chosen with taste. The atmosphere is relaxing, the coffee is excellent, and the staff is very friendly. A place you will be happy to return to. I recommend it with all my heart!"
+    },
+    {
+      "autor": "Anamaria Leahu",
+      "stele": 5,
+      "text": "An elegant and welcoming cafe. It is always very clean, and the products are fresh and of the highest quality. Always friendly staff. I recommend it with confidence to everyone who appreciates quality and excellent service!"
+    },
+    {
+      "autor": "Georcea Alex",
+      "stele": 5,
+      "text": "Coffee is a magical drink that awakens the senses and provides moments of relaxation or energy. Its varied aromas, from floral notes to chocolate accents, perfectly match any mood. Regardless of the preparation method, coffee remains a source of inspiration and an irreplaceable ritual in everyday life"
+    },
+    {
+      "autor": "Luci Pohoata",
+      "stele": 5,
+      "text": "The most elegant cafe in the area. And the coffee is excellent!"
     }
   ],
   "fotografiiIlustrative": false,
