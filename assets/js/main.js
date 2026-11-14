@@ -90,7 +90,6 @@ function setupMenu() {
   if (!list) return;
   const tabs = selectAll(".menu-tab");
   const panels = selectAll(".menu-panel");
-  const visuals = selectAll(".menu-visual-item");
   const calm = matchMedia("(prefers-reduced-motion: reduce)");
   list.hidden = false;
 
@@ -102,11 +101,10 @@ function setupMenu() {
       other.tabIndex = active ? 0 : -1;
     }
     for (const panel of panels) panel.hidden = panel.id !== "meniu-" + id;
-    for (const visual of visuals) visual.classList.toggle("is-active", visual.dataset.category === id);
     if (focus) tab.focus();
     if (!animate || calm.matches) return;
     // Preparatele intră pe rând, ca și cum ar fi puse pe masă.
-    select("#meniu-" + id).querySelectorAll(".dish").forEach((dish, index) => {
+    select("#meniu-" + id).querySelectorAll(".dish-card").forEach((dish, index) => {
       dish.animate(
         [{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }],
         { duration: 520, delay: index * 60, easing: "cubic-bezier(.23, 1, .32, 1)", fill: "backwards" }

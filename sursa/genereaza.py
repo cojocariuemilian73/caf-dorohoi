@@ -111,39 +111,27 @@ def menu_tab(category, index):
     )
 
 
-def menu_visual(category, index):
-    key = category.get("imagine")
-    if key not in DATA["imagini"]:
-        return ""
-    active = " is-active" if index == 0 else ""
-    count = len(category["produse"])
-    label = "preparat" if count == 1 else "preparate"
-    return (
-        f'<div class="menu-visual-item{active}" data-category="{esc(category["id"])}">'
-        f'{image(key, sizes="(min-width: 900px) 25vw, 100vw")}'
-        f'<span class="menu-visual-caption"><span class="menu-visual-index">{index + 1:02d}</span>'
-        f'<strong>{esc(category["nume"])}</strong><span>{count} {label}</span></span></div>'
-    )
-
-
 def menu_panel(category):
     category_id = esc(category["id"])
-    rows = []
-    for number, product in enumerate(category["produse"], start=1):
+    cards = []
+    for product in category["produse"]:
         price = product["pret"]
         amount = (f"{price:g}".replace(".", ",") + " lei") if price is not None else "La cerere"
-        favorite = product.get("preferat")
-        badge = '<span class="favorite"><span aria-hidden="true">\u2605</span> Preferata casei</span>' if favorite else ""
-        rows.append(
-            f'<li class="dish{" is-favorite" if favorite else ""}">'
-            f'<span class="dish-number" aria-hidden="true">{number:02d}</span>'
-            f'<div class="dish-body"><div class="dish-line"><h4>{esc(product["nume"])}</h4>'
-            f'<span class="dish-leader" aria-hidden="true"></span><span class="price">{amount}</span></div>'
-            f'<p>{esc(product["descriere"])}</p>{badge}</div></li>'
+        badge = '<span class="favorite">Preferata casei</span>' if product.get("preferat") else ""
+        key = product.get("imagine")
+        if key in DATA["imagini"]:
+            visual = f'<div class="dish-photo">{image(key, sizes="(min-width: 900px) 30vw, 50vw")}{badge}</div>'
+        else:
+            # Fără fotografie: numele scris mare, pe un fond cald.
+            visual = f'<div class="dish-photo dish-type"><span class="dish-type-name" aria-hidden="true">{esc(product["nume"])}</span>{badge}</div>'
+        cards.append(
+            f'<li class="dish-card">{visual}<div class="dish-info"><div class="dish-line">'
+            f'<h4>{esc(product["nume"])}</h4><span class="price">{amount}</span></div>'
+            f'<p>{esc(product["descriere"])}</p></div></li>'
         )
     return (
         f'<section class="menu-panel" role="tabpanel" id="meniu-{category_id}" aria-labelledby="fila-{category_id}">'
-        f'<h3 class="menu-panel-title">{esc(category["nume"])}</h3><ul>{"".join(rows)}</ul></section>'
+        f'<h3 class="menu-panel-title">{esc(category["nume"])}</h3><ul class="dish-grid">{"".join(cards)}</ul></section>'
     )
 
 
@@ -321,7 +309,6 @@ values = {
     "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(("fibra", "lumina", "terasa"))),
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
-    "menuVisuals": "".join(menu_visual(row, i) for i, row in enumerate(DATA["meniu"])),
     "socialLink": f'<a class="text-link" href="{esc(social)}">Urmărește-ne pe {social_label} {arrow("M6 18 18 6M7 6h11v11")}</a>' if social else "",
     "photoCredits": '<p class="photo-credits">Fotografii din ' + " · ".join(
         f'<a href="{esc(source["url"])}">{esc(source["nume"])}</a>' for source in DATA["surseFoto"]

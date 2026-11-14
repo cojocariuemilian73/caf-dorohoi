@@ -1,7 +1,7 @@
 {
   "_instructiuni": [
     "Câmpurile goale (\"\") nu apar pe site. Completează-le și rulează: python sursa/genereaza.py",
-    "Meniu: adaugă produse în lista 'produse' a unei categorii, în forma {\"nume\": \"...\", \"descriere\": \"...\", \"pret\": 0}. 'pret': null afișează «La cerere». 'preferat': true pune eticheta «Preferata casei».",
+    "Meniu: adaugă produse în lista \"produse\" a unei categorii: {\"nume\": \"...\", \"descriere\": \"...\", \"pret\": 0, \"imagine\": \"cheie din imagini\"}. \"imagine\" e opțională; fără ea, cardul arată numele scris frumos. \"pret\": null afișează «La cerere», \"preferat\": true pune «Preferata casei».",
     "Meniu: o categorie nouă are 'id' (fără spații/diacritice), 'nume', 'imagine' (o cheie din 'imagini') și 'produse'. Apare automat ca filă nouă.",
     "Când meniul e confirmat, pune 'meniuExemplu': false.",
     "Botoșani: completează 'telefon', 'program', 'latitudine' și 'longitudine'. Până atunci site-ul arată [DE COMPLETAT].",
@@ -71,17 +71,20 @@
           "nume": "Cappuccino",
           "descriere": "Espresso cu lapte spumat fin. Merge oricând, dar dimineața parcă e mai bun.",
           "pret": 14,
-          "preferat": true
+          "preferat": true,
+          "imagine": "vCappuccino"
         },
         {
           "nume": "Espresso",
           "descriere": "Scurt și intens, pentru o pauză rapidă.",
-          "pret": 9
+          "pret": 9,
+          "imagine": "vEspresso"
         },
         {
           "nume": "Flat white",
           "descriere": "Espresso dublu și puțin lapte catifelat.",
-          "pret": 16
+          "pret": 16,
+          "imagine": "cafea"
         }
       ],
       "imagine": "vCappuccino"
@@ -129,7 +132,8 @@
           "nume": "Croissant",
           "descriere": "Rumen pe dinafară, moale pe dinăuntru.",
           "pret": 12,
-          "preferat": true
+          "preferat": true,
+          "imagine": "vCroissante"
         },
         {
           "nume": "Prăjitura zilei",
@@ -146,19 +150,9 @@
   },
   "recenzii": [
     {
-      "autor": "Patrick Andrei",
+      "autor": "Georcea Alex",
       "stele": 5,
-      "text": "Great coffee"
-    },
-    {
-      "autor": "Sorin Mancas",
-      "stele": 5,
-      "text": "super ok"
-    },
-    {
-      "autor": "Marius Balauca",
-      "stele": 5,
-      "text": "Great coffee and nice staff!"
+      "text": "Coffee is a magical drink that awakens the senses and provides moments of relaxation or energy. Its varied aromas, from floral notes to chocolate accents, perfectly match any mood. Regardless of the preparation method, coffee remains a source of inspiration and an irreplaceable ritual in everyday life"
     },
     {
       "autor": "Lupu Alexandra",
@@ -176,14 +170,24 @@
       "text": "An elegant and welcoming cafe. It is always very clean, and the products are fresh and of the highest quality. Always friendly staff. I recommend it with confidence to everyone who appreciates quality and excellent service!"
     },
     {
-      "autor": "Georcea Alex",
-      "stele": 5,
-      "text": "Coffee is a magical drink that awakens the senses and provides moments of relaxation or energy. Its varied aromas, from floral notes to chocolate accents, perfectly match any mood. Regardless of the preparation method, coffee remains a source of inspiration and an irreplaceable ritual in everyday life"
-    },
-    {
       "autor": "Luci Pohoata",
       "stele": 5,
       "text": "The most elegant cafe in the area. And the coffee is excellent!"
+    },
+    {
+      "autor": "Marius Balauca",
+      "stele": 5,
+      "text": "Great coffee and nice staff!"
+    },
+    {
+      "autor": "Patrick Andrei",
+      "stele": 5,
+      "text": "Great coffee"
+    },
+    {
+      "autor": "Sorin Mancas",
+      "stele": 5,
+      "text": "super ok"
     }
   ],
   "fotografiiIlustrative": false,
