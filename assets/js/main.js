@@ -130,46 +130,6 @@ function setupMenu() {
   show(tabs[0], { animate: false });
 }
 
-function setupGallery() {
-  const dialog = select("#lightbox");
-  if (typeof dialog.showModal !== "function") return;
-  const triggers = selectAll(".gallery-item");
-  const image = select("#lightbox-image");
-  const caption = select("#lightbox-caption");
-  let current = 0;
-  let opener;
-
-  function show(index) {
-    current = (index + triggers.length) % triggers.length;
-    const trigger = triggers[current];
-    const original = trigger.querySelector("img");
-    image.src = trigger.href;
-    image.alt = original.alt;
-    caption.textContent = (current + 1) + " / " + triggers.length + " · " + trigger.dataset.caption;
-  }
-
-  triggers.forEach((link, index) => {
-    link.addEventListener("click", (event) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
-      opener = link;
-      show(index);
-      dialog.showModal();
-    });
-  });
-  select(".lightbox-prev").addEventListener("click", () => show(current - 1));
-  select(".lightbox-next").addEventListener("click", () => show(current + 1));
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
-  });
-  dialog.addEventListener("close", () => opener?.focus({ preventScroll: true }));
-  dialog.addEventListener("keydown", (event) => {
-    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-    event.preventDefault();
-    show(current + (event.key === "ArrowRight" ? 1 : -1));
-  });
-}
-
 function loadMotion() {
   const motion = matchMedia("(prefers-reduced-motion: no-preference)");
   function enableMotion() {
@@ -197,6 +157,5 @@ function setupHeader() {
 setupNavigation();
 setupHours();
 setupMenu();
-setupGallery();
 setupHeader();
 loadMotion();

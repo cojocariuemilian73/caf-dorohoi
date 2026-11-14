@@ -6,6 +6,7 @@
   <title>{{title}}</title>
   <meta name="description" content="{{description}}">
   <meta name="theme-color" content="#1F1612">
+  <meta name="color-scheme" content="only light">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ro_RO">
   <meta property="og:title" content="{{title}}">
@@ -119,21 +120,10 @@
       </div>
     </section>
 
-    <section class="section gallery-section" id="spatiul" aria-labelledby="gallery-title">
-      <div class="shell">
-        <div class="section-intro">
-          <p class="eyebrow"><span>04</span> Spațiul</p>
-          <h2 id="gallery-title">Un loc în care<br> rămâi puțin.</h2>
-          <p>Vino cu prietenii, cu laptopul sau doar cu o carte. Muzica e mereu în fundal, iar pe geamurile mari intră multă lumină.</p>
-        </div>
-        <div class="gallery-grid">{{gallery}}</div>
-      </div>
-    </section>
-
     <section class="section reviews" id="recenzii" aria-labelledby="reviews-title">
       <div class="shell">
         <div class="section-intro">
-          <p class="eyebrow"><span>05</span> Păreri</p>
+          <p class="eyebrow"><span>04</span> Păreri</p>
           <h2 id="reviews-title">Ce spun oaspeții.</h2>
           {{reviewsRating}}
         </div>
@@ -145,7 +135,7 @@
     <section class="section locations" id="locatii" aria-labelledby="locations-title">
       <div class="shell">
         <div class="section-intro">
-          <p class="eyebrow"><span>06</span> Unde ne găsești</p>
+          <p class="eyebrow"><span>05</span> Unde ne găsești</p>
           <h2 id="locations-title">Ne vedem la CAF.</h2>
         </div>
         <div class="locations-grid">
@@ -208,13 +198,5 @@
     <a href="{{directionsD}}">Direcții <span aria-hidden="true">↗</span></a>
   </div>
 
-  <dialog class="lightbox" id="lightbox" aria-label="Imagine din galerie">
-    <div class="lightbox-inner">
-      <form method="dialog"><button class="close-button lightbox-close" aria-label="Închide imaginea" autofocus>×</button></form>
-      <figure><img id="lightbox-image" src="{{galleryInitial}}" loading="lazy" alt=""><figcaption id="lightbox-caption" aria-live="polite"></figcaption></figure>
-      <button class="lightbox-prev" type="button" aria-label="Imaginea anterioară">←</button>
-      <button class="lightbox-next" type="button" aria-label="Imaginea următoare">→</button>
-    </div>
-  </dialog>
 </body>
 </html>

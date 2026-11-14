@@ -237,7 +237,7 @@ profiles = [links[key] for key in ("instagram", "facebook") if links.get(key)]
 if profiles:
     main_shop["sameAs"] = profiles
 
-nav = (("poveste", "Poveste"), ("meniu", "Meniu"), ("spatiul", "Spațiul"), ("locatii", "Locații"), ("contact", "Contact"))
+nav = (("poveste", "Poveste"), ("meniu", "Meniu"), ("locatii", "Locații"), ("contact", "Contact"))
 values = {
     "title": esc(f'{DATA["brand"]} — Cafenea în Dorohoi'),
     "brand": esc(DATA["brand"]),
@@ -285,7 +285,6 @@ values = {
     "arrowDown": arrow("M12 4v15m-6-6 6 6 6-6"),
     "arrowOut": arrow("M6 18 18 6M7 6h11v11"),
     "menuNotice": '<p class="sample-note">Meniul de aici e orientativ. Prețurile exacte le afli la bar.</p>' if DATA["meniuExemplu"] else "",
-    "galleryInitial": esc(IMG + DATA["imagini"]["fereastra"]["fisier"]),
     "reviews": "".join(review(item) for item in DATA["recenzii"] if item),
     "contactLinks": contact_links(links),
     "contactButtons": contact_buttons(links),
@@ -294,12 +293,11 @@ values = {
     "mapD": esc(links["harta"] or map_embed(dorohoi)),
     "mapB": esc(map_embed(botosani)),
     "storyLarge": frame("atelier", " story-large", "(min-width: 900px) 40vw, 80vw"),
-    "storySmall": frame("cafea", " story-small", "(min-width: 900px) 24vw, 45vw"),
+    "storySmall": frame("espresso", " story-small", "(min-width: 900px) 24vw, 45vw"),
     "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(("fibra", "lumina", "terasa"))),
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
     "menuVisuals": "".join(menu_visual(row, i) for i, row in enumerate(DATA["meniu"])),
-    "gallery": "".join(gallery_tile(key, i) for i, key in enumerate(("fereastra", "exterior", "terasaSeara", "vLapte"), start=1)),
     "socialLink": f'<a class="text-link" href="{esc(social)}">Urmărește-ne pe {social_label} {arrow("M6 18 18 6M7 6h11v11")}</a>' if social else "",
     "photoCredits": '<p class="photo-credits">Fotografii din ' + " · ".join(
         f'<a href="{esc(source["url"])}">{esc(source["nume"])}</a>' for source in DATA["surseFoto"]
