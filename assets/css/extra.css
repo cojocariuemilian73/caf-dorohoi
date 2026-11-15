@@ -1,22 +1,44 @@
 /* Secțiunile propuse: specialități, colțul de lucru, voucher, roată, card de fidelitate. */
 
-/* Specialitățile casei: trei cărți mari, cea din mijloc coborâtă. */
-.special-list { display: grid; gap: clamp(28px, 4vw, 40px); }
-.special { display: grid; gap: 18px; }
-.special-photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 8px; background: color-mix(in oklab, var(--ink) 6%, var(--paper)); }
+/* Specialitățile casei.
+   Fără animație: trei produse rotunde pe un rând. Cu animație: secțiunea stă pe loc,
+   iar produsele trec pe rând prin centru pe măsură ce derulezi. */
+.specials { position: relative; }
+.specials-inner { display: grid; gap: clamp(28px, 4vw, 48px); padding-block: clamp(72px, 9vw, 128px); }
+.specials-head { display: grid; gap: 12px; justify-items: center; text-align: center; }
+.specials-head p { max-width: 40ch; color: var(--muted); }
+.specials-stage { position: relative; }
+.special-list { display: grid; gap: 40px; justify-items: center; }
+.special { display: grid; justify-items: center; gap: 20px; text-align: center; }
+.special-photo { position: relative; width: clamp(200px, 60vw, 380px); aspect-ratio: 1; overflow: hidden; border-radius: 50%; background: color-mix(in oklab, var(--accent) 22%, var(--paper)); box-shadow: 0 0 0 10px color-mix(in oklab, var(--ink) 5%, transparent), 0 40px 70px -30px #000; }
 .special-photo picture, .special-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.special-photo img { transition: scale .7s var(--ease-out); }
-@media (hover: hover) and (pointer: fine) { .special:hover .special-photo img { scale: 1.04; } }
-.special-photo.is-type { display: grid; place-items: center; padding: 24px; background: color-mix(in oklab, var(--accent) 22%, var(--paper)); }
-.special-photo.is-type span { font: italic 500 clamp(2rem, 4vw, 3rem)/1 var(--serif); text-align: center; }
-.special-copy { display: grid; gap: 8px; }
-.special-copy h3 { font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1; }
-.special-copy p { color: var(--muted); max-width: 34ch; }
-.special-copy .price { color: var(--oak); font-weight: 600; }
-@media (min-width: 900px) {
-  .special-list { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
-  .special:nth-child(2) { margin-top: clamp(48px, 8vw, 110px); }
-}
+.special-photo.is-type { display: grid; place-items: center; padding: 18%; background: radial-gradient(circle at 35% 30%, #e2bf98, #c08a5e 70%); color: var(--espresso); }
+.special-photo.is-type span { font: italic 600 clamp(2rem, 5vw, 3.2rem)/1 var(--serif); }
+.special-copy { display: grid; justify-items: center; gap: 8px; max-width: 30ch; }
+.special-copy h3 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1; }
+.special-copy p { color: var(--muted); }
+.special-copy .price { color: var(--oak); font-weight: 700; font-size: 1.05rem; }
+.steam { display: none; }
+.specials-dots { display: none; }
+@media (min-width: 900px) { .special-list { grid-template-columns: repeat(3, 1fr); align-items: start; } }
+
+.specials.is-scrolly .specials-track { height: calc(100svh * (var(--count) + .4)); }
+.specials.is-scrolly .specials-sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; align-items: center; }
+.specials.is-scrolly .specials-inner { padding-block: 84px 24px; gap: clamp(12px, 2vh, 24px); }
+.specials.is-scrolly .specials-stage { height: min(64svh, 600px); }
+.specials.is-scrolly .special-list { display: block; height: 100%; }
+.specials.is-scrolly .special { position: absolute; left: 50%; top: 0; width: min(88vw, 520px); margin-left: calc(min(88vw, 520px) / -2); gap: 18px; will-change: transform, opacity; }
+.specials.is-scrolly .special-photo { width: min(38svh, 360px, 70vw); }
+.specials.is-scrolly .special-copy { transition: none; }
+.specials.is-scrolly .steam { display: block; position: absolute; left: 50%; top: -6%; z-index: 2; width: clamp(70px, 9vw, 110px); translate: -50% 0; fill: none; stroke: #f5eee4; stroke-width: 3; stroke-linecap: round; opacity: .5; pointer-events: none; }
+.steam path { stroke-dasharray: 60 140; animation: steam 3.2s ease-in-out infinite; }
+.steam path:nth-child(2) { animation-delay: .9s; }
+.steam path:nth-child(3) { animation-delay: 1.7s; }
+@keyframes steam { 0% { stroke-dashoffset: 0; opacity: 0; } 30% { opacity: .9; } 100% { stroke-dashoffset: -200; opacity: 0; } }
+.specials.is-scrolly .specials-dots { display: flex; justify-content: center; gap: 8px; }
+.specials-dots span { width: 8px; height: 8px; border-radius: 999px; background: color-mix(in oklab, var(--ink) 25%, transparent); transition: width .3s var(--ease-out), background-color .3s var(--ease-out); }
+.specials-dots span.is-on { width: 26px; background: var(--oak); }
+@media (prefers-reduced-motion: reduce) { .steam path { animation: none; } }
 
 /* Oferte: trei plăci egale. */
 .offer-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(16px, 2vw, 24px); }
@@ -143,3 +165,4 @@
 .prize-time { color: var(--accent-text); font-weight: 600; }
 .prize-card form { margin-top: 12px; }
 @media (prefers-reduced-motion: reduce) { .prize-rays, .prize-stage[open] { animation: none; } }
+@media (max-width: 899px) { .specials.is-scrolly .specials-inner { padding-bottom: calc(78px + env(safe-area-inset-bottom)); } .specials.is-scrolly .specials-stage { height: min(60svh, 520px); } }

@@ -317,5 +317,52 @@ function setupWheel() {
   button.addEventListener("click", spin);
 }
 
+// Specialitățile: produsele trec prin centru legate de derulare; cel din mijloc e mare și clar.
+function setupSpecials() {
+  const section = document.querySelector(".specials");
+  if (!section || calm) return;
+  const track = section.querySelector(".specials-track");
+  const items = [...section.querySelectorAll(".special")];
+  const dots = [...section.querySelectorAll(".specials-dots span")];
+  if (items.length < 2) return;
+  section.classList.add("is-scrolly");
+  const last = items.length - 1;
+  // Fiecare produs stă puțin pe loc în centru, apoi alunecă repede spre următorul.
+  const settle = (t) => {
+    const x = Math.min(1, Math.max(0, (t - .25) / .5));
+    return x * x * (3 - 2 * x);
+  };
+  let queued = false;
+
+  function draw() {
+    queued = false;
+    const box = track.getBoundingClientRect();
+    const progress = Math.min(1, Math.max(0, -box.top / (box.height - innerHeight)));
+    const raw = progress * last;
+    const base = Math.min(last - 1, Math.floor(raw));
+    const focus = base + settle(raw - base);
+    const gap = Math.min(innerWidth * .36, 440);
+    items.forEach((item, i) => {
+      const d = i - focus;
+      const far = Math.min(Math.abs(d), 1.6);
+      item.style.transform = `translateX(${d * gap}px) translateY(${far * 40}px) scale(${1 - far * .38})`;
+      item.style.opacity = String(Math.max(0, 1 - far * .55));
+      item.style.zIndex = String(10 - Math.round(far * 4));
+      item.style.filter = far > .05 ? `blur(${(far * 2.5).toFixed(1)}px)` : "none";
+      item.querySelector(".special-photo").style.rotate = `${d * -28}deg`;
+      const copy = item.querySelector(".special-copy");
+      copy.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 2.4));
+      copy.style.transform = `translateY(${Math.abs(d) * 18}px)`;
+    });
+    const active = Math.round(focus);
+    dots.forEach((dot, i) => dot.classList.toggle("is-on", i === active));
+  }
+  const request = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
+  addEventListener("scroll", request, { passive: true });
+  addEventListener("resize", request);
+  draw();
+}
+
 setupWelcome();
+setupSpecials();
 setupWheel();

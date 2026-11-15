@@ -14,26 +14,35 @@ def build(data, esc, image, frame):
         value = product["pret"]
         return (f"{value:g}".replace(".", ",") + " lei") if value is not None else "La cerere"
 
-    # --- Specialitățile casei ---
+    # --- Specialitățile casei: carusel legat de derulare, cu abur deasupra ---
     cards = []
-    for name in extra["specialitati"]["produse"]:
+    for i, name in enumerate(extra["specialitati"]["produse"]):
         product = products.get(name)
         if not product:
             continue
         key = product.get("imagine")
         if key in data["imagini"]:
-            visual = f'<div class="special-photo">{image(key, sizes="(min-width: 900px) 30vw, 85vw")}</div>'
+            visual = f'<div class="special-photo">{image(key, sizes="(min-width: 900px) 400px, 70vw")}</div>'
         else:
             visual = f'<div class="special-photo is-type" aria-hidden="true"><span>{esc(product["nume"])}</span></div>'
         cards.append(
-            f'<li class="special">{visual}<div class="special-copy"><h3>{esc(product["nume"])}</h3>'
+            f'<li class="special" style="--i:{i}">{visual}<div class="special-copy"><h3>{esc(product["nume"])}</h3>'
             f'<p>{esc(product["descriere"])}</p><span class="price">{price(product)}</span></div></li>'
         )
     spec = extra["specialitati"]
+    steam = (
+        '<svg class="steam" viewBox="0 0 120 160" aria-hidden="true">'
+        '<path d="M40 150c-14-20 14-34 0-56s12-36 0-60"/><path d="M62 150c-14-22 16-36 0-60s12-34 2-62"/>'
+        '<path d="M84 150c-12-18 12-32 0-52s10-30 0-52"/></svg>'
+    )
+    dots = "".join(f'<span style="--i:{i}"></span>' for i in range(len(cards)))
     specials = (
-        '<section class="section specials" id="specialitati" aria-labelledby="specials-title"><div class="shell">'
-        f'<div class="section-intro"><h2 id="specials-title">{esc(spec["titlu"])}</h2><p>{esc(spec["text"])}</p></div>'
-        f'<ul class="special-list">{"".join(cards)}</ul></div></section>'
+        '<section class="specials" id="specialitati" aria-labelledby="specials-title">'
+        f'<div class="specials-track" style="--count:{len(cards)}"><div class="specials-sticky"><div class="shell specials-inner">'
+        f'<div class="specials-head"><h2 id="specials-title">{esc(spec["titlu"])}</h2><p>{esc(spec["text"])}</p></div>'
+        f'<div class="specials-stage">{steam}<ul class="special-list">{"".join(cards)}</ul></div>'
+        f'<div class="specials-dots" aria-hidden="true">{dots}</div>'
+        '</div></div></div></section>'
     )
 
     # --- Roata: 12 felii (fiecare premiu de două ori, față în față), becuri, cuie, ac și butuc ---
