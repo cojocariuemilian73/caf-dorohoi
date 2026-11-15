@@ -479,3 +479,17 @@ html.has-window .wood-window { display: block; position: absolute; inset: 0; }
 .story-text .w { display: inline-block; white-space: nowrap; }
 .story-text .w.is-key { color: var(--oak); }
 @media (max-width: 899px) { .story-third { width: 34%; right: 0; bottom: 10%; } .story-year { left: -6%; top: -6%; } }
+
+/* Fereastra nu mai umple tot ecranul: pozele sunt mici (680–800 px), așa că le arătăm aproape de mărimea lor reală, ca să rămână clare. */
+.ww-frame { inset: auto; right: var(--edge); top: 50%; width: min(52vw, 860px); height: min(74svh, 640px); translate: 0 -50%; }
+.ww-shade { display: none; }
+.ww-copy { left: var(--edge); top: 50%; bottom: auto; translate: 0 -50%; max-width: min(34vw, 520px); color: var(--ink); }
+.ww-title { font-size: clamp(3rem, 5.4vw, 5.6rem); }
+.ww-text { color: var(--muted); }
+.ww-count { right: var(--edge); bottom: calc(50% - min(37svh, 320px) - 52px); color: var(--ink); }
+@media (max-width: 899px) {
+  .ww-frame { left: var(--edge); right: var(--edge); top: 92px; width: auto; height: min(48svh, 420px); translate: none; }
+  .ww-copy { top: auto; bottom: calc(84px + env(safe-area-inset-bottom)); translate: none; max-width: none; right: var(--edge); }
+  .ww-title { font-size: clamp(2.4rem, 10vw, 3.2rem); }
+  .ww-count { top: calc(92px + min(48svh, 420px) + 12px); bottom: auto; }
+}

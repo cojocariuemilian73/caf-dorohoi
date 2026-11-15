@@ -153,14 +153,14 @@ scrolly.add("(min-width: 0px)", () => {
       }
     });
     // 1. Fereastra se deschide.
-    story.to(frames[0], { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 1.2, ease: "power2.inOut" })
+    story.to(frames[0], { clipPath: "inset(0% 0% 0% 0% round 18px)", duration: 1.2, ease: "power2.inOut" })
       .to(frames[0].querySelector("img"), { scale: 1, duration: 1.2, ease: "power2.inOut" }, "<")
       .to(".ww-shade", { opacity: 1, duration: .4 }, "-=.4")
       .fromTo(".ww-copy", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4 }, "<")
       .to(".ww-count", { opacity: 1, duration: .3 }, "<");
     // 2. Pozele următoare cresc din centru, una câte una.
     frames.slice(1).forEach((frame) => {
-      story.to(frame, { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 1, ease: "power2.inOut" }, "+=.15")
+      story.to(frame, { clipPath: "inset(0% 0% 0% 0% round 18px)", duration: 1, ease: "power2.inOut" }, "+=.15")
         .to(frame.querySelector("img"), { scale: 1, duration: 1, ease: "power2.inOut" }, "<");
     });
     story.to({}, { duration: .3 });
