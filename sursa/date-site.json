@@ -204,14 +204,14 @@
   ],
   "imagini": {
     "hero": {
-      "fisier": "caf-fatada-seara.webp",
-      "latime": 1600,
-      "inaltime": 899,
-      "alt": "Fațada cafenelei CAF coffee&more seara, cu luminile aprinse și vitrinele de sticlă",
+      "fisier": "caf-terasa-gradina.webp",
+      "latime": 800,
+      "inaltime": 533,
+      "alt": "Terasa CAF coffee&more, cu firma CAF pe chioșc, lemn, ghirlande de lumini și mese albe",
       "titlu": "Terasa vitrată",
-      "mobil": "caf-fatada-seara-mobil.webp",
-      "latimeMobil": 660,
-      "inaltimeMobil": 870
+      "mobil": "caf-terasa-gradina-mobil.webp",
+      "latimeMobil": 404,
+      "inaltimeMobil": 533
     },
     "share": {
       "fisier": "caf-distribuire.jpg",
