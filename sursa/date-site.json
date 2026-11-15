@@ -204,14 +204,14 @@
   ],
   "imagini": {
     "hero": {
-      "fisier": "caf-terasa-gradina.webp",
-      "latime": 800,
-      "inaltime": 533,
-      "alt": "Terasa CAF coffee&more, cu firma CAF pe chioșc, lemn, ghirlande de lumini și mese albe",
+      "fisier": "caf-coperta.webp",
+      "latime": 1600,
+      "inaltime": 1000,
+      "alt": "Terasa vitrată CAF Dorohoi, cu mese din lemn și lămpi suspendate",
       "titlu": "Terasa vitrată",
-      "mobil": "caf-terasa-gradina-mobil.webp",
-      "latimeMobil": 404,
-      "inaltimeMobil": 533
+      "mobil": "caf-coperta-mobil.webp",
+      "latimeMobil": 660,
+      "inaltimeMobil": 870
     },
     "share": {
       "fisier": "caf-distribuire.jpg",
