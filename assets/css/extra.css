@@ -38,7 +38,7 @@
 .specials.is-scrolly .specials-sticky::before { content: ""; position: absolute; inset: -20%; z-index: -1; background: radial-gradient(circle at var(--glow-x, 50%) 55%, color-mix(in oklab, var(--tint) 34%, transparent), transparent 45%); pointer-events: none; }
 .specials.is-scrolly .specials-inner { padding-block: 84px calc(70px + env(safe-area-inset-bottom)); gap: 10px; }
 .specials.is-scrolly .specials-head h2 { font-size: var(--fs-xl); }
-.specials.is-scrolly .specials-stage { height: calc(min(66vw, 320px) + 270px); }
+.specials.is-scrolly .specials-stage { height: calc(min(66vw, 320px) + 310px); }
 .specials.is-scrolly .special-list { display: block; height: 100%; }
 .specials.is-scrolly .special { position: absolute; left: 50%; top: 0; width: min(90vw, 520px); margin-left: calc(min(90vw, 520px) / -2); gap: 16px; }
 .specials.is-scrolly { --photo: min(66vw, 320px); }

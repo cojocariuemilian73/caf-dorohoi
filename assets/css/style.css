@@ -94,7 +94,7 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .wordmark { display: inline-grid; width: max-content; justify-items: start; line-height: .84; }
 .wordmark > span { font: 700 var(--fs-xl)/.78 var(--sans); letter-spacing: -.095em; margin-left: -.04em; }
 .wordmark small { font: 600 var(--fs-xs)/1.05 var(--sans); letter-spacing: -.03em; margin-top: 5px; }
-.site-header { position: fixed; inset: 0 0 auto; z-index: 6; color: var(--paper); background: transparent; transition: background-color .3s var(--ease-out), color .3s var(--ease-out), box-shadow .3s var(--ease-out); }
+.site-header { position: fixed; inset: 0 0 auto; z-index: 60; color: var(--paper); background: transparent; transition: background-color .3s var(--ease-out), color .3s var(--ease-out), box-shadow .3s var(--ease-out); }
 .site-header.is-scrolled { color: var(--ink); background: color-mix(in oklab, var(--paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 1px var(--line); }
 .header-inner { width: min(100% - var(--edge) * 2, 1360px); margin-inline: auto; min-height: var(--header-height); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .desktop-nav { display: flex; flex-wrap: wrap; justify-content: end; gap: 4px 12px; font-size: var(--fs-xs); }
