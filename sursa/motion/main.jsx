@@ -150,7 +150,7 @@ scrolly.add("(min-width: 0px)", () => {
     frames.forEach((frame, i) => gsap.set(frame, {
       xPercent: -50, yPercent: wide ? -50 : 0, transformOrigin: "50% 50%",
       x: () => rest[i].x + innerWidth * spot(i).x / 100, y: () => rest[i].y + innerHeight * spot(i).y / 100,
-      rotation: spot(i).r, scale: wide ? .5 : .52
+      rotation: spot(i).r, scale: wide ? .5 : .52, filter: "brightness(1)"
     }));
     gsap.set(".ww-copy", { opacity: 0, y: 40 });
 
@@ -165,13 +165,22 @@ scrolly.add("(min-width: 0px)", () => {
     story.to({}, { duration: .25 });
     frames.forEach((frame, i) => {
       story.to(frame, { x: rest[i].x, y: rest[i].y, rotation: rest[i].r, scale: 1, duration: 1 }, i ? "+=.1" : ">");
+      // Pozele de dinainte se retrag în spate: mai mici, mai sus și mai întunecate, ca să se vadă clar doar cea nouă.
+      frames.slice(0, i).forEach((back, j) => {
+        const depth = i - j;
+        story.to(back, {
+          x: rest[j].x + (wide ? 70 : 18) * depth, y: rest[j].y - (wide ? 34 : 14) * depth,
+          rotation: rest[j].r + 3 * depth, scale: 1 - .1 * depth,
+          filter: `brightness(${Math.max(.25, .55 - .15 * (depth - 1))})`, duration: 1
+        }, "<");
+      });
       if (i === 0) story.to(".ww-copy", { opacity: 1, y: 0, duration: .5, ease: "power2.out" }, "<+=.3");
     });
     story.to({}, { duration: .3 });
 
     return () => {
       document.documentElement.classList.remove("has-window");
-      gsap.set(".ww-frame", { clearProps: "transform" });
+      gsap.set(".ww-frame", { clearProps: "transform,filter" });
       gsap.set(".ww-shade, .ww-copy", { clearProps: "all" });
     };
   });
