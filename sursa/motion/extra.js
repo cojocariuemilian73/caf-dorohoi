@@ -167,7 +167,14 @@ function setupWheel() {
     const left = document.createElement("span");
     left.className = "wheel-left";
     detail.textContent = `Cod CAF-${spin.code}. Arată ecranul la bar. ${config.wheelValid}`;
-    result.append("Ai câștigat: ", prize, detail, left);
+    const kicker = document.createElement("span");
+    kicker.className = "wheel-kicker";
+    kicker.textContent = "Ai câștigat";
+    const ticket = document.createElement("span");
+    ticket.className = "wheel-code";
+    ticket.textContent = `CAF-${spin.code}`;
+    detail.textContent = `Arată codul la bar. ${config.wheelValid}`;
+    result.append(kicker, prize, ticket, left, detail);
     const update = () => {
       const midnight = new Date();
       midnight.setHours(24, 0, 0, 0);

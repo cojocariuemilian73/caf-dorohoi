@@ -189,3 +189,16 @@
 .prize-time { color: var(--accent-text); font-weight: 600; }
 .prize-card form { margin-top: 12px; }
 @media (prefers-reduced-motion: reduce) { .prize-rays, .prize-stage[open] { animation: none; } }
+
+/* Roata: text mai mare în stânga, premiul ca un bon. */
+.offer-wheel h3 { font-size: clamp(2.8rem, 5.4vw, 5.2rem); line-height: .98; }
+.offer-wheel > p:not(.wheel-result):not(.wheel-hint) { font-size: clamp(1.1rem, 1.4vw, 1.3rem); max-width: 34ch; }
+.offer-wheel [data-spin] { min-height: 56px; padding-inline: 28px; font-size: 1.05rem; }
+.offer-wheel .wheel-hint { font-size: .9rem; }
+.wheel-result { gap: 10px; min-height: 0; margin-top: 8px; }
+.wheel-result:not(:empty) { padding: clamp(20px, 2.4vw, 28px); border: 1.5px dashed color-mix(in oklab, var(--oak) 60%, transparent); border-radius: 14px; background: color-mix(in oklab, var(--oak) 7%, transparent); }
+.wheel-kicker { color: var(--oak); font: 700 .8rem/1 var(--sans) !important; letter-spacing: .28em; text-transform: uppercase; }
+.wheel-result strong { font: 600 clamp(2.4rem, 4.2vw, 3.8rem)/1 var(--serif); color: var(--ink); }
+.wheel-code { justify-self: start; padding: 8px 16px; border-radius: 999px; color: var(--espresso); background: var(--oak); font: 700 1.05rem/1 var(--sans) !important; letter-spacing: .08em; }
+.wheel-result .wheel-left { color: var(--accent-text); font-size: 1.1rem !important; font-weight: 700; }
+.wheel-result > span:last-child { font-size: .95rem; color: var(--muted); }
