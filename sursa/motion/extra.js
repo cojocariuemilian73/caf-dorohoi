@@ -320,7 +320,8 @@ function setupWheel() {
 // Specialitățile: produsele trec prin centru legate de derulare; cel din mijloc e mare și clar.
 function setupSpecials() {
   const section = document.querySelector(".specials");
-  if (!section || calm) return;
+  // Mișcarea urmează degetul sau rotița, deci rulează și cu „animații reduse”; doar fără blur și rotire.
+  if (!section) return;
   const track = section.querySelector(".specials-track");
   const items = [...section.querySelectorAll(".special")];
   const dots = [...section.querySelectorAll(".specials-dots span")];
@@ -348,8 +349,8 @@ function setupSpecials() {
       item.style.transform = `translateX(${d * gap}px) translateY(${far * 40}px) scale(${1 - far * .38})`;
       item.style.opacity = String(Math.max(0, 1 - far * .55));
       item.style.zIndex = String(10 - Math.round(far * 4));
-      item.style.filter = far > .05 ? `blur(${(far * 2.5).toFixed(1)}px)` : "none";
-      item.querySelector(".special-photo").style.rotate = `${d * -28}deg`;
+      item.style.filter = !calm && far > .05 ? `blur(${(far * 2.5).toFixed(1)}px)` : "none";
+      item.querySelector(".special-photo").style.rotate = calm ? "0deg" : `${d * -28}deg`;
       const copy = item.querySelector(".special-copy");
       copy.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 2.4));
       copy.style.transform = `translateY(${Math.abs(d) * 18}px)`;
