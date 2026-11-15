@@ -110,9 +110,8 @@ def build(data, esc, image, frame):
     }
     offers = (
         '<section class="section offers" id="oferte" aria-labelledby="offers-title"><div class="shell">'
-        '<div class="section-intro"><h2 id="offers-title">Pentru tine, de la noi.</h2></div>'
         '<div class="offer-grid">'
-        f'<article class="offer offer-wheel"><h3>{esc(wheel["titlu"])}</h3><p>{esc(wheel["text"])}</p>'
+        f'<article class="offer offer-wheel"><h3 id="offers-title">{esc(wheel["titlu"])}</h3><p>{esc(wheel["text"])}</p>'
         f'<button type="button" class="wheel-wrap" aria-label="Învârte roata">{wheel_svg}</button>'
         '<button type="button" class="button button-dark" data-spin>Învârte roata</button>'
         '<p class="wheel-hint">Sau apasă direct pe roată.</p>'
