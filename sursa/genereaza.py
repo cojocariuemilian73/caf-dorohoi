@@ -179,7 +179,6 @@ FILTERS = (("toate", "Toate"), ("fara-cafeina", "Fără cafeină"), ("rece", "Re
 DOODLES = {
     "cana": '<svg class="doodle doodle-cup" viewBox="0 0 120 100"><path pathLength="1" d="M22 40c20 2 40 2 58 0 1 10 1 18-2 26-6 14-48 14-54 0-3-8-3-16-2-26Z"/><path pathLength="1" d="M80 46c16-2 16 20-2 18"/><path pathLength="1" d="M8 84c30 8 74 8 104-1"/><path pathLength="1" d="M42 30c-7-8 7-12 0-21M58 30c-7-8 7-12 0-21"/></svg>',
     "lamaie": '<svg class="doodle doodle-lemon" viewBox="0 0 100 100"><path pathLength="1" d="M50 8a42 42 0 1 1-.1 0Z"/><path pathLength="1" d="M50 18a32 32 0 1 1-.1 0Z"/><path pathLength="1" d="M50 18v64M18 50h64M27 27l46 46M73 27 27 73"/></svg>',
-    "croissant": '<svg class="doodle doodle-croissant" viewBox="0 0 140 80"><path pathLength="1" d="M8 62C18 18 122 16 132 62c-18-12-30-8-34-4-10-10-46-10-56 0-6-6-18-8-34 4Z"/><path pathLength="1" d="M42 58c-2-14 2-26 10-34M70 54c0-14 0-28 0-36M98 58c2-14-2-26-10-34"/></svg>',
 }
 
 
