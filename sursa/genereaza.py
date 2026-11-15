@@ -430,7 +430,6 @@ values = {
             for i, key in enumerate(TEXT["galerie"]["imagini"]))
         + '<div class="ww-shade"></div>'
         + f'<div class="ww-copy"><p class="ww-title">{rich(TEXT["galerie"]["titlu"])}</p><p class="ww-text">{rich(TEXT["galerie"]["text"])}</p></div>'
-        + f'<p class="ww-count"><span class="ww-now">01</span> / {len(TEXT["galerie"]["imagini"]):02d}</p>'
         + '</div>'
     ),
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),

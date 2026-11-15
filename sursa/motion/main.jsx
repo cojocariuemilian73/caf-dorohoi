@@ -132,7 +132,6 @@ scrolly.add("(min-width: 0px)", () => {
     const frames = gsap.utils.toArray(".ww-frame");
     if (!stage || frames.length < 2) return;
     document.documentElement.classList.add("has-window");
-    const now = stage.querySelector(".ww-now");
     const wideScreen = innerWidth >= 900;
     const start = wideScreen ? "inset(30% 35% 30% 35% round 24px)" : "inset(32% 18% 32% 18% round 20px)";
     gsap.set(frames[0], { clipPath: start });
@@ -145,19 +144,13 @@ scrolly.add("(min-width: 0px)", () => {
       scrollTrigger: {
         trigger: ".wood-pin", start: "top top", end: () => "+=" + innerHeight * (steps + 1),
         pin: true, scrub: .7, invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const shown = Math.min(steps, 1 + Math.floor(Math.max(0, self.progress * (steps + 1) - 1.4)));
-          const label = String(Math.max(1, shown)).padStart(2, "0");
-          if (now.textContent !== label) now.textContent = label;
-        }
       }
     });
     // 1. Fereastra se deschide.
     story.to(frames[0], { clipPath: "inset(0% 0% 0% 0% round 6px)", duration: 1.2, ease: "power2.inOut" })
       .to(frames[0].querySelector("img"), { scale: 1, duration: 1.2, ease: "power2.inOut" }, "<")
       .to(".ww-shade", { opacity: 1, duration: .4 }, "-=.4")
-      .fromTo(".ww-copy", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4 }, "<")
-      .to(".ww-count", { opacity: 1, duration: .3 }, "<");
+      .fromTo(".ww-copy", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4 }, "<");
     // 2. Pozele următoare cresc din centru, una câte una.
     frames.slice(1).forEach((frame) => {
       story.to(frame, { clipPath: "inset(0% 0% 0% 0% round 6px)", duration: 1, ease: "power2.inOut" }, "+=.15")
@@ -169,7 +162,7 @@ scrolly.add("(min-width: 0px)", () => {
       document.documentElement.classList.remove("has-window");
       gsap.set(".ww-frame", { clearProps: "clipPath" });
       gsap.set(".ww-frame img", { clearProps: "transform" });
-      gsap.set(".ww-shade, .ww-copy, .ww-count", { clearProps: "all" });
+      gsap.set(".ww-shade, .ww-copy", { clearProps: "all" });
     };
   });
 

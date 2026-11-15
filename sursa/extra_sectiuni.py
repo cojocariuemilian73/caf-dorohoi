@@ -43,7 +43,7 @@ def build(data, esc, image, frame):
         kicker = f'<span class="special-kicker">{esc(story["eticheta"])}</span>' if story.get("eticheta") else ""
         cards.append(
             f'<li class="special" style="--i:{i};--tint-own:{esc(tint)}" data-tint="{esc(tint)}">'
-            f'<span class="special-giant" aria-hidden="true">{esc(product["nume"])}</span><div class="special-visual">{photo}'
+            f'<div class="special-visual">{photo}'
             f'<div class="floaters" aria-hidden="true">{floaters}</div></div>'
             f'<div class="special-copy">{kicker}<h3>{esc(product["nume"])}</h3>'
             f'<p>{esc(story.get("text") or product["descriere"])}</p><span class="price">{price(product)}</span></div></li>'
