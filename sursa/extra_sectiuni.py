@@ -1,4 +1,4 @@
-"""Propunerile pentru patron: voucher pe e-mail, roata norocului, card de fidelitate și specialitățile casei.
+"""Propunerile pentru patron: voucher pe e-mail, roata norocului și specialitățile casei.
 
 Apar pe demo.html. Pe index.html apar doar când "extra.activ" e true în date-site.json.
 """
@@ -76,14 +76,10 @@ def build(data, esc, image, frame):
     )
 
     voucher = extra["voucher"]
-    loyalty = extra["fidelitate"]
     mail = extra.get("email", {})
-    stamps = "".join(f'<li><span class="sr-only">Ștampila {i}</span></li>' for i in range(1, loyalty["stampile"] + 1))
     config = {
         "prizes": [p["nume"] for p in prizes],
         "wheelValid": wheel["valabilitate"],
-        "stamps": loyalty["stampile"],
-        "pin": loyalty["pinDemo"],
         "supabaseUrl": mail.get("supabaseUrl", ""),
         "supabaseKey": mail.get("supabaseCheie", ""),
     }
@@ -96,12 +92,6 @@ def build(data, esc, image, frame):
         '<button type="button" class="button button-dark" data-spin>Învârte roata</button>'
         '<p class="wheel-hint">Sau apasă direct pe roată.</p>'
         '<p class="wheel-result" role="status"></p></article>'
-        f'<article class="offer offer-loyalty"><h3>{esc(loyalty["titlu"])}</h3><p>{esc(loyalty["text"])}</p>'
-        f'<ol class="stamps">{stamps}</ol><p class="stamp-status" role="status"></p>'
-        '<form class="stamp-form"><label for="stamp-pin">Pentru barista: codul de ștampilă</label>'
-        '<div><input id="stamp-pin" inputmode="numeric" autocomplete="off" maxlength="6">'
-        '<button class="button button-outline">Pune ștampila</button></div>'
-        f'<small>Demonstrație: codul este {esc(loyalty["pinDemo"])}.</small></form></article>'
         '</div></div>'
         f'<script id="extra-config" type="application/json">{json.dumps(config, ensure_ascii=False)}</script>'
         '</section>'

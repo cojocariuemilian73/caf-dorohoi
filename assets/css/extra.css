@@ -24,7 +24,12 @@
 .offer h3 { font-size: clamp(1.7rem, 2.6vw, 2.2rem); line-height: 1.05; }
 .offer > p { color: var(--muted); }
 .offer small { color: var(--muted); font-size: .78rem; }
-@media (min-width: 900px) { .offer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 900px) {
+  .offer-wheel { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); column-gap: clamp(32px, 5vw, 80px); align-items: center; align-content: center; padding: clamp(32px, 4vw, 56px); }
+  .offer-wheel > :not(.wheel-wrap) { grid-column: 1; }
+  .offer-wheel .wheel-wrap { grid-column: 2; grid-row: 1 / span 6; width: 100%; }
+  .offer-wheel h3 { font-size: clamp(2.4rem, 3.6vw, 3.4rem); }
+}
 
 /* Voucherul arată ca un bon rupt, cu cod QR. */
 .ticket { display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center; width: 100%; padding: 16px; border-radius: 10px; color: var(--espresso); background: var(--cream);
@@ -78,22 +83,10 @@
 .wheel-result { display: grid; gap: 4px; min-height: 3.2em; color: var(--muted); }
 .wheel-result strong { font: 600 1.6rem/1.1 var(--serif); color: var(--ink); }
 .wheel-result span { font-size: .8rem; }
+.wheel-result .wheel-left { color: var(--accent-text); font-weight: 600; }
 .offer .button:disabled { opacity: .5; cursor: default; transform: none; }
 @media (prefers-reduced-motion: reduce) { .is-spinning .bulb, .is-won .bulb { animation: none; } }
 
-/* Cardul de fidelitate: șase cești care se umplu. */
-.stamps { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; width: 100%; max-width: 320px; box-sizing: border-box; margin: 4px 0 0; padding: 0; list-style: none; }
-.stamps li { position: relative; aspect-ratio: 1; border: 1.5px dashed color-mix(in oklab, var(--ink) 30%, transparent); border-radius: 50%; transition: background-color .3s var(--ease-out), border-color .3s var(--ease-out); }
-.stamps li:last-child { border-color: var(--oak); }
-.stamps li::after { content: ""; position: absolute; inset: 24%; border-radius: 0 0 40% 40%; border: 2px solid transparent; border-top: 0; }
-.stamps li.is-stamped { background: var(--oak); border: 1.5px solid var(--oak); }
-.stamps li.is-stamped::after { border-color: var(--espresso); }
-.stamp-status { min-height: 1.6em; font-weight: 600; }
-.stamp-form { display: grid; gap: 8px; width: 100%; padding-top: 16px; border-top: 1px solid var(--line); }
-.stamp-form label { font-size: .8rem; color: var(--muted); }
-.stamp-form > div { display: flex; gap: 8px; }
-.stamp-form input { flex: 1; width: 100%; min-width: 0; min-height: 48px; padding: 0 14px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; font: inherit; letter-spacing: .2em; }
-.stamp-form input:focus-visible { outline: 2px solid var(--oak); outline-offset: 2px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* Fereastra de bun venit: e-mail, cod, voucher. */

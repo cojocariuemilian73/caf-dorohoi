@@ -13,7 +13,7 @@ const day = (offset = 0) => {
   date.setDate(date.getDate() + offset);
   return date;
 };
-const isoDay = (date) => date.toISOString().slice(0, 10);
+const isoDay = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 const human = (iso) => new Date(iso).toLocaleDateString("ro-RO", { day: "numeric", month: "long" });
 const code = () => {
   const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -164,8 +164,19 @@ function setupWheel() {
     const prize = document.createElement("strong");
     prize.textContent = config.prizes[spin.index];
     const detail = document.createElement("span");
+    const left = document.createElement("span");
+    left.className = "wheel-left";
     detail.textContent = `Cod CAF-${spin.code}. Arată ecranul la bar. ${config.wheelValid}`;
-    result.append("Ai câștigat: ", prize, detail);
+    result.append("Ai câștigat: ", prize, detail, left);
+    const update = () => {
+      const midnight = new Date();
+      midnight.setHours(24, 0, 0, 0);
+      const minutes = Math.max(0, Math.ceil((midnight - Date.now()) / 60000));
+      left.textContent = `Mai ai ${Math.floor(minutes / 60)} h ${minutes % 60} min.`;
+    };
+    update();
+    clearInterval(announce.timer);
+    announce.timer = setInterval(update, 30000);
   }
 
   function highlight(sliceIndex) {
@@ -265,45 +276,5 @@ function setupWheel() {
   button.addEventListener("click", spin);
 }
 
-function setupLoyalty() {
-  const form = document.querySelector(".stamp-form");
-  const cups = [...document.querySelectorAll(".stamps li")];
-  const status = document.querySelector(".stamp-status");
-  if (!form || !config) return;
-  let count = store.get("caf-stampile") || 0;
-
-  function render(message) {
-    cups.forEach((cup, i) => cup.classList.toggle("is-stamped", i < count));
-    const left = config.stamps - count;
-    status.textContent = message || (left > 0
-      ? `${count} din ${config.stamps}. Încă ${left} până la cafeaua din partea casei.`
-      : "Cafeaua următoare e din partea casei. Arată ecranul la bar.");
-  }
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const input = form.querySelector("input");
-    if (input.value !== config.pin) {
-      render("Codul nu e bun. Barista îl are la bar.");
-      input.select();
-      return;
-    }
-    input.value = "";
-    if (count >= config.stamps) {
-      count = 0;
-      store.set("caf-stampile", count);
-      render("Cafeaua gratuită a fost oferită. Cardul începe din nou.");
-      return;
-    }
-    count += 1;
-    store.set("caf-stampile", count);
-    render();
-    cups[count - 1]?.animate([{ transform: "scale(.6)", opacity: 0 }, { transform: "scale(1)", opacity: 1 }], { duration: calm ? 0 : 300, easing: "cubic-bezier(.16,1,.3,1)" });
-  });
-
-  render();
-}
-
 setupWelcome();
 setupWheel();
-setupLoyalty();

@@ -352,7 +352,7 @@
     },
     "roata": {
       "titlu": "Încearcă-ți norocul.",
-      "text": "O învârtire pe zi. Ce câștigi folosești la următoarea cafea.",
+      "text": "O învârtire pe zi. Premiul e valabil doar azi, până la miezul nopții.",
       "premii": [
         {
           "nume": "Topping gratuit",
@@ -379,13 +379,7 @@
           "scurt": "−15%"
         }
       ],
-      "valabilitate": "Valabil 7 zile, la următoarea vizită."
-    },
-    "fidelitate": {
-      "titlu": "A 6-a cafea e din partea casei.",
-      "text": "Cardul stă în telefon, nu în portofel. La fiecare cafea, barista îți pune o ștampilă.",
-      "stampile": 6,
-      "pinDemo": "1234"
+      "valabilitate": "Valabil doar azi, până la ora 24:00."
     },
     "email": {
       "_nota": "Serviciul care trimite codul pe e-mail (Supabase, gratuit). Gol = mod demonstrație: codul apare pe ecran.",
