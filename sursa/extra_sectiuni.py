@@ -94,7 +94,7 @@ def build(data, esc, image, frame):
         f'{"".join(pegs)}</g>'
         f'<circle class="wheel-edge" cx="{C}" cy="{C}" r="{R}"/>'
         f'<circle class="wheel-hub" cx="{C}" cy="{C}" r="25"/>'
-        f'<text class="wheel-hub-text" x="{C}" y="{C + 1}" text-anchor="middle" dominant-baseline="middle">CAF</text>'
+        f'<text class="wheel-hub-text" x="{C}" y="{C + 1}" text-anchor="middle" dominant-baseline="middle">{esc(data["texte"]["logo"]["mare"])}</text>'
         '<g class="wheel-pointer"><path d="M120 30 L109 6 Q120 -2 131 6 Z"/><circle cx="120" cy="9" r="3.2"/></g>'
         '</svg>'
     )
@@ -104,6 +104,7 @@ def build(data, esc, image, frame):
     config = {
         "prizes": [p["nume"] for p in prizes],
         "wheelValid": wheel["valabilitate"],
+        "prefix": data["texte"]["logo"]["mare"],
         "supabaseUrl": mail.get("supabaseUrl", ""),
         "supabaseKey": mail.get("supabaseCheie", ""),
     }

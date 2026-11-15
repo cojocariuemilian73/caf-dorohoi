@@ -43,11 +43,11 @@ function setupWelcome() {
 
   function showVoucher(voucher) {
     const qr = qrcode(0, "M");
-    qr.addData(`CAF VOUCHER ESPRESSO ${voucher.code} PANA LA ${voucher.until}`);
+    qr.addData(`${config.prefix} VOUCHER ESPRESSO ${voucher.code} PANA LA ${voucher.until}`);
     qr.make();
     const ticket = steps.voucher;
     ticket.querySelector(".ticket-qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
-    ticket.querySelector(".ticket-code").textContent = "CAF-" + voucher.code;
+    ticket.querySelector(".ticket-code").textContent = config.prefix + "-" + voucher.code;
     ticket.querySelector(".ticket-until").textContent = "Valabil până pe " + human(voucher.until);
     go("voucher");
     pill.hidden = false;
@@ -166,13 +166,13 @@ function setupWheel() {
     const detail = document.createElement("span");
     const left = document.createElement("span");
     left.className = "wheel-left";
-    detail.textContent = `Cod CAF-${spin.code}. Arată ecranul la bar. ${config.wheelValid}`;
+    detail.textContent = `Cod ${config.prefix}-${spin.code}. Arată ecranul la bar. ${config.wheelValid}`;
     const kicker = document.createElement("span");
     kicker.className = "wheel-kicker";
     kicker.textContent = "Ai câștigat";
     const ticket = document.createElement("span");
     ticket.className = "wheel-code";
-    ticket.textContent = `CAF-${spin.code}`;
+    ticket.textContent = `${config.prefix}-${spin.code}`;
     detail.textContent = `Arată codul la bar. ${config.wheelValid}`;
     result.append(kicker, prize, ticket, left, detail);
     const update = () => {
@@ -241,7 +241,7 @@ function setupWheel() {
       span.style.setProperty("--i", i);
       name.append(span, " ");
     });
-    stage.querySelector(".prize-code").textContent = `Cod CAF-${spin.code} · arată ecranul la bar`;
+    stage.querySelector(".prize-code").textContent = `Cod ${config.prefix}-${spin.code} · arată ecranul la bar`;
     stage.querySelector(".prize-time").textContent = result.querySelector(".wheel-left")?.textContent.replace("Mai ai", "Valabil azi, mai ai") || config.wheelValid;
     stage.showModal();
     if (calm) return;

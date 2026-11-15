@@ -31,7 +31,7 @@
   <a class="skip-link" href="#continut">Sari la conținut</a>
   <header class="site-header">
     <div class="header-inner">
-      <a class="wordmark" href="#sus"><span>CAF</span><small>coffee&amp;more</small></a>
+      <a class="wordmark" href="#sus">{{logo}}</a>
       <button type="button" class="nav-toggle" aria-haspopup="dialog" aria-controls="navigatie-mobila" hidden>Meniu <span aria-hidden="true"></span></button>
       <nav class="desktop-nav" aria-label="Navigare principală">{{navigation}}</nav>
       <a class="header-directions" href="{{directionsD}}">Cum ajungi <span aria-hidden="true">↗</span></a>
@@ -39,7 +39,7 @@
   </header>
   <dialog class="mobile-nav" id="navigatie-mobila" aria-label="Navigare mobilă">
     <div class="mobile-nav-head">
-      <span class="wordmark" aria-hidden="true"><span>CAF</span><small>coffee&amp;more</small></span>
+      <span class="wordmark" aria-hidden="true">{{logo}}</span>
       <form method="dialog"><button class="close-button" aria-label="Închide meniul" autofocus>×</button></form>
     </div>
     <nav aria-label="Navigare principală">{{navigation}}</nav>
@@ -57,7 +57,7 @@
           </picture>
         </div>
         <div class="hero-copy">
-          <h1 id="hero-title">Cafea bună, <span class="nowrap">într-un</span> loc făcut cu mâna.</h1>
+          <h1 id="hero-title">{{heroTitle}}</h1>
           <div class="hero-actions">
             <a class="button button-light" href="#meniu">Vezi meniul {{arrowDown}}</a>
             <a class="button button-ghost" href="{{directionsD}}">Cum ajungi {{arrowOut}}</a>
@@ -71,9 +71,9 @@
     <section class="section story" id="poveste" aria-labelledby="story-title">
       <div class="shell story-grid">
         <div class="story-text">
-          <h2 id="story-title">Am pornit<br> de la lemn.</h2>
-          <p class="lead">Înainte să fie cafenea, CAF a fost un atelier. La {{atelier}} se fac uși, scări și parchet, așa că, atunci când am deschis prima cafenea în Botoșani, am lucrat-o cu mâinile noastre.</p>
-          <p>La Dorohoi am ajuns pe {{deschidere}}. Barul, mesele și pereții au ieșit tot din atelier. Dacă te uiți de aproape, se vede în fibră.</p>
+          <h2 id="story-title">{{storyTitle}}</h2>
+          <p class="lead">{{storyLead}}</p>
+          <p>{{storyText}}</p>
         </div>
         <div class="story-images">
           {{storyLarge}}
@@ -88,8 +88,8 @@
       <div class="wood-pin">
         <div class="shell wood-layout">
           <div class="wood-head">
-            <h2 id="wood-title">Fiecare masă<br> are o poveste.</h2>
-            <p>Barul, mesele și placarea pereților le-am făcut în același atelier. Am lăsat lemnul la vedere, pentru că ne place cum arată și cum se simte sub mână.</p>
+            <h2 id="wood-title">{{galleryTitle}}</h2>
+            <p>{{galleryText}}</p>
           </div>
           <div class="wood-rail" role="region" aria-label="Fotografii din cafenea, derulează spre dreapta" tabindex="0">
             <ul class="wood-strip">{{woodImages}}</ul>
@@ -101,7 +101,7 @@
     <section class="section menu-section" id="meniu" aria-labelledby="menu-title">
       <div class="shell">
         <div class="section-intro">
-          <h2 id="menu-title">Meniu</h2>
+          <h2 id="menu-title">{{menuTitle}}</h2>
           {{menuNotice}}
         </div>
         {{menuBoard}}
@@ -111,7 +111,7 @@
     <section class="section reviews" id="recenzii" aria-labelledby="reviews-title">
       <div class="shell">
         <div class="section-intro reviews-intro">
-          <h2 id="reviews-title">Ce spun oaspeții.</h2>
+          <h2 id="reviews-title">{{reviewsTitle}}</h2>
           <div class="reviews-side">
             {{reviewsRating}}
             <a class="button button-dark" href="{{writeReview}}">Lasă și tu o recenzie {{arrowOut}}</a>
@@ -128,34 +128,9 @@
     <section class="section locations" id="locatii" aria-labelledby="locations-title">
       <div class="shell">
         <div class="section-intro">
-          <h2 id="locations-title">Ne vedem la CAF.</h2>
+          <h2 id="locations-title">{{locationsTitle}}</h2>
         </div>
-        <div class="locations-grid">
-          <article class="location-card" aria-labelledby="loc-dorohoi">
-            <h3 id="loc-dorohoi">Dorohoi</h3>
-            <dl class="location-facts">
-              <div><dt>Adresă</dt><dd>{{addressD}}, Dorohoi<span>{{landmark}}</span></dd></div>
-              <div><dt>Program</dt><dd>{{scheduleLabelD}}</dd></div>
-              <div><dt>Telefon</dt><dd>{{phoneD}}<span class="chips">{{contactButtons}}</span></dd></div>
-            </dl>
-            <a class="button button-dark" href="{{directionsD}}">Direcții {{arrowOut}}</a>
-            <figure class="location-map" data-lenis-prevent>
-              <iframe src="{{mapD}}" title="Hartă: CAF Dorohoi, {{addressD}}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </figure>
-          </article>
-          <article class="location-card" aria-labelledby="loc-botosani">
-            <h3 id="loc-botosani">Botoșani</h3>
-            <dl class="location-facts">
-              <div><dt>Adresă</dt><dd>{{addressB}}, Botoșani</dd></div>
-              <div><dt>Program</dt><dd>{{scheduleLabelB}}</dd></div>
-              <div><dt>Telefon</dt><dd>{{phoneB}}</dd></div>
-            </dl>
-            <a class="button button-dark" href="{{directionsB}}">Direcții {{arrowOut}}</a>
-            <figure class="location-map" data-lenis-prevent>
-              <iframe src="{{mapB}}" title="Hartă: CAF Botoșani, {{addressB}}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </figure>
-          </article>
-        </div>
+        <div class="locations-grid">{{locationCards}}</div>
       </div>
     </section>
   </main>
@@ -164,13 +139,13 @@
     <div class="shell">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a class="wordmark" href="#sus"><span>CAF</span><small>coffee&amp;more</small></a>
-          <p>O cafenea făcută de atelierul {{atelier}}.</p>
+          <a class="wordmark" href="#sus">{{logo}}</a>
+          <p>{{footerText}}</p>
           {{socialLink}}
         </div>
         <div>
           <h2 class="eyebrow">Treci pe la noi</h2>
-          <address><a href="{{directionsD}}">{{addressD}}, Dorohoi <span aria-hidden="true">↗</span></a></address>
+          <address><a href="{{directionsD}}">{{addressD}}, {{cityD}} <span aria-hidden="true">↗</span></a></address>
           <p>{{scheduleLabelD}}</p>
         </div>
         <div>

@@ -11,7 +11,8 @@ from urllib.parse import quote, urljoin
 SOURCE = Path(__file__).resolve().parent
 ROOT = SOURCE.parent
 DATA = json.loads((SOURCE / "date-site.json").read_text(encoding="utf-8"))
-IMG = "assets/img/caf/"
+IMG = DATA.get("folderImagini", "assets/img/caf/")
+TEXT = DATA["texte"]
 DAY_LABELS = dict(zip(
     ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"),
     ("Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"),
@@ -24,6 +25,39 @@ def esc(value):
 
 def js(value):
     return json.dumps(value, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+
+
+def rich(text):
+    """Text din date: „|” devine rând nou, iar cuvintele cu cratimă (într-un) nu se rup."""
+    out = html.escape(str(text), quote=True).replace("|", "<br> ")
+    return re.sub(r"(?<![\w-])(\w+-\w+)(?![\w-])", r'<span class="nowrap">\1</span>', out)
+
+
+def logo():
+    return f'<span>{esc(TEXT["logo"]["mare"])}</span><small>{esc(TEXT["logo"]["mic"])}</small>'
+
+
+def location_card(place, index):
+    """Cardul unei locații. Prima e locația principală: are reper, butoane de contact și harta din linkuri."""
+    slug = re.sub(r"[^a-z0-9]+", "-", place["oras"].lower().translate(str.maketrans("ăâîșțş ţ", "aaisstst"))).strip("-")
+    primary = index == 0
+    landmark = f'<span>{esc(place["reper"])}</span>' if primary and place.get("reper") else ""
+    chips = f'<span class="chips">{contact_buttons(DATA["linkuri"])}</span>' if primary else ""
+    src = (DATA["linkuri"].get("harta") if primary else "") or map_embed(place)
+    short = TEXT["logo"]["mare"]
+    return (
+        f'<article class="location-card" aria-labelledby="loc-{slug}">'
+        f'<h3 id="loc-{slug}">{esc(place["oras"])}</h3>'
+        '<dl class="location-facts">'
+        f'<div><dt>Adresă</dt><dd>{esc(place["adresa"])}, {esc(place["oras"])}{landmark}</dd></div>'
+        f'<div><dt>Program</dt><dd>{esc(schedule_label(place.get("program")))}</dd></div>'
+        f'<div><dt>Telefon</dt><dd>{phone_link(place.get("telefon"))}{chips}</dd></div>'
+        '</dl>'
+        f'<a class="button button-dark" href="{esc(maps("dir", place["cautareHarta"]))}">Direcții {arrow("M6 18 18 6M7 6h11v11")}</a>'
+        '<figure class="location-map" data-lenis-prevent>'
+        f'<iframe src="{esc(src)}" title="Hartă: {esc(short)} {esc(place["oras"])}, {esc(place["adresa"])}" loading="lazy" '
+        'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></figure></article>'
+    )
 
 
 def arrow(path):
@@ -263,7 +297,7 @@ def shop_schema(place, *, primary):
             "@type": "PostalAddress",
             "streetAddress": place["adresa"],
             "addressLocality": place["oras"],
-            "addressRegion": "Botoșani",
+            "addressRegion": place.get("judet") or DATA["locatii"][0].get("judet", ""),
             "addressCountry": "RO",
         },
         "hasMap": maps("search", place["cautareHarta"]),
@@ -282,8 +316,8 @@ def shop_schema(place, *, primary):
     return shop
 
 
-dorohoi = DATA["dorohoi"]
-botosani = DATA["botosani"]
+dorohoi = DATA["locatii"][0]
+botosani = DATA["locatii"][1] if len(DATA["locatii"]) > 1 else DATA["locatii"][0]
 links = DATA["linkuri"]
 video = DATA["video"]
 video_id = quote(video["youtube"], safe="")
@@ -296,11 +330,11 @@ map_search = maps("search", dorohoi["cautareHarta"])
 map_query = quote(dorohoi["cautareHarta"])
 map_url = links["harta"] or f"https://www.google.com/maps?q={map_query}&z=17&output=embed"
 share = DATA["imagini"]["share"]
-main_shop = shop_schema(dorohoi, primary=True)
-second_shop = shop_schema(botosani, primary=False)
-schema = {"@context": "https://schema.org", "@graph": [main_shop, second_shop]}
+shops = [shop_schema(place, primary=i == 0) for i, place in enumerate(DATA["locatii"])]
+main_shop = shops[0]
+schema = {"@context": "https://schema.org", "@graph": shops}
 if site_url:
-    for shop in (main_shop, second_shop):
+    for shop in shops:
         shop.update(url=site_url, hasMenu=site_url + "#meniu")
         if not illustrative:
             shop["image"] = urljoin(site_url, IMG + share["fisier"])
@@ -310,7 +344,24 @@ if profiles:
 
 nav = (("poveste", "Poveste"), ("meniu", "Meniu"), ("locatii", "Locații"), ("contact", "Contact"))
 values = {
-    "title": esc(f'{DATA["brand"]} — Cafenea în Dorohoi'),
+    "title": esc(TEXT["titluPagina"]),
+    "logo": logo(),
+    "logoShort": esc(TEXT["logo"]["mare"]),
+    "heroTitle": rich(TEXT["hero"]),
+    "storyTitle": rich(TEXT["poveste"]["titlu"]),
+    "storyLead": rich(TEXT["poveste"]["lead"]),
+    "storyText": rich(TEXT["poveste"]["text"]),
+    "galleryTitle": rich(TEXT["galerie"]["titlu"]),
+    "galleryText": rich(TEXT["galerie"]["text"]),
+    "menuTitle": rich(TEXT["meniu"]),
+    "reviewsTitle": rich(TEXT["recenzii"]),
+    "locationsTitle": rich(TEXT["locatii"]),
+    "footerText": rich(TEXT["subsol"]),
+    "menuPageTitle": esc(TEXT["paginaMeniu"]["titlu"]),
+    "menuPageDescription": esc(TEXT["paginaMeniu"]["descriere"]),
+    "menuPageStory": esc(TEXT["paginaMeniu"]["linkPoveste"]),
+    "cityD": esc(dorohoi["oras"]),
+    "locationCards": "".join(location_card(place, i) for i, place in enumerate(DATA["locatii"])),
     "brand": esc(DATA["brand"]),
     "description": esc(DATA["description"]),
     "shareUrl": esc(urljoin(site_url, IMG + share["fisier"])),
@@ -363,9 +414,9 @@ values = {
     "phoneB": phone_link(botosani.get("telefon")),
     "mapD": esc(links["harta"] or map_embed(dorohoi)),
     "mapB": esc(map_embed(botosani)),
-    "storyLarge": frame("atelier", " story-large", "(min-width: 900px) 40vw, 80vw"),
-    "storySmall": frame("vPahare", " story-small", "(min-width: 900px) 24vw, 45vw"),
-    "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(("fibra", "terasa", "lumina", "terasaSeara", "exterior"))),
+    "storyLarge": frame(TEXT["poveste"]["imagineMare"], " story-large", "(min-width: 900px) 40vw, 80vw"),
+    "storySmall": frame(TEXT["poveste"]["imagineMica"], " story-small", "(min-width: 900px) 24vw, 45vw"),
+    "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(TEXT["galerie"]["imagini"])),
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
     "menuBoard": menu_board(),
@@ -433,7 +484,7 @@ def qr_item(product):
 menu_values = dict(values)
 menu_values.update({
     "vMenuCss": hashlib.sha1((ROOT / "assets/css/meniu.css").read_bytes()).hexdigest()[:8],
-    "cover": image("terasaSeara", hero=True, sizes="100vw"),
+    "cover": image(TEXT["paginaMeniu"].get("imagine", "hero"), hero=True, sizes="100vw"),
     "chips": "".join(f'<a class="qm-chip" href="#{esc(c["id"])}">{esc(c["nume"])}</a>' for c in DATA["meniu"]),
     "sections": "".join(
         f'<section class="qm-section" id="{esc(c["id"])}"><h2>{esc(c["nume"])}</h2>'

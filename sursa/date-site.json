@@ -14,40 +14,6 @@
   "publicUrl": "https://cojocariuemilian73.github.io/caf-dorohoi/",
   "atelier": "ArtLegno Porte&Scale",
   "deschidere": "7 martie 2025",
-  "dorohoi": {
-    "oras": "Dorohoi",
-    "adresa": "Bulevardul Victoriei",
-    "judet": "Botoșani",
-    "reper": "Vizavi de Penny",
-    "telefon": "+40 756 764 805",
-    "latitudine": 47.94246,
-    "longitudine": 26.40645,
-    "cautareHarta": "CAF coffee&more, Bulevardul Victoriei, Dorohoi",
-    "program": [
-      {
-        "zile": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
-        ],
-        "deschide": "07:00",
-        "inchide": "22:00"
-      }
-    ]
-  },
-  "botosani": {
-    "oras": "Botoșani",
-    "adresa": "Calea Națională nr. 61",
-    "cautareHarta": "CAF coffee&more, Calea Națională 61, Botoșani",
-    "program": [],
-    "telefon": "",
-    "latitudine": null,
-    "longitudine": null
-  },
   "linkuri": {
     "recenzii": "https://www.google.com/maps/place/CAF+coffee%26more/@47.9424599,26.406446,17z/data=!4m8!3m7!1s0x47348b006e70985d:0xfefb369d6e00d1fc!8m2!3d47.9424599!4d26.406446!9m1!1b1!16s%2Fg%2F11m64rjsg9",
     "harta": "https://www.google.com/maps?cid=18373339154571383292&output=embed&hl=ro",
@@ -238,12 +204,12 @@
   ],
   "imagini": {
     "hero": {
-      "fisier": "caf-coperta.webp",
+      "fisier": "caf-fatada-seara.webp",
       "latime": 1600,
-      "inaltime": 1000,
-      "alt": "Terasa vitrată CAF Dorohoi, cu mese din lemn și lămpi suspendate",
+      "inaltime": 899,
+      "alt": "Fațada cafenelei CAF coffee&more seara, cu luminile aprinse și vitrinele de sticlă",
       "titlu": "Terasa vitrată",
-      "mobil": "caf-coperta-mobil.webp",
+      "mobil": "caf-fatada-seara-mobil.webp",
       "latimeMobil": 660,
       "inaltimeMobil": 870
     },
@@ -444,5 +410,79 @@
       "supabaseUrl": "",
       "supabaseCheie": ""
     }
-  }
+  },
+  "locatii": [
+    {
+      "oras": "Dorohoi",
+      "adresa": "Bulevardul Victoriei",
+      "judet": "Botoșani",
+      "reper": "Vizavi de Penny",
+      "telefon": "+40 756 764 805",
+      "latitudine": 47.94246,
+      "longitudine": 26.40645,
+      "cautareHarta": "CAF coffee&more, Bulevardul Victoriei, Dorohoi",
+      "program": [
+        {
+          "zile": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "deschide": "07:00",
+          "inchide": "22:00"
+        }
+      ]
+    },
+    {
+      "oras": "Botoșani",
+      "adresa": "Calea Națională nr. 61",
+      "cautareHarta": "CAF coffee&more, Calea Națională 61, Botoșani",
+      "program": [],
+      "telefon": "",
+      "latitudine": null,
+      "longitudine": null
+    }
+  ],
+  "texte": {
+    "_nota": "Toate textele vizibile ale site-ului. „|” = rând nou în titlu. Cuvintele cu cratimă nu se rup singure.",
+    "titluPagina": "CAF coffee&more — Cafenea în Dorohoi",
+    "logo": {
+      "mare": "CAF",
+      "mic": "coffee&more"
+    },
+    "hero": "Cafea bună, într-un loc făcut cu mâna.",
+    "poveste": {
+      "titlu": "Am pornit|de la lemn.",
+      "lead": "Înainte să fie cafenea, CAF a fost un atelier. La ArtLegno Porte&Scale se fac uși, scări și parchet, așa că, atunci când am deschis prima cafenea în Botoșani, am lucrat-o cu mâinile noastre.",
+      "text": "La Dorohoi am ajuns pe 7 martie 2025. Barul, mesele și pereții au ieșit tot din atelier. Dacă te uiți de aproape, se vede în fibră.",
+      "imagineMare": "atelier",
+      "imagineMica": "vPahare"
+    },
+    "galerie": {
+      "titlu": "Fiecare masă|are o poveste.",
+      "text": "Barul, mesele și placarea pereților le-am făcut în același atelier. Am lăsat lemnul la vedere, pentru că ne place cum arată și cum se simte sub mână.",
+      "imagini": [
+        "fibra",
+        "terasa",
+        "lumina",
+        "terasaSeara",
+        "exterior"
+      ]
+    },
+    "meniu": "Meniu",
+    "recenzii": "Ce spun oaspeții.",
+    "locatii": "Ne vedem la CAF.",
+    "subsol": "O cafenea făcută de atelierul ArtLegno Porte&Scale.",
+    "paginaMeniu": {
+      "titlu": "Meniu — CAF coffee&more Dorohoi",
+      "descriere": "Meniul CAF coffee&more din Dorohoi: cafea, băuturi reci, fresh și patiserie.",
+      "linkPoveste": "Povestea CAF",
+      "imagine": "terasaSeara"
+    }
+  },
+  "folderImagini": "assets/img/caf/"
 }
