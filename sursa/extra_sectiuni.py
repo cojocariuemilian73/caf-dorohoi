@@ -67,7 +67,7 @@ def build(data, esc, image, frame):
         f'<circle class="wheel-frame" cx="{C}" cy="{C}" r="117"/>'
         f'<g class="wheel-lights">{"".join(lights)}</g>'
         f'<g class="wheel-disc">{"".join(slices)}'
-        f'<circle class="wheel-inner" cx="{C}" cy="{C}" r="44"/>{"".join(pegs)}</g>'
+        f'{"".join(pegs)}</g>'
         f'<circle class="wheel-edge" cx="{C}" cy="{C}" r="{R}"/>'
         f'<circle class="wheel-hub" cx="{C}" cy="{C}" r="25"/>'
         f'<text class="wheel-hub-text" x="{C}" y="{C + 1}" text-anchor="middle" dominant-baseline="middle">CAF</text>'

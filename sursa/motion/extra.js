@@ -192,23 +192,63 @@ function setupWheel() {
   }
 
   // Boabe de cafea care sar din centru la câștig.
-  function burst() {
+  // Boabe de cafea care sar dintr-un punct (roata sau mijlocul ecranului).
+  function burst(host, amount = 26, reach = 110) {
     if (calm) return;
-    for (let i = 0; i < 26; i++) {
+    for (let i = 0; i < amount; i++) {
       const bean = document.createElement("span");
       bean.className = "bean" + (i % 3 === 0 ? " is-cream" : "");
-      wrap.append(bean);
+      host.append(bean);
       const dir = Math.random() * Math.PI * 2;
-      const dist = 90 + Math.random() * 110;
+      const dist = reach * (.8 + Math.random());
       const x = Math.cos(dir) * dist;
       const y = Math.sin(dir) * dist;
-      const spin = (Math.random() - .5) * 720;
+      const turn = (Math.random() - .5) * 720;
       bean.animate([
         { transform: "translate(0, 0) rotate(0deg) scale(.4)", opacity: 1 },
-        { transform: `translate(${x * .8}px, ${y * .8 - 30}px) rotate(${spin * .7}deg) scale(1)`, opacity: 1, offset: .6 },
-        { transform: `translate(${x}px, ${y + 40}px) rotate(${spin}deg) scale(.9)`, opacity: 0 }
-      ], { duration: 900 + Math.random() * 500, easing: "cubic-bezier(.2,.7,.3,1)" }).finished.then(() => bean.remove());
+        { transform: `translate(${x * .8}px, ${y * .8 - 30}px) rotate(${turn * .7}deg) scale(1)`, opacity: 1, offset: .6 },
+        { transform: `translate(${x}px, ${y + 60}px) rotate(${turn}deg) scale(.9)`, opacity: 0 }
+      ], { duration: 1100 + Math.random() * 700, delay: Math.random() * 120, easing: "cubic-bezier(.2,.7,.3,1)", fill: "backwards" }).finished.then(() => bean.remove());
     }
+  }
+
+  // Premiul, mare pe tot ecranul.
+  let stage;
+  function reveal(spin) {
+    if (!stage) {
+      stage = document.createElement("dialog");
+      stage.className = "prize-stage";
+      stage.setAttribute("aria-labelledby", "prize-name");
+      stage.innerHTML = '<div class="prize-rays" aria-hidden="true"></div><div class="prize-burst" aria-hidden="true"></div>'
+        + '<div class="prize-card"><p class="prize-kicker">Ai câștigat</p><h2 id="prize-name" class="prize-name"></h2>'
+        + '<p class="prize-code"></p><p class="prize-time"></p>'
+        + '<form method="dialog"><button class="button button-light">Super, mulțumesc!</button></form></div>';
+      document.body.append(stage);
+      stage.addEventListener("click", (event) => { if (event.target === stage) stage.close(); });
+    }
+    const name = stage.querySelector(".prize-name");
+    name.innerHTML = "";
+    config.prizes[spin.index].split(" ").forEach((word, i) => {
+      const span = document.createElement("span");
+      span.textContent = word;
+      span.style.setProperty("--i", i);
+      name.append(span, " ");
+    });
+    stage.querySelector(".prize-code").textContent = `Cod CAF-${spin.code} · arată ecranul la bar`;
+    stage.querySelector(".prize-time").textContent = result.querySelector(".wheel-left")?.textContent.replace("Mai ai", "Valabil azi, mai ai") || config.wheelValid;
+    stage.showModal();
+    if (calm) return;
+    stage.querySelector(".prize-card").animate(
+      [{ transform: "scale(.6)", opacity: 0, filter: "blur(10px)" }, { transform: "scale(1.04)", opacity: 1, filter: "blur(0)", offset: .7 }, { transform: "scale(1)" }],
+      { duration: 700, easing: "cubic-bezier(.2,.8,.2,1)" }
+    );
+    name.querySelectorAll("span").forEach((span, i) => span.animate(
+      [{ transform: "translateY(60%) rotate(4deg)", opacity: 0 }, { transform: "none", opacity: 1 }],
+      { duration: 650, delay: 250 + i * 110, easing: "cubic-bezier(.16,1,.3,1)", fill: "backwards" }
+    ));
+    const host = stage.querySelector(".prize-burst");
+    burst(host, 46, Math.min(innerWidth, innerHeight) * .42);
+    setTimeout(() => stage.open && burst(host, 24, Math.min(innerWidth, innerHeight) * .32), 650);
   }
 
   function tick() {
@@ -248,7 +288,8 @@ function setupWheel() {
       store.set("caf-roata", record);
       highlight(sliceIndex);
       announce(record);
-      burst();
+      burst(wrap);
+      setTimeout(() => reveal(record), calm ? 0 : 450);
       lock();
       busy = false;
     };
@@ -256,7 +297,7 @@ function setupWheel() {
 
     wrap.classList.add("is-spinning");
     // Pornește repede și încetinește lung, ca o roată adevărată; acul tresare la fiecare cui.
-    const duration = 5600;
+    const duration = 7000;
     const t0 = performance.now();
     let last = under(start);
     const frame = (now) => {
