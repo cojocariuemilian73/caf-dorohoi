@@ -141,6 +141,60 @@ def menu_panel(category):
     )
 
 
+FILTERS = (("toate", "Toate"), ("fara-cafeina", "Fără cafeină"), ("rece", "Rece"), ("dulce", "Dulce"), ("preferat", "Preferata casei"))
+DOODLES = {
+    "cana": '<svg class="doodle doodle-cup" viewBox="0 0 120 100"><path pathLength="1" d="M22 40c20 2 40 2 58 0 1 10 1 18-2 26-6 14-48 14-54 0-3-8-3-16-2-26Z"/><path pathLength="1" d="M80 46c16-2 16 20-2 18"/><path pathLength="1" d="M8 84c30 8 74 8 104-1"/><path pathLength="1" d="M42 30c-7-8 7-12 0-21M58 30c-7-8 7-12 0-21"/></svg>',
+    "lamaie": '<svg class="doodle doodle-lemon" viewBox="0 0 100 100"><path pathLength="1" d="M50 8a42 42 0 1 1-.1 0Z"/><path pathLength="1" d="M50 18a32 32 0 1 1-.1 0Z"/><path pathLength="1" d="M50 18v64M18 50h64M27 27l46 46M73 27 27 73"/></svg>',
+    "croissant": '<svg class="doodle doodle-croissant" viewBox="0 0 140 80"><path pathLength="1" d="M8 62C18 18 122 16 132 62c-18-12-30-8-34-4-10-10-46-10-56 0-6-6-18-8-34 4Z"/><path pathLength="1" d="M42 58c-2-14 2-26 10-34M70 54c0-14 0-28 0-36M98 58c2-14-2-26-10-34"/></svg>',
+}
+
+
+def small_src(key):
+    item = DATA["imagini"][key]
+    stem = item["fisier"].rsplit(".", 1)[0]
+    small = ROOT / IMG / f"{stem}-480.webp"
+    return IMG + (small.name if small.exists() else item["fisier"])
+
+
+def menu_board():
+    filters = "".join(
+        f'<button type="button" class="board-filter" data-filter="{key}" aria-pressed="{"true" if key == "toate" else "false"}">{label}</button>'
+        for key, label in FILTERS
+    )
+    groups = []
+    n = 0
+    for category in DATA["meniu"]:
+        items = []
+        for product in category["produse"]:
+            price = product["pret"]
+            amount = (f"{price:g}".replace(".", ",") + " lei") if price is not None else "La cerere"
+            labels = list(product.get("etichete", [])) + (["preferat"] if product.get("preferat") else [])
+            key = product.get("imagine")
+            has_photo = key in DATA["imagini"]
+            thumb = f'<span class="board-thumb" aria-hidden="true">{image(key, sizes="52px")}</span>' if has_photo else ""
+            peek = f' data-peek="{esc(small_src(key))}"' if has_photo else ""
+            star = '<span class="board-fav">★ preferata casei</span>' if product.get("preferat") else ""
+            items.append(
+                f'<li class="board-item" data-tags="{" ".join(labels)}"{peek} style="view-transition-name: produs-{n}">'
+                f'<div class="board-line">{thumb}<h4>{esc(product["nume"])}</h4><span class="board-dots" aria-hidden="true"></span>'
+                f'<span class="board-price">{amount}</span></div><p>{esc(product["descriere"])}{star}</p></li>'
+            )
+            n += 1
+        groups.append(
+            f'<section class="board-group" data-category="{esc(category["id"])}"><h3>{esc(category["nume"])}</h3>'
+            f'<ul class="board-list">{"".join(items)}</ul></section>'
+        )
+    return (
+        '<div class="chalkboard">'
+        + "".join(DOODLES.values())
+        + f'<div class="board-filters" role="group" aria-label="Filtrează meniul">{filters}</div>'
+        + f'<div class="board-cols">{"".join(groups)}</div>'
+        + '<p class="board-empty" hidden>Nimic pe filtrul ăsta. Încearcă altul.</p>'
+        + '<p class="sr-only" role="status" aria-live="polite" data-board-status></p>'
+        + "</div>"
+    )
+
+
 def review(item, index, total):
     # Textul se afișează exact cum l-a scris autorul.
     name = item["autor"]
@@ -315,6 +369,7 @@ values = {
     "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(("fibra", "terasa", "lumina", "terasaSeara", "exterior"))),
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
+    "menuBoard": menu_board(),
     "socialLink": f'<a class="text-link" href="{esc(social)}">Urmărește-ne pe {social_label} {arrow("M6 18 18 6M7 6h11v11")}</a>' if social else "",
     "photoCredits": '<p class="photo-credits">Fotografii din ' + " · ".join(
         f'<a href="{esc(source["url"])}">{esc(source["nume"])}</a>' for source in DATA["surseFoto"]

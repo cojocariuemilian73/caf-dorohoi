@@ -6,6 +6,20 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "Caveat";
+  src: url("../fonts/caveat-latin-ext.woff2") format("woff2");
+  font-weight: 500 700;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Caveat";
+  src: url("../fonts/caveat-latin.woff2") format("woff2");
+  font-weight: 500 700;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
   font-family: "DM Sans";
   src: url("../fonts/dm-sans-ro.woff2") format("woff2");
   font-style: normal;
@@ -173,43 +187,81 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .wood-notes { flex-direction: column; }
 .wood-notes li + li::before { display: none; content: "·"; margin-right: 28px; color: var(--oak); }
 
-/* 03 Meniul: categorii ca pastile, produsele ca un perete de carduri cu poze. */
-.menu-board { display: grid; gap: clamp(24px, 3vw, 40px); }
-.menu-tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--edge) * -1); padding: 2px var(--edge); }
-.menu-tabs::-webkit-scrollbar { display: none; }
-.menu-tab { flex: none; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 20px; color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 999px; transition: color .25s var(--ease-out), background-color .25s var(--ease-out), border-color .25s var(--ease-out), transform .16s var(--ease-out); }
-.menu-tab:active { transform: scale(.97); }
-.menu-tab[aria-selected="true"] { color: var(--paper); background: var(--ink); border-color: var(--ink); }
-@media (hover: hover) { .menu-tab:not([aria-selected="true"]):hover { color: var(--ink); border-color: color-mix(in oklab, var(--ink) 45%, transparent); } }
-.tab-index { display: none; }
-.tab-name { font-weight: 600; font-size: .92rem; }
-.tab-count { min-width: 22px; padding: 1px 7px; border-radius: 999px; background: color-mix(in oklab, var(--ink) 10%, transparent); font-size: .72rem; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; }
-.menu-tab[aria-selected="true"] .tab-count { background: color-mix(in oklab, var(--paper) 14%, transparent); }
-.menu-panel-title { margin-bottom: 18px; }
-.menu-tabs:not([hidden]) ~ .menu-panels .menu-panel-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.menu-panels .menu-panel + .menu-panel { margin-top: 56px; }
-.menu-tabs:not([hidden]) ~ .menu-panels .menu-panel + .menu-panel { margin-top: 0; }
-
-.dish-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 28px) clamp(10px, 1.6vw, 22px); }
-.dish-card { display: flex; flex-direction: column; gap: 14px; }
-.dish-photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 8px; background: color-mix(in oklab, var(--ink) 6%, var(--paper)); }
-.dish-photo picture { display: block; width: 100%; height: 100%; }
-.dish-photo img { width: 100%; height: 100%; object-fit: cover; transition: scale .7s var(--ease-out); }
-@media (hover: hover) and (pointer: fine) { .dish-card:hover .dish-photo img { scale: 1.05; } }
-/* Produsele fără poză: numele scris mare, pe un ton cald de lemn. */
-.dish-type { display: grid; place-items: center; padding: 18px; text-align: center; background: color-mix(in oklab, var(--accent) 22%, var(--paper)); }
-.dish-type-name { font: italic 500 clamp(1.6rem, 3vw, 2.6rem)/1.05 var(--serif); color: color-mix(in oklab, var(--ink) 88%, var(--accent)); transition: translate .5s var(--ease-out); }
-@media (hover: hover) and (pointer: fine) { .dish-card:hover .dish-type-name { translate: 0 -4px; } }
-.favorite { position: absolute; top: 12px; left: 12px; padding: 5px 10px; border-radius: 999px; color: var(--espresso); background: var(--oak); font-size: .66rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.dish-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.dish-card h4 { font: 600 clamp(1.3rem, 2vw, 1.75rem)/1.1 var(--serif); letter-spacing: -.01em; }
-.price { flex: none; font-weight: 600; font-size: .95rem; white-space: nowrap; color: var(--oak); font-variant-numeric: tabular-nums; }
-.dish-card p { margin-top: 6px; color: var(--muted); font-size: .9rem; line-height: 1.5; }
-
-@media (min-width: 900px) {
-  .dish-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .dish-photo { aspect-ratio: 5 / 4; }
+/* 03 Meniul: o tablă de cafenea într-o ramă de lemn, scrisă cu cretă. */
+.chalkboard {
+  --chalk: #f3eee4;
+  --chalk-soft: #f3eee4a6;
+  position: relative; isolation: isolate; overflow: hidden;
+  padding: clamp(28px, 5vw, 64px) clamp(20px, 5vw, 72px) clamp(96px, 9vw, 130px);
+  color: var(--chalk);
+  background:
+    radial-gradient(ellipse at 20% 15%, #ffffff0d, transparent 45%),
+    radial-gradient(ellipse at 85% 70%, #ffffff0a, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, #ffffff08, transparent 60%),
+    #15100d;
+  border: clamp(10px, 1.4vw, 16px) solid #6b4a30;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 2px #2c1d13, inset 0 0 60px #000c, 0 30px 60px -30px #000;
 }
+/* Urmă fină de cretă ștearsă. */
+.chalkboard::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .35; background: repeating-linear-gradient(100deg, #ffffff06 0 2px, transparent 2px 9px); pointer-events: none; }
+.chalkboard h3, .chalkboard h4, .board-price, .board-filter, .board-fav, .board-empty { font-family: "Caveat", var(--serif); text-shadow: 0 0 1px #fff6, 0 0 8px #ffffff1a; }
+
+.board-filters { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px 10px; margin-bottom: clamp(24px, 4vw, 44px); }
+.board-filter { min-height: 44px; padding: 2px 18px 4px; color: var(--chalk-soft); background: transparent; border: 1.5px dashed #f3eee466; border-radius: 999px; font-size: 1.35rem; font-weight: 600; line-height: 1; cursor: pointer; transition: color .2s var(--ease-out), background-color .2s var(--ease-out), border-color .2s var(--ease-out), transform .16s var(--ease-out); }
+.board-filter:active { transform: scale(.96); }
+.board-filter[aria-pressed="true"] { color: #15100d; background: var(--chalk); border: 1.5px solid var(--chalk); text-shadow: none; }
+@media (hover: hover) { .board-filter[aria-pressed="false"]:hover { color: var(--chalk); border-color: var(--chalk); } }
+.board-filter:focus-visible { outline: 2px solid var(--oak); outline-offset: 3px; }
+
+.board-cols { position: relative; z-index: 1; display: grid; gap: clamp(28px, 4vw, 48px) clamp(40px, 6vw, 96px); }
+.board-group[hidden] { display: none; }
+.board-group h3 { margin-bottom: 10px; color: var(--oak); font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 700; line-height: 1; transform: rotate(-1.5deg); transform-origin: left; }
+.board-list { display: grid; }
+.board-item { padding: 12px 0 14px; border-bottom: 1px dashed #f3eee426; }
+.board-item:last-child { border-bottom: 0; }
+.board-item[hidden] { display: none; }
+.board-line { display: flex; align-items: baseline; gap: 10px; }
+.board-line h4 { font-size: clamp(1.7rem, 2.6vw, 2.1rem); font-weight: 600; line-height: 1.05; }
+.board-dots { flex: 1; min-width: 16px; border-bottom: 2px dotted #f3eee455; translate: 0 -6px; }
+.board-price { flex: none; font-size: clamp(1.6rem, 2.4vw, 1.95rem); font-weight: 700; color: var(--chalk); }
+.board-item p { margin-top: 2px; max-width: 46ch; color: var(--chalk-soft); font-size: .92rem; line-height: 1.5; }
+.board-fav { display: inline-block; margin-left: 8px; color: var(--oak); font-size: 1.2rem; font-weight: 700; line-height: 1; transform: rotate(-3deg); }
+.board-thumb { display: none; }
+.board-empty { position: relative; z-index: 1; font-size: 1.8rem; color: var(--chalk-soft); }
+.board-empty[hidden] { display: none; }
+
+/* Desene de cretă în colțuri: se desenează singure când tabla intră în ecran. */
+.doodle { position: absolute; z-index: 0; fill: none; stroke: #f3eee4; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: .28; pointer-events: none; }
+.doodle path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s cubic-bezier(.45, 0, .2, 1); }
+.chalkboard.is-drawn .doodle path { stroke-dashoffset: 0; }
+.doodle path:nth-child(2) { transition-delay: .5s; }
+.doodle path:nth-child(3) { transition-delay: .9s; }
+.doodle path:nth-child(4) { transition-delay: 1.2s; }
+.doodle-cup { right: clamp(14px, 3vw, 40px); top: clamp(14px, 2.5vw, 34px); width: clamp(70px, 9vw, 120px); }
+.doodle-lemon { left: clamp(14px, 3vw, 36px); bottom: clamp(14px, 3vw, 36px); width: clamp(54px, 6vw, 84px); }
+.doodle-croissant { right: clamp(18px, 4vw, 60px); bottom: clamp(12px, 2.5vw, 30px); width: clamp(90px, 11vw, 150px); }
+.doodle-croissant, .doodle-lemon { opacity: .2; }
+
+/* Poza care urmează mouse-ul. */
+.menu-peek { position: fixed; left: 0; top: 0; z-index: 30; width: 220px; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 12px; border: 6px solid #f3eee4; box-shadow: 0 30px 50px -20px #000d; pointer-events: none; opacity: 0; scale: .7; transition: opacity .2s var(--ease-out), scale .25s var(--ease-out); }
+.menu-peek.is-on { opacity: 1; scale: 1; }
+.menu-peek img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Telefon (fără mouse): poza mică lângă nume. */
+@media (hover: none), (pointer: coarse) {
+  .board-thumb { display: block; flex: none; align-self: center; width: 48px; height: 48px; overflow: hidden; border-radius: 50%; border: 2px solid #f3eee4aa; }
+  .board-thumb img, .board-thumb picture { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .board-line { align-items: center; }
+  .board-dots { translate: 0 4px; }
+}
+@media (min-width: 900px) {
+  .board-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .board-filters { padding-right: clamp(80px, 10vw, 140px); }
+}
+@media (max-width: 899px) { .board-filters { padding-right: 70px; } .doodle-cup { width: 60px; } }
+@media (prefers-reduced-motion: reduce) { .doodle path { transition: none; stroke-dashoffset: 0; } .menu-peek { transition: none; } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* 04 Păreri: carduri mari care se derulează spre dreapta. */
 .reviews { padding-bottom: calc(var(--section) * .8); }

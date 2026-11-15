@@ -6,7 +6,8 @@
     "Când meniul e confirmat, pune 'meniuExemplu': false.",
     "Botoșani: completează 'telefon', 'program', 'latitudine' și 'longitudine'. Până atunci site-ul arată [DE COMPLETAT].",
     "Contact: 'whatsapp' = numărul în format internațional (ex. 40756764805), 'email', 'instagram' = linkul profilului.",
-    "Recenzii: fiecare are {\"autor\": \"...\", \"stele\": 5, \"text\": \"textul exact\"} și, opțional, \"url\" spre recenzia originală. Pune câte vrei; se derulează spre dreapta."
+    "Recenzii: fiecare are {\"autor\": \"...\", \"stele\": 5, \"text\": \"textul exact\"} și, opțional, \"url\" spre recenzia originală. Pune câte vrei; se derulează spre dreapta.",
+    "Filtre meniu: fiecare produs are \"etichete\" — oricare din \"fara-cafeina\", \"rece\", \"dulce\". \"Preferata casei\" vine din \"preferat\": true."
   ],
   "brand": "CAF coffee&more",
   "description": "CAF coffee&more, cafenea pe Bulevardul Victoriei din Dorohoi. Cappuccino, croissante și limonade, într-un interior lucrat în lemn de atelierul ArtLegno.",
@@ -72,19 +73,22 @@
           "descriere": "Espresso cu lapte spumat fin. Merge oricând, dar dimineața parcă e mai bun.",
           "pret": 14,
           "preferat": true,
-          "imagine": "vCappuccino"
+          "imagine": "vCappuccino",
+          "etichete": []
         },
         {
           "nume": "Espresso",
           "descriere": "Scurt și intens, pentru o pauză rapidă.",
           "pret": 9,
-          "imagine": "vEspresso"
+          "imagine": "vEspresso",
+          "etichete": []
         },
         {
           "nume": "Flat white",
           "descriere": "Espresso dublu și puțin lapte catifelat.",
           "pret": 16,
-          "imagine": "cafea"
+          "imagine": "cafea",
+          "etichete": []
         }
       ],
       "imagine": "vCappuccino"
@@ -97,12 +101,19 @@
           "nume": "Mojito fără alcool",
           "descriere": "Mentă, lime și multă gheață.",
           "pret": 20,
-          "preferat": true
+          "preferat": true,
+          "etichete": [
+            "fara-cafeina",
+            "rece"
+          ]
         },
         {
           "nume": "Iced latte",
           "descriere": "Espresso și lapte rece, turnate peste gheață.",
-          "pret": 17
+          "pret": 17,
+          "etichete": [
+            "rece"
+          ]
         }
       ],
       "imagine": "terasa"
@@ -114,12 +125,20 @@
         {
           "nume": "Limonadă cu mentă",
           "descriere": "Lămâie, mentă proaspătă și gheață.",
-          "pret": 18
+          "pret": 18,
+          "etichete": [
+            "fara-cafeina",
+            "rece"
+          ]
         },
         {
           "nume": "Fresh de portocale",
           "descriere": "Portocale stoarse pe loc.",
-          "pret": 19
+          "pret": 19,
+          "etichete": [
+            "fara-cafeina",
+            "rece"
+          ]
         }
       ],
       "imagine": "fereastra"
@@ -133,12 +152,20 @@
           "descriere": "Rumen pe dinafară, moale pe dinăuntru.",
           "pret": 12,
           "preferat": true,
-          "imagine": "vCroissante"
+          "imagine": "vCroissante",
+          "etichete": [
+            "fara-cafeina",
+            "dulce"
+          ]
         },
         {
           "nume": "Prăjitura zilei",
           "descriere": "Se schimbă des. Întreabă la bar ce avem azi.",
-          "pret": 19
+          "pret": 19,
+          "etichete": [
+            "fara-cafeina",
+            "dulce"
+          ]
         }
       ],
       "imagine": "vCroissante"
