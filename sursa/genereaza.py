@@ -172,10 +172,9 @@ def menu_board():
             key = product.get("imagine")
             has_photo = key in DATA["imagini"]
             thumb = f'<span class="board-thumb" aria-hidden="true">{image(key, sizes="52px")}</span>' if has_photo else ""
-            peek = f' data-peek="{esc(small_src(key))}"' if has_photo else ""
             star = '<span class="board-fav">★ preferata casei</span>' if product.get("preferat") else ""
             items.append(
-                f'<li class="board-item" data-tags="{" ".join(labels)}"{peek} style="view-transition-name: produs-{n}">'
+                f'<li class="board-item" data-tags="{" ".join(labels)}" style="view-transition-name: produs-{n}">'
                 f'<div class="board-line">{thumb}<h4>{esc(product["nume"])}</h4><span class="board-dots" aria-hidden="true"></span>'
                 f'<span class="board-price">{amount}</span></div><p>{esc(product["descriere"])}{star}</p></li>'
             )

@@ -243,11 +243,6 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .doodle-croissant { right: clamp(18px, 4vw, 60px); bottom: clamp(12px, 2.5vw, 30px); width: clamp(90px, 11vw, 150px); }
 .doodle-croissant, .doodle-lemon { opacity: .2; }
 
-/* Poza care urmează mouse-ul. */
-.menu-peek { position: fixed; left: 0; top: 0; z-index: 30; width: 220px; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 12px; border: 6px solid #f3eee4; box-shadow: 0 30px 50px -20px #000d; pointer-events: none; opacity: 0; scale: .7; transition: opacity .2s var(--ease-out), scale .25s var(--ease-out); }
-.menu-peek.is-on { opacity: 1; scale: 1; }
-.menu-peek img { width: 100%; height: 100%; object-fit: cover; }
-
 /* Telefon (fără mouse): poza mică lângă nume. */
 @media (hover: none), (pointer: coarse) {
   .board-thumb { display: block; flex: none; align-self: center; width: 48px; height: 48px; overflow: hidden; border-radius: 50%; border: 2px solid #f3eee4aa; }
@@ -260,7 +255,7 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .board-filters { padding-right: clamp(80px, 10vw, 140px); }
 }
 @media (max-width: 899px) { .board-filters { padding-right: 70px; } .doodle-cup { width: 60px; } }
-@media (prefers-reduced-motion: reduce) { .doodle path { transition: none; stroke-dashoffset: 0; } .menu-peek { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .doodle path { transition: none; stroke-dashoffset: 0; } }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* 04 Păreri: carduri mari care se derulează spre dreapta. */

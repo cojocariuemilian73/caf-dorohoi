@@ -128,7 +128,7 @@ function setupMenu() {
   show(tabs[0], { animate: false });
 }
 
-// Tabla cu meniul: filtre rapide, poza care urmează mouse-ul și desenele de cretă.
+// Tabla cu meniul: filtre rapide și desenele de cretă.
 function setupBoard() {
   const board = select(".chalkboard");
   if (!board) return;
@@ -169,45 +169,6 @@ function setupBoard() {
       observer.disconnect();
     }
   }, { threshold: .25 }).observe(board);
-
-  // Poza plutește lângă cursor, cu o mică înclinare după viteză.
-  if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-  const peek = document.createElement("div");
-  peek.className = "menu-peek";
-  peek.setAttribute("aria-hidden", "true");
-  const img = document.createElement("img");
-  img.alt = "";
-  peek.append(img);
-  document.body.append(peek);
-  let x = 0, y = 0, px = 0, py = 0, tilt = 0, active = false, frame = 0;
-
-  const loop = () => {
-    const nx = px + (x - px) * .18;
-    const ny = py + (y - py) * .18;
-    tilt += (Math.max(-12, Math.min(12, (nx - px) * .9)) - tilt) * .2;
-    px = nx; py = ny;
-    peek.style.transform = `translate(${px + 28}px, ${py - 140}px) rotate(${calm.matches ? 0 : tilt}deg)`;
-    if (active || Math.abs(x - px) > .5) frame = requestAnimationFrame(loop);
-    else frame = 0;
-  };
-  board.addEventListener("pointermove", (event) => {
-    x = event.clientX; y = event.clientY;
-    if (!frame) frame = requestAnimationFrame(loop);
-  });
-  for (const item of items) {
-    if (!item.dataset.peek) continue;
-    item.addEventListener("pointerenter", (event) => {
-      if (!active) { px = x = event.clientX; py = y = event.clientY; }
-      img.src = item.dataset.peek;
-      active = true;
-      peek.classList.add("is-on");
-      if (!frame) frame = requestAnimationFrame(loop);
-    });
-    item.addEventListener("pointerleave", () => {
-      active = false;
-      peek.classList.remove("is-on");
-    });
-  }
 }
 
 function setupReviews() {
