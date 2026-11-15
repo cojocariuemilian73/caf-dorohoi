@@ -348,6 +348,7 @@ values = {
     "logo": logo(),
     "logoShort": esc(TEXT["logo"]["mare"]),
     "heroTitle": rich(TEXT["hero"]),
+    "heroKeys": esc(",".join(TEXT.get("heroCuvinteAurii", []))),
     "storyTitle": rich(TEXT["poveste"]["titlu"]),
     "storyLead": rich(TEXT["poveste"]["lead"]),
     "storyText": rich(TEXT["poveste"]["text"]),

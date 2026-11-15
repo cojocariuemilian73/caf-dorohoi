@@ -216,6 +216,45 @@ function setupHeader() {
   addEventListener("scroll", update, { passive: true });
 }
 
+// Titlul de sus: literele urcă pe rând dintr-un abur, apoi cuvintele-cheie se fac aurii.
+function setupSteamTitle() {
+  const title = select(".hero h1");
+  if (!title) return;
+  const keys = (title.dataset.keys || "").toLowerCase().split(",").filter(Boolean);
+  title.setAttribute("aria-label", title.textContent.replace(/\s+/g, " ").trim());
+  let index = 0;
+  const words = [];
+  const split = (node) => {
+    for (const child of [...node.childNodes]) {
+      if (child.nodeType !== 3) { split(child); continue; }
+      const frag = document.createDocumentFragment();
+      for (const part of child.textContent.split(/(\s+)/)) {
+        if (!part) continue;
+        if (!part.trim()) { frag.append(part); continue; }
+        const word = document.createElement("span");
+        word.className = "sw";
+        word.setAttribute("aria-hidden", "true");
+        const bare = part.toLowerCase().replace(/[^\p{L}]/gu, "");
+        if (keys.includes(bare)) word.classList.add("is-key");
+        for (const letter of part) {
+          const ch = document.createElement("span");
+          ch.className = "sc";
+          ch.style.setProperty("--d", index++);
+          ch.textContent = letter;
+          word.append(ch);
+        }
+        words.push(word);
+        frag.append(word);
+      }
+      child.replaceWith(frag);
+    }
+  };
+  split(title);
+  title.style.setProperty("--letters", index);
+  title.classList.add("is-steam");
+}
+
+setupSteamTitle();
 setupNavigation();
 setupHours();
 setupMenu();

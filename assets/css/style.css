@@ -516,3 +516,15 @@ html.has-window .wood-window { display: block; position: absolute; inset: 0; }
   .ww-count { top: auto; bottom: calc(84px + env(safe-area-inset-bottom)); right: var(--edge); }
   .ww-copy { bottom: calc(130px + env(safe-area-inset-bottom)); }
 }
+
+/* Titlul de sus: literele urcă din abur, pe rând; la final cuvintele-cheie se fac aurii. */
+.hero h1.is-steam { animation: none; }
+.hero h1 .sw { display: inline-block; white-space: nowrap; transition: color .9s ease; }
+.hero h1 .sc { display: inline-block; opacity: 0; animation: steam-up 1.3s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: calc(.25s + var(--d) * 45ms); }
+.hero h1 .sw.is-key { animation: gold-on 1s ease forwards; animation-delay: calc(.6s + var(--letters) * 45ms); }
+@keyframes steam-up {
+  0% { opacity: 0; transform: translateY(.55em) scaleY(1.25); filter: blur(14px); }
+  60% { opacity: .85; filter: blur(2px); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes gold-on { to { color: #e6bd7d; text-shadow: 0 0 40px #e6bd7d55; } }

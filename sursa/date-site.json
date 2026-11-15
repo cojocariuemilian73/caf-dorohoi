@@ -503,7 +503,12 @@
       "descriere": "Meniul CAF coffee&more din Dorohoi: cafea, băuturi reci, fresh și patiserie.",
       "linkPoveste": "Povestea CAF",
       "imagine": "terasaSeara"
-    }
+    },
+    "heroCuvinteAurii": [
+      "Cafea",
+      "bună",
+      "mâna"
+    ]
   },
   "folderImagini": "assets/img/caf/"
 }
