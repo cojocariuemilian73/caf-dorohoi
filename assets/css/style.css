@@ -539,3 +539,16 @@ html.has-window .ww-frame { translate: none; rotate: none; }
 /* Textul galeriei stă mereu deasupra pozelor care se rotesc. */
 .ww-copy { z-index: 150; }
 @media (min-width: 900px) { .ww-frame { left: 67%; } }
+
+/* Caruselul galeriei: se trage pe orizontal; pe verticală pagina se derulează normal. */
+html.has-window .wood-pin { touch-action: pan-y; cursor: grab; user-select: none; }
+html.has-window .wood-pin.is-dragging { cursor: grabbing; }
+.ww-frame img { -webkit-user-drag: none; pointer-events: none; }
+.ww-nav { position: absolute; z-index: 160; left: 67%; bottom: clamp(20px, 4vh, 44px); translate: -50% 0; display: flex; align-items: center; gap: 18px; }
+.ww-arrow { width: 52px; height: 52px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--cream) 40%, transparent); background: transparent; color: var(--cream); font-size: 1.2rem; cursor: pointer; transition: background-color .2s ease, color .2s ease; }
+.ww-arrow:hover, .ww-arrow:focus-visible { background: var(--cream); color: var(--ink); }
+.ww-hint { color: color-mix(in oklab, var(--cream) 60%, transparent); font: 600 .74rem var(--sans); letter-spacing: .2em; text-transform: uppercase; }
+@media (max-width: 899px) {
+  .ww-nav { display: none; }
+  .ww-copy { bottom: calc(150px + env(safe-area-inset-bottom)); }
+}

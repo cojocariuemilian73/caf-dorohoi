@@ -154,20 +154,55 @@ scrolly.add("(min-width: 0px)", () => {
     render();
     gsap.set(".ww-copy", { opacity: 1, y: 0 });
 
-    const story = gsap.timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: {
-        trigger: ".wood-pin", start: "top top", end: () => "+=" + innerHeight * count,
-        pin: true, scrub: .8, invalidateOnRefresh: true, onRefresh: render
-      }
-    });
-    story.to({}, { duration: .3 });
-    for (let i = 1; i < count; i++) {
-      story.to(turn, { angle: -step * i, duration: 1, ease: "power2.inOut", onUpdate: render });
-      story.to({}, { duration: .35 });
-    }
+    // Caruselul se rotește pe orizontal: glisare cu degetul/mouse-ul, rotița orizontală, săgeți și tastatură.
+    // Derularea în jos a paginii rămâne normală.
+    const pin = stage.closest(".wood-pin");
+    const snapTo = (angle) => gsap.to(turn, { angle: Math.round(angle / step) * step, duration: .7, ease: "power3.out", onUpdate: render, overwrite: true });
+    const go = (dir) => snapTo(Math.round(turn.angle / step) * step - dir * step);
+    const nav = document.createElement("div");
+    nav.className = "ww-nav";
+    nav.innerHTML = '<button type="button" class="ww-arrow" aria-label="Poza anterioară">←</button><span class="ww-hint">Glisează</span><button type="button" class="ww-arrow" aria-label="Poza următoare">→</button>';
+    pin.append(nav);
+    const [prev, next] = nav.querySelectorAll("button");
+    prev.addEventListener("click", () => go(-1));
+    next.addEventListener("click", () => go(1));
+
+    let drag = null;
+    const down = (e) => { drag = { x: e.clientX, angle: turn.angle, id: e.pointerId }; gsap.killTweensOf(turn); };
+    const move = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 6) pin.classList.add("is-dragging");
+      turn.angle = drag.angle + dx * (wide ? .22 : .45);
+      render();
+    };
+    const up = () => { if (!drag) return; drag = null; pin.classList.remove("is-dragging"); snapTo(turn.angle); };
+    pin.addEventListener("pointerdown", down);
+    addEventListener("pointermove", move);
+    addEventListener("pointerup", up);
+    addEventListener("pointercancel", up);
+
+    let wheelTimer;
+    const wheel = (e) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;   // derularea în jos merge mai departe
+      e.preventDefault();
+      gsap.killTweensOf(turn);
+      turn.angle -= e.deltaX * .25;
+      render();
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => snapTo(turn.angle), 140);
+    };
+    pin.addEventListener("wheel", wheel, { passive: false });
+    const key = (e) => { if (e.key === "ArrowLeft") go(-1); if (e.key === "ArrowRight") go(1); };
+    nav.addEventListener("keydown", key);
 
     return () => {
+      nav.remove();
+      pin.removeEventListener("pointerdown", down);
+      removeEventListener("pointermove", move);
+      removeEventListener("pointerup", up);
+      removeEventListener("pointercancel", up);
+      pin.removeEventListener("wheel", wheel);
       document.documentElement.classList.remove("has-window");
       gsap.set(".ww-frame", { clearProps: "transform,filter,zIndex" });
       gsap.set(".ww-shade, .ww-copy", { clearProps: "all" });
