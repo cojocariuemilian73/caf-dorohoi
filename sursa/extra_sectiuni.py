@@ -40,7 +40,8 @@ def build(data, esc, image, frame):
         )
         tint = spec.get("tente", {}).get(name, "#c08a5e")
         cards.append(
-            f'<li class="special" style="--i:{i}" data-tint="{esc(tint)}"><div class="special-visual">{photo}'
+            f'<li class="special" style="--i:{i};--tint-own:{esc(tint)}" data-tint="{esc(tint)}">'
+            f'<span class="special-giant" aria-hidden="true">{esc(product["nume"])}</span><div class="special-visual">{photo}'
             f'<div class="floaters" aria-hidden="true">{floaters}</div></div>'
             f'<div class="special-copy"><h3>{esc(product["nume"])}</h3>'
             f'<p>{esc(product["descriere"])}</p><span class="price">{price(product)}</span></div></li>'

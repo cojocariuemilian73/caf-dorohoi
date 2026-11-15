@@ -68,7 +68,7 @@
 
     {{extraAfterMenu}}
 
-    <section class="section story" id="poveste" aria-labelledby="story-title">
+    <section class="section story" id="poveste" aria-labelledby="story-title" data-keys="{{storyKeys}}">
       <div class="shell story-grid">
         <div class="story-text">
           <h2 id="story-title">{{storyTitle}}</h2>
@@ -76,8 +76,10 @@
           <p>{{storyText}}</p>
         </div>
         <div class="story-images">
+          {{storyYear}}
           {{storyLarge}}
           {{storySmall}}
+          {{storyThird}}
         </div>
       </div>
     </section>

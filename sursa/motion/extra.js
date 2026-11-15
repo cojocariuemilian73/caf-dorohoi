@@ -341,6 +341,7 @@ function setupSpecials() {
     visual: item.querySelector(".special-visual"),
     photo: item.querySelector(".special-photo"),
     copy: item.querySelector(".special-copy"),
+    giant: item.querySelector(".special-giant"),
     floaters: [...item.querySelectorAll(".floater")],
     tint: hex(item.dataset.tint)
   }));
@@ -363,7 +364,7 @@ function setupSpecials() {
     const base = Math.min(last - 1, Math.floor(raw));
     const focus = base + settle(raw - base);
     const size = parts[0].photo.offsetWidth || 300;
-    parts.forEach(({ item, visual, photo, copy, floaters }, i) => {
+    parts.forEach(({ item, visual, photo, copy, floaters, giant }, i) => {
       const d = i - focus;
       const far = Math.min(Math.abs(d), 1.6);
       const move = wide
@@ -379,6 +380,11 @@ function setupSpecials() {
         el.style.translate = `0 ${d * depth * -60}px`;
         el.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 2.2));
       });
+      // Numele uriaș alunecă mai repede decât poza, în sens invers, și se stinge când pleacă.
+      if (giant) {
+        giant.style.transform = `translate(calc(-50% + ${d * -55}vw), -50%)`;
+        giant.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 1.6));
+      }
       copy.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 2.4));
       copy.style.transform = wide ? `translateY(${d * -40}px)` : `translateX(${d * Math.min(innerWidth * .62, 380)}px)`;
       copy.style.pointerEvents = Math.abs(d) < .5 ? "auto" : "none";

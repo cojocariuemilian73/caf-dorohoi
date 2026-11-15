@@ -460,7 +460,17 @@
       "lead": "Înainte să fie cafenea, CAF a fost un atelier. La ArtLegno Porte&Scale se fac uși, scări și parchet, așa că, atunci când am deschis prima cafenea în Botoșani, am lucrat-o cu mâinile noastre.",
       "text": "La Dorohoi am ajuns pe 7 martie 2025. Barul, mesele și pereții au ieșit tot din atelier. Dacă te uiți de aproape, se vede în fibră.",
       "imagineMare": "atelier",
-      "imagineMica": "vPahare"
+      "imagineMica": "vPahare",
+      "imagineTrei": "vLapte",
+      "an": "2025",
+      "cuvinteCheie": [
+        "atelier",
+        "ArtLegno",
+        "lemn",
+        "mâinile",
+        "noastre",
+        "fibră"
+      ]
     },
     "galerie": {
       "titlu": "Fiecare masă|are o poveste.",

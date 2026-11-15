@@ -416,6 +416,9 @@ values = {
     "mapB": esc(map_embed(botosani)),
     "storyLarge": frame(TEXT["poveste"]["imagineMare"], " story-large", "(min-width: 900px) 40vw, 80vw"),
     "storySmall": frame(TEXT["poveste"]["imagineMica"], " story-small", "(min-width: 900px) 24vw, 45vw"),
+    "storyThird": frame(TEXT["poveste"]["imagineTrei"], " story-third", "(min-width: 900px) 16vw, 30vw") if TEXT["poveste"].get("imagineTrei") else "",
+    "storyYear": f'<span class="story-year" aria-hidden="true">{esc(TEXT["poveste"].get("an", ""))}</span>' if TEXT["poveste"].get("an") else "",
+    "storyKeys": esc(",".join(TEXT["poveste"].get("cuvinteCheie", []))),
     "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(TEXT["galerie"]["imagini"])),
     "woodWindow": (
         '<div class="wood-window" aria-hidden="true">'

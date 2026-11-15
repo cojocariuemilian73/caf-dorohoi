@@ -35,7 +35,7 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
 
   // 4. Restul conținutului apare în grupuri, la fel de discret.
   const groups = [
-    ".story-text > :not(h2)", ".story-images .image-frame", ".section-intro > p:not(.eyebrow)", ".wood-head > p",
+    ".section-intro > p:not(.eyebrow)", ".wood-head > p",
     ".wood-notes li", ".board-group", ".review-card",
     ".location-card", ".footer-grid > *"
   ];
@@ -57,6 +57,41 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
       scrollTrigger: { trigger: image.closest(".depth"), start: "top bottom", end: "bottom top", scrub: true }
     });
   });
+
+  // 5a. Povestea: textul se aprinde cuvânt cu cuvânt, iar pozele plutesc la viteze diferite.
+  const storySection = document.querySelector(".story");
+  const storyParagraphs = gsap.utils.toArray(".story-text .lead, .story-text .lead + p");
+  const storyOriginal = storyParagraphs.map((p) => p.innerHTML);
+  if (storySection && storyParagraphs.length) {
+    const keys = (storySection.dataset.keys || "").toLowerCase().split(",").filter(Boolean);
+    const words = [];
+    storyParagraphs.forEach((p) => {
+      const parts = p.textContent.split(/(\s+)/);
+      p.textContent = "";
+      for (const part of parts) {
+        if (!part.trim()) { p.append(part); continue; }
+        const span = document.createElement("span");
+        span.className = "w";
+        span.textContent = part;
+        const bare = part.toLowerCase().replace(/[^\p{L}]/gu, "");
+        if (keys.some((key) => bare === key.toLowerCase())) span.classList.add("is-key");
+        p.append(span);
+        words.push(span);
+      }
+    });
+    gsap.fromTo(words, { opacity: .14 }, {
+      opacity: 1, stagger: .06, ease: "none",
+      scrollTrigger: { trigger: ".story-text", start: "top 78%", end: "bottom 42%", scrub: true }
+    });
+    const drift = (selector, from, to) => gsap.fromTo(selector, from, {
+      ...to, ease: "none",
+      scrollTrigger: { trigger: ".story", start: "top bottom", end: "bottom top", scrub: true }
+    });
+    drift(".story-large", { y: 70, rotate: -2.5 }, { y: -70, rotate: 1 });
+    drift(".story-small", { y: 150, rotate: 3 }, { y: -150, rotate: -3 });
+    drift(".story-third", { y: 240, rotate: 8 }, { y: -220, rotate: -2 });
+    drift(".story-year", { xPercent: -8, y: 90 }, { xPercent: 8, y: -90 });
+  }
 
   // 5b. Atelierul: o fereastră mică în mijloc crește până umple ecranul, ca și cum intri pe ușă;
   // apoi fiecare poză următoare se deschide din centru peste cea de dinainte.
@@ -124,6 +159,7 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
   return () => {
     desktop.revert();
     room.revert();
+    storyParagraphs.forEach((p, i) => { p.innerHTML = storyOriginal[i]; });
     for (const { root, title, html } of roots) {
       root.unmount();
       title.innerHTML = html;

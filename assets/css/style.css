@@ -469,3 +469,13 @@ html.has-window .wood-window { display: block; position: absolute; inset: 0; }
   .ww-count { top: 88px; bottom: auto; }
   .ww-shade { background: linear-gradient(0deg, #1f1612e6 0%, #1f161299 45%, #1f161200 75%); }
 }
+
+/* Povestea: a treia poză, anul uriaș din spate și cuvintele care se aprind la derulare. */
+.story-images { isolation: isolate; }
+.story-year { position: absolute; z-index: -1; left: -34%; top: -14%; font: 600 clamp(7rem, 19vw, 19rem)/.8 var(--serif); letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1.5px color-mix(in oklab, var(--oak) 45%, transparent); pointer-events: none; user-select: none; }
+.story-third { position: absolute; z-index: 2; right: -3%; bottom: 4%; width: 30%; aspect-ratio: 4 / 5; outline: 6px solid var(--paper); box-shadow: 0 30px 60px -20px #000c; rotate: 4deg; }
+.story-small { z-index: 1; }
+.story-large { rotate: -1.5deg; }
+.story-text .w { display: inline-block; white-space: nowrap; }
+.story-text .w.is-key { color: var(--oak); }
+@media (max-width: 899px) { .story-third { width: 34%; right: 0; bottom: 10%; } .story-year { left: -6%; top: -6%; } }
