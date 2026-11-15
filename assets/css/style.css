@@ -527,3 +527,8 @@ html.has-window .wood-window { display: block; position: absolute; inset: 0; }
 @keyframes gold-on { to { color: #e6bd7d; } }
 /* Titlul stă ascuns până îl pregătește scriptul, ca să nu apară întreg o clipă. */
 .js .hero h1:not(.is-steam) { visibility: hidden; }
+
+/* Galeria: printurile pornesc întinse pe masă, deci sunt vizibile de la început (fără ramă care se deschide). */
+.ww-frame { clip-path: none; will-change: transform; }
+html.has-window .ww-frame { translate: none; rotate: none; }
+.ww-frame img { will-change: auto; }
