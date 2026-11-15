@@ -1,44 +1,68 @@
 /* Secțiunile propuse: specialități, colțul de lucru, voucher, roată, card de fidelitate. */
 
 /* Specialitățile casei.
-   Fără animație: trei produse rotunde pe un rând. Cu animație: secțiunea stă pe loc,
-   iar produsele trec pe rând prin centru pe măsură ce derulezi. */
-.specials { position: relative; }
+   Fără script: trei produse rotunde pe un rând. Cu script: secțiunea stă pe loc și produsele
+   trec pe rând prin centru, legate de derulare. Pe calculator poza e mare în stânga și textul în dreapta. */
+.specials { position: relative; --tint: #c08a5e; --photo: clamp(200px, 60vw, 380px); }
 .specials-inner { display: grid; gap: clamp(28px, 4vw, 48px); padding-block: clamp(72px, 9vw, 128px); }
-.specials-head { display: grid; gap: 12px; justify-items: center; text-align: center; }
+.specials-head { position: relative; z-index: 12; display: grid; gap: 10px; justify-items: center; text-align: center; }
 .specials-head p { max-width: 40ch; color: var(--muted); }
 .specials-stage { position: relative; }
-.special-list { display: grid; gap: 40px; justify-items: center; }
+.special-list { display: grid; gap: 48px; justify-items: center; }
 .special { display: grid; justify-items: center; gap: 20px; text-align: center; }
-.special-photo { position: relative; width: clamp(200px, 60vw, 380px); aspect-ratio: 1; overflow: hidden; border-radius: 50%; background: color-mix(in oklab, var(--accent) 22%, var(--paper)); box-shadow: 0 0 0 10px color-mix(in oklab, var(--ink) 5%, transparent), 0 40px 70px -30px #000; }
+.special-visual { position: relative; width: var(--photo); }
+.special-photo { position: relative; width: var(--photo); aspect-ratio: 1; overflow: hidden; border-radius: 50%; container-type: inline-size; background: color-mix(in oklab, var(--accent) 22%, var(--paper)); box-shadow: 0 0 0 10px color-mix(in oklab, var(--ink) 5%, transparent), 0 50px 80px -30px #000; }
 .special-photo picture, .special-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.special-photo.is-type { display: grid; place-items: center; padding: 18%; background: radial-gradient(circle at 35% 30%, #e2bf98, #c08a5e 70%); color: var(--espresso); }
-.special-photo.is-type span { font: italic 600 clamp(2rem, 5vw, 3.2rem)/1 var(--serif); }
+.special-photo.is-type { display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, #c8e6a8, #6fa86a 75%); color: #13240f; }
+.special-photo.is-type span { width: 70%; font: italic 600 12cqi/1 var(--serif); text-align: center; text-wrap: balance; }
 .special-copy { display: grid; justify-items: center; gap: 8px; max-width: 30ch; }
 .special-copy h3 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1; }
 .special-copy p { color: var(--muted); }
-.special-copy .price { color: var(--oak); font-weight: 700; font-size: 1.05rem; }
-.steam { display: none; }
-.specials-dots { display: none; }
+.special-copy .price { color: var(--oak); font-weight: 700; font-size: 1.1rem; }
+.floaters { display: none; }
+.steam, .specials-dots { display: none; }
 @media (min-width: 900px) { .special-list { grid-template-columns: repeat(3, 1fr); align-items: start; } }
 
+/* Mod derulare */
 .specials.is-scrolly .specials-track { height: calc(100svh * (var(--count) + .4)); }
 .specials.is-scrolly .specials-sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; align-items: center; }
-.specials.is-scrolly .specials-inner { padding-block: 84px 24px; gap: clamp(12px, 2vh, 24px); }
-.specials.is-scrolly .specials-stage { height: min(64svh, 600px); }
+.specials.is-scrolly .specials-sticky::before { content: ""; position: absolute; inset: -20%; z-index: -1; background: radial-gradient(circle at var(--glow-x, 50%) 55%, color-mix(in oklab, var(--tint) 34%, transparent), transparent 45%); pointer-events: none; }
+.specials.is-scrolly .specials-inner { padding-block: 84px calc(70px + env(safe-area-inset-bottom)); gap: 10px; }
+.specials.is-scrolly .specials-head h2 { font-size: clamp(2.2rem, 7vw, 3.4rem); }
+.specials.is-scrolly .specials-stage { height: calc(min(66vw, 320px) + 220px); }
 .specials.is-scrolly .special-list { display: block; height: 100%; }
-.specials.is-scrolly .special { position: absolute; left: 50%; top: 0; width: min(88vw, 520px); margin-left: calc(min(88vw, 520px) / -2); gap: 18px; will-change: transform, opacity; }
-.specials.is-scrolly .special-photo { width: min(38svh, 360px, 70vw); }
-.specials.is-scrolly .special-copy { transition: none; }
-.specials.is-scrolly .steam { display: block; position: absolute; left: 50%; top: -6%; z-index: 2; width: clamp(70px, 9vw, 110px); translate: -50% 0; fill: none; stroke: #f5eee4; stroke-width: 3; stroke-linecap: round; opacity: .5; pointer-events: none; }
+.specials.is-scrolly .special { position: absolute; left: 50%; top: 0; width: min(90vw, 520px); margin-left: calc(min(90vw, 520px) / -2); gap: 16px; }
+.specials.is-scrolly { --photo: min(66vw, 320px); }
+.specials.is-scrolly .special-visual, .specials.is-scrolly .special-copy { will-change: transform, opacity; }
+.specials.is-scrolly .floaters { display: block; position: absolute; inset: 0; pointer-events: none; }
+.floater { position: absolute; left: 50%; top: 50%; width: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); transform: rotate(var(--a)) translateX(calc(var(--r) * var(--photo) / 2)) rotate(calc(var(--a) * -1)); }
+.floater svg { display: block; width: 100%; filter: drop-shadow(0 6px 8px #0008); animation: float 4.5s ease-in-out infinite alternate; animation-delay: calc(var(--k) * -.8s); }
+@keyframes float { from { translate: 0 -5px; rotate: -8deg; } to { translate: 0 5px; rotate: 10deg; } }
+.specials.is-scrolly .steam { display: block; position: absolute; left: 50%; top: -4%; z-index: 2; width: clamp(70px, 9vw, 110px); translate: -50% 0; fill: none; stroke: #f5eee4; stroke-width: 3; stroke-linecap: round; opacity: .5; pointer-events: none; }
 .steam path { stroke-dasharray: 60 140; animation: steam 3.2s ease-in-out infinite; }
 .steam path:nth-child(2) { animation-delay: .9s; }
 .steam path:nth-child(3) { animation-delay: 1.7s; }
 @keyframes steam { 0% { stroke-dashoffset: 0; opacity: 0; } 30% { opacity: .9; } 100% { stroke-dashoffset: -200; opacity: 0; } }
-.specials.is-scrolly .specials-dots { display: flex; justify-content: center; gap: 8px; }
+.specials.is-scrolly .specials-dots { display: flex; justify-content: center; gap: 8px; position: relative; z-index: 3; }
 .specials-dots span { width: 8px; height: 8px; border-radius: 999px; background: color-mix(in oklab, var(--ink) 25%, transparent); transition: width .3s var(--ease-out), background-color .3s var(--ease-out); }
 .specials-dots span.is-on { width: 26px; background: var(--oak); }
-@media (prefers-reduced-motion: reduce) { .steam path { animation: none; } }
+
+/* Calculator: poza mare în stânga, textul mare în dreapta, vecinii intră de sus și de jos. */
+@media (min-width: 900px) {
+  .specials.is-scrolly .specials-inner { padding-block: 92px 28px; }
+  .specials.is-scrolly .specials-head { justify-items: start; text-align: left; }
+  .specials.is-scrolly .specials-stage { height: min(calc(100svh - 230px), 680px); }
+  .specials.is-scrolly .special { inset: 0; left: 0; width: auto; margin: 0; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: center; justify-items: center; column-gap: clamp(32px, 5vw, 80px); text-align: left; }
+  .specials.is-scrolly { --photo: min(calc(100svh - 260px), 44vw, 620px); }
+  .specials.is-scrolly .special-copy { justify-self: start; justify-items: start; max-width: 22ch; gap: 14px; }
+  .specials.is-scrolly .special-copy h3 { font-size: clamp(3.4rem, 6vw, 6.2rem); line-height: .95; }
+  .specials.is-scrolly .special-copy p { font-size: 1.1rem; }
+  .specials.is-scrolly .special-copy .price { font-size: 1.4rem; }
+  .specials.is-scrolly .steam { left: 28.5%; top: -2%; }
+  .specials.is-scrolly .specials-dots { position: absolute; right: var(--edge); top: 50%; flex-direction: column; translate: 0 -50%; }
+  .specials-dots span.is-on { width: 8px; height: 26px; }
+}
+@media (prefers-reduced-motion: reduce) { .steam path, .floater svg { animation: none; } }
 
 /* Oferte: trei plăci egale. */
 .offer-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(16px, 2vw, 24px); }
@@ -165,4 +189,3 @@
 .prize-time { color: var(--accent-text); font-weight: 600; }
 .prize-card form { margin-top: 12px; }
 @media (prefers-reduced-motion: reduce) { .prize-rays, .prize-stage[open] { animation: none; } }
-@media (max-width: 899px) { .specials.is-scrolly .specials-inner { padding-bottom: calc(78px + env(safe-area-inset-bottom)); } .specials.is-scrolly .specials-stage { height: min(60svh, 520px); } }

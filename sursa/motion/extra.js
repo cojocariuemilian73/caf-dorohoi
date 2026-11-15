@@ -317,44 +317,70 @@ function setupWheel() {
   button.addEventListener("click", spin);
 }
 
-// Specialitățile: produsele trec prin centru legate de derulare; cel din mijloc e mare și clar.
+// Specialitățile: produsele trec prin centru legate de derulare. Pe calculator vin de jos în sus,
+// pe telefon din dreapta spre stânga. Lumina din fundal ia culoarea produsului din centru.
 function setupSpecials() {
   const section = document.querySelector(".specials");
-  // Mișcarea urmează degetul sau rotița, deci rulează și cu „animații reduse”; doar fără blur și rotire.
   if (!section) return;
   const track = section.querySelector(".specials-track");
+  const sticky = section.querySelector(".specials-sticky");
   const items = [...section.querySelectorAll(".special")];
   const dots = [...section.querySelectorAll(".specials-dots span")];
   if (items.length < 2) return;
   section.classList.add("is-scrolly");
   const last = items.length - 1;
-  // Fiecare produs stă puțin pe loc în centru, apoi alunecă repede spre următorul.
+  const parts = items.map((item) => ({
+    item,
+    visual: item.querySelector(".special-visual"),
+    photo: item.querySelector(".special-photo"),
+    copy: item.querySelector(".special-copy"),
+    floaters: [...item.querySelectorAll(".floater")],
+    tint: hex(item.dataset.tint)
+  }));
   const settle = (t) => {
     const x = Math.min(1, Math.max(0, (t - .25) / .5));
     return x * x * (3 - 2 * x);
   };
+  function hex(value) {
+    const n = parseInt((value || "#c08a5e").slice(1), 16);
+    return [n >> 16, (n >> 8) & 255, n & 255];
+  }
   let queued = false;
 
   function draw() {
     queued = false;
+    const wide = innerWidth >= 900;
     const box = track.getBoundingClientRect();
     const progress = Math.min(1, Math.max(0, -box.top / (box.height - innerHeight)));
     const raw = progress * last;
     const base = Math.min(last - 1, Math.floor(raw));
     const focus = base + settle(raw - base);
-    const gap = Math.min(innerWidth * .36, 440);
-    items.forEach((item, i) => {
+    const size = parts[0].photo.offsetWidth || 300;
+    parts.forEach(({ item, visual, photo, copy, floaters }, i) => {
       const d = i - focus;
       const far = Math.min(Math.abs(d), 1.6);
-      item.style.transform = `translateX(${d * gap}px) translateY(${far * 40}px) scale(${1 - far * .38})`;
-      item.style.opacity = String(Math.max(0, 1 - far * .55));
+      const move = wide
+        ? `translateY(${d * size * 1.02}px) scale(${1 - far * .42})`
+        : `translateX(${d * Math.min(innerWidth * .62, 380)}px) translateY(${far * 30}px) scale(${1 - far * .4})`;
+      visual.style.transform = move;
+      visual.style.opacity = String(Math.max(0, 1 - far * (wide ? .85 : .55)));
+      visual.style.filter = !calm && far > .05 ? `blur(${(far * 2.5).toFixed(1)}px)` : "none";
       item.style.zIndex = String(10 - Math.round(far * 4));
-      item.style.filter = !calm && far > .05 ? `blur(${(far * 2.5).toFixed(1)}px)` : "none";
-      item.querySelector(".special-photo").style.rotate = calm ? "0deg" : `${d * -28}deg`;
-      const copy = item.querySelector(".special-copy");
+      photo.style.rotate = calm ? "0deg" : `${d * -24}deg`;
+      floaters.forEach((el) => {
+        const depth = Number(el.style.getPropertyValue("--z")) || 1;
+        el.style.translate = `0 ${d * depth * -60}px`;
+        el.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 2.2));
+      });
       copy.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 2.4));
-      copy.style.transform = `translateY(${Math.abs(d) * 18}px)`;
+      copy.style.transform = wide ? `translateY(${d * -40}px)` : `translateX(${d * Math.min(innerWidth * .62, 380)}px)`;
+      copy.style.pointerEvents = Math.abs(d) < .5 ? "auto" : "none";
     });
+    // Culoarea luminii: amestec între produsele vecine.
+    const lo = Math.floor(focus), hi = Math.min(last, lo + 1), t = focus - lo;
+    const mix = parts[lo].tint.map((c, k) => Math.round(c + (parts[hi].tint[k] - c) * t));
+    section.style.setProperty("--tint", `rgb(${mix.join(" ")})`);
+    sticky.style.setProperty("--glow-x", wide ? "30%" : "50%");
     const active = Math.round(focus);
     dots.forEach((dot, i) => dot.classList.toggle("is-on", i === active));
   }

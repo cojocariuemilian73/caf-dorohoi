@@ -14,22 +14,37 @@ def build(data, esc, image, frame):
         value = product["pret"]
         return (f"{value:g}".replace(".", ",") + " lei") if value is not None else "La cerere"
 
-    # --- Specialitățile casei: carusel legat de derulare, cu abur deasupra ---
+    # --- Specialitățile casei: carusel legat de derulare, cu ingrediente care plutesc ---
+    spec = extra["specialitati"]
+    shapes = {
+        "bob": '<svg viewBox="0 0 20 28"><ellipse cx="10" cy="14" rx="9" ry="13" fill="#5a3520"/><path d="M10 2c-4 6 4 18 0 24" stroke="#2a160c" stroke-width="2" fill="none"/></svg>',
+        "frunza": '<svg viewBox="0 0 30 20"><path d="M1 10C8-1 24-1 29 10 24 21 8 21 1 10Z" fill="#6f9e5a"/><path d="M3 10h24" stroke="#4d7a3c" stroke-width="1.4"/></svg>',
+        "lime": '<svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="14" fill="#9cc45a"/><circle cx="15" cy="15" r="11" fill="#d5ea9a"/><path d="M15 4v22M4 15h22M7 7l16 16M23 7 7 23" stroke="#9cc45a" stroke-width="1.2"/></svg>',
+        "firimitura": '<svg viewBox="0 0 20 16"><path d="M2 8 6 2l8 1 5 6-4 6-9 0Z" fill="#d9a860"/><path d="M6 6l6 1" stroke="#b07f3e" stroke-width="1"/></svg>',
+    }
+    # Unde stau ingredientele în jurul pozei: unghi, distanță (din rază), mărime, adâncime.
+    spots = [(-55, 1.14, 52, 1.4), (-5, 1.2, 34, .7), (40, 1.12, 46, 1.2), (145, 1.16, 40, .9), (200, 1.1, 56, 1.5), (250, 1.22, 32, .6)]
     cards = []
-    for i, name in enumerate(extra["specialitati"]["produse"]):
+    for i, name in enumerate(spec["produse"]):
         product = products.get(name)
         if not product:
             continue
         key = product.get("imagine")
         if key in data["imagini"]:
-            visual = f'<div class="special-photo">{image(key, sizes="(min-width: 900px) 400px, 70vw")}</div>'
+            photo = f'<div class="special-photo">{image(key, sizes="(min-width: 900px) 46vw, 80vw")}</div>'
         else:
-            visual = f'<div class="special-photo is-type" aria-hidden="true"><span>{esc(product["nume"])}</span></div>'
+            photo = f'<div class="special-photo is-type" aria-hidden="true"><span>{esc(product["nume"])}</span></div>'
+        floaters = "".join(
+            f'<span class="floater" style="--a:{a}deg;--r:{r};--s:{size}px;--z:{z};--k:{k}">{shapes[kind]}</span>'
+            for k, (kind, (a, r, size, z)) in enumerate(zip(spec.get("ingrediente", {}).get(name, []), spots))
+        )
+        tint = spec.get("tente", {}).get(name, "#c08a5e")
         cards.append(
-            f'<li class="special" style="--i:{i}">{visual}<div class="special-copy"><h3>{esc(product["nume"])}</h3>'
+            f'<li class="special" style="--i:{i}" data-tint="{esc(tint)}"><div class="special-visual">{photo}'
+            f'<div class="floaters" aria-hidden="true">{floaters}</div></div>'
+            f'<div class="special-copy"><h3>{esc(product["nume"])}</h3>'
             f'<p>{esc(product["descriere"])}</p><span class="price">{price(product)}</span></div></li>'
         )
-    spec = extra["specialitati"]
     steam = (
         '<svg class="steam" viewBox="0 0 120 160" aria-hidden="true">'
         '<path d="M40 150c-14-20 14-34 0-56s12-36 0-60"/><path d="M62 150c-14-22 16-36 0-60s12-34 2-62"/>'

@@ -342,7 +342,38 @@
         "Cappuccino",
         "Mojito fără alcool",
         "Croissant"
-      ]
+      ],
+      "tente": {
+        "Cappuccino": "#c08a5e",
+        "Mojito fără alcool": "#6fa86a",
+        "Croissant": "#e0ac4f"
+      },
+      "ingrediente": {
+        "Cappuccino": [
+          "bob",
+          "bob",
+          "bob",
+          "bob",
+          "bob",
+          "bob"
+        ],
+        "Mojito fără alcool": [
+          "frunza",
+          "lime",
+          "frunza",
+          "frunza",
+          "lime",
+          "frunza"
+        ],
+        "Croissant": [
+          "firimitura",
+          "firimitura",
+          "bob",
+          "firimitura",
+          "firimitura",
+          "firimitura"
+        ]
+      }
     },
     "voucher": {
       "titlu": "Primul espresso e din partea casei.",
