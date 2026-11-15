@@ -36,23 +36,43 @@ def build(data, esc, image, frame):
         f'<ul class="special-list">{"".join(cards)}</ul></div></section>'
     )
 
-    # --- Roata: felii egale, eticheta scrisă pe rază ---
+    # --- Roata: 12 felii (fiecare premiu de două ori, față în față), becuri, cuie, ac și butuc ---
     wheel = extra["roata"]
     prizes = wheel["premii"]
-    n = len(prizes)
-    slices = []
-    for i, prize in enumerate(prizes):
-        a0, a1 = math.radians(i * 360 / n - 90), math.radians((i + 1) * 360 / n - 90)
-        x0, y0, x1, y1 = 100 + 98 * math.cos(a0), 100 + 98 * math.sin(a0), 100 + 98 * math.cos(a1), 100 + 98 * math.sin(a1)
-        mid = (i + .5) * 360 / n
+    n = len(prizes) * 2
+    step = 360 / n
+    C, R = 120, 100
+
+    def point(radius, angle):
+        rad = math.radians(angle - 90)
+        return C + radius * math.cos(rad), C + radius * math.sin(rad)
+
+    slices, pegs, lights = [], [], []
+    for i in range(n):
+        prize = prizes[i % len(prizes)]
+        x0, y0 = point(R, i * step)
+        x1, y1 = point(R, (i + 1) * step)
+        mid = (i + .5) * step
         slices.append(
-            f'<path class="slice s{i % 3}" d="M100 100L{x0:.2f} {y0:.2f}A98 98 0 0 1 {x1:.2f} {y1:.2f}Z"/>'
-            f'<text transform="rotate({mid:.1f} 100 100)" x="100" y="34" text-anchor="middle">{esc(prize["scurt"])}</text>'
+            f'<path class="slice s{i % 3}" data-slice="{i}" d="M{C} {C}L{x0:.2f} {y0:.2f}A{R} {R} 0 0 1 {x1:.2f} {y1:.2f}Z"/>'
+            f'<text class="t{i % 3}" transform="rotate({mid:.1f} {C} {C}) translate({C} {C - R + 12}) rotate(90)" dominant-baseline="middle">{esc(prize["scurt"])}</text>'
         )
+        px, py = point(R - 3, i * step)
+        pegs.append(f'<circle class="peg" cx="{px:.2f}" cy="{py:.2f}" r="2.4"/>')
+    for i in range(24):
+        lx, ly = point(110, i * 15 + 7.5)
+        lights.append(f'<circle class="bulb b{i % 2}" cx="{lx:.2f}" cy="{ly:.2f}" r="3.1"/>')
     wheel_svg = (
-        '<svg class="wheel" viewBox="0 0 200 200" aria-hidden="true">'
-        + "".join(slices)
-        + '<circle cx="100" cy="100" r="98" class="wheel-rim"/><circle cx="100" cy="100" r="15" class="wheel-hub"/></svg>'
+        '<svg class="wheel" viewBox="0 0 240 240" aria-hidden="true">'
+        f'<circle class="wheel-frame" cx="{C}" cy="{C}" r="117"/>'
+        f'<g class="wheel-lights">{"".join(lights)}</g>'
+        f'<g class="wheel-disc">{"".join(slices)}'
+        f'<circle class="wheel-inner" cx="{C}" cy="{C}" r="44"/>{"".join(pegs)}</g>'
+        f'<circle class="wheel-edge" cx="{C}" cy="{C}" r="{R}"/>'
+        f'<circle class="wheel-hub" cx="{C}" cy="{C}" r="25"/>'
+        f'<text class="wheel-hub-text" x="{C}" y="{C + 1}" text-anchor="middle" dominant-baseline="middle">CAF</text>'
+        '<g class="wheel-pointer"><path d="M120 30 L109 6 Q120 -2 131 6 Z"/><circle cx="120" cy="9" r="3.2"/></g>'
+        '</svg>'
     )
 
     voucher = extra["voucher"]
@@ -72,8 +92,9 @@ def build(data, esc, image, frame):
         '<div class="section-intro"><h2 id="offers-title">Pentru tine, de la noi.</h2></div>'
         '<div class="offer-grid">'
         f'<article class="offer offer-wheel"><h3>{esc(wheel["titlu"])}</h3><p>{esc(wheel["text"])}</p>'
-        f'<div class="wheel-wrap"><span class="wheel-pin" aria-hidden="true"></span>{wheel_svg}</div>'
+        f'<button type="button" class="wheel-wrap" aria-label="Învârte roata">{wheel_svg}</button>'
         '<button type="button" class="button button-dark" data-spin>Învârte roata</button>'
+        '<p class="wheel-hint">Sau apasă direct pe roată.</p>'
         '<p class="wheel-result" role="status"></p></article>'
         f'<article class="offer offer-loyalty"><h3>{esc(loyalty["titlu"])}</h3><p>{esc(loyalty["text"])}</p>'
         f'<ol class="stamps">{stamps}</ol><p class="stamp-status" role="status"></p>'

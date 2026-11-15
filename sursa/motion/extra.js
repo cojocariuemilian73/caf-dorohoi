@@ -143,12 +143,21 @@ function setupWelcome() {
 }
 
 function setupWheel() {
+  const wrap = document.querySelector(".wheel-wrap");
   const button = document.querySelector("[data-spin]");
-  const wheel = document.querySelector(".wheel");
+  const disc = document.querySelector(".wheel-disc");
+  const pointer = document.querySelector(".wheel-pointer");
   const result = document.querySelector(".wheel-result");
-  if (!button || !wheel || !config) return;
-  const slice = 360 / config.prizes.length;
-  let turned = 0;
+  const hint = document.querySelector(".wheel-hint");
+  if (!wrap || !disc || !config) return;
+  const count = config.prizes.length * 2;
+  const slice = 360 / count;
+  let angle = 0;
+  let busy = false;
+
+  const turn = (deg) => disc.setAttribute("transform", `rotate(${deg} 120 120)`);
+  // Felia aflată sub ac pentru un unghi dat.
+  const under = (deg) => Math.floor((((360 - (deg % 360)) % 360) + 360) % 360 / slice);
 
   function announce(spin) {
     result.innerHTML = "";
@@ -159,31 +168,101 @@ function setupWheel() {
     result.append("Ai câștigat: ", prize, detail);
   }
 
+  function highlight(sliceIndex) {
+    disc.querySelectorAll(".slice").forEach((el) => el.classList.toggle("is-win", Number(el.dataset.slice) === sliceIndex));
+    wrap.classList.add("is-won");
+  }
+
   function lock() {
+    wrap.disabled = true;
     button.disabled = true;
     button.textContent = "Revino mâine";
+    if (hint) hint.hidden = true;
+  }
+
+  // Boabe de cafea care sar din centru la câștig.
+  function burst() {
+    if (calm) return;
+    for (let i = 0; i < 26; i++) {
+      const bean = document.createElement("span");
+      bean.className = "bean" + (i % 3 === 0 ? " is-cream" : "");
+      wrap.append(bean);
+      const dir = Math.random() * Math.PI * 2;
+      const dist = 90 + Math.random() * 110;
+      const x = Math.cos(dir) * dist;
+      const y = Math.sin(dir) * dist;
+      const spin = (Math.random() - .5) * 720;
+      bean.animate([
+        { transform: "translate(0, 0) rotate(0deg) scale(.4)", opacity: 1 },
+        { transform: `translate(${x * .8}px, ${y * .8 - 30}px) rotate(${spin * .7}deg) scale(1)`, opacity: 1, offset: .6 },
+        { transform: `translate(${x}px, ${y + 40}px) rotate(${spin}deg) scale(.9)`, opacity: 0 }
+      ], { duration: 900 + Math.random() * 500, easing: "cubic-bezier(.2,.7,.3,1)" }).finished.then(() => bean.remove());
+    }
+  }
+
+  function tick() {
+    pointer.animate([{ transform: "rotate(-22deg)" }, { transform: "rotate(0deg)" }], { duration: 160, easing: "cubic-bezier(.2,.8,.3,1)" });
   }
 
   const saved = store.get("caf-roata");
   if (saved && saved.date === isoDay(day())) {
-    turned = 360 - (saved.index + .5) * slice;
-    wheel.style.transform = `rotate(${turned}deg)`;
+    const sliceIndex = saved.slice ?? saved.index;
+    angle = 360 - (sliceIndex + .5) * slice;
+    turn(angle);
+    highlight(sliceIndex);
     announce(saved);
     lock();
   }
 
-  button.addEventListener("click", () => {
+  function spin() {
+    if (busy || wrap.disabled) return;
+    busy = true;
     const index = crypto.getRandomValues(new Uint32Array(1))[0] % config.prizes.length;
-    const spin = { index, code: code(), date: isoDay(day()) };
-    // Câteva ture întregi, apoi felia câștigătoare se oprește sub ac.
-    turned += 360 * 5 + (360 - (index + .5) * slice - (turned % 360) + 360) % 360;
-    button.disabled = true;
+    // Fiecare premiu apare de două ori pe roată; alegem una din felii.
+    const sliceIndex = index + (Math.random() < .5 ? 0 : config.prizes.length);
+    const jitter = (Math.random() - .5) * slice * .6;
+    const target = 360 - (sliceIndex + .5) * slice + jitter;
+    const start = angle;
+    const end = start + 360 * 6 + ((target - start) % 360 + 360) % 360;
+    const record = { index, slice: sliceIndex, code: code(), date: isoDay(day()) };
     result.textContent = "";
-    wheel.style.transform = `rotate(${turned}deg)`;
-    const done = () => { store.set("caf-roata", spin); announce(spin); lock(); };
-    if (calm) done();
-    else wheel.addEventListener("transitionend", done, { once: true });
-  });
+    button.disabled = true;
+    wrap.classList.remove("is-won");
+    disc.querySelectorAll(".slice").forEach((el) => el.classList.remove("is-win"));
+
+    const finish = () => {
+      angle = end;
+      turn(angle);
+      wrap.classList.remove("is-spinning");
+      store.set("caf-roata", record);
+      highlight(sliceIndex);
+      announce(record);
+      burst();
+      lock();
+      busy = false;
+    };
+    if (calm) return finish();
+
+    wrap.classList.add("is-spinning");
+    // Pornește repede și încetinește lung, ca o roată adevărată; acul tresare la fiecare cui.
+    const duration = 5600;
+    const t0 = performance.now();
+    let last = under(start);
+    const frame = (now) => {
+      const t = Math.min(1, (now - t0) / duration);
+      const eased = 1 - Math.pow(1 - t, 4);
+      const current = start + (end - start) * eased;
+      turn(current);
+      const slot = under(current);
+      if (slot !== last) { last = slot; tick(); }
+      if (t < 1) requestAnimationFrame(frame);
+      else finish();
+    };
+    requestAnimationFrame(frame);
+  }
+
+  wrap.addEventListener("click", spin);
+  button.addEventListener("click", spin);
 }
 
 function setupLoyalty() {
