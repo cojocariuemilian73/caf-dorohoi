@@ -153,9 +153,10 @@ function setupBoard() {
 
   for (const button of buttons) {
     button.addEventListener("click", () => {
-      if (button.getAttribute("aria-pressed") === "true") return;
-      for (const other of buttons) other.setAttribute("aria-pressed", String(other === button));
-      const run = () => apply(button.dataset.filter);
+      // Un clic alege filtrul; încă un clic pe același îl scoate și arată tot meniul.
+      const off = button.getAttribute("aria-pressed") === "true";
+      for (const other of buttons) other.setAttribute("aria-pressed", String(!off && other === button));
+      const run = () => apply(off ? "toate" : button.dataset.filter);
       // Produsele se rearanjează animat, acolo unde browserul știe.
       if (document.startViewTransition && !calm.matches) document.startViewTransition(run);
       else run();

@@ -175,7 +175,7 @@ def menu_panel(category):
     )
 
 
-FILTERS = (("toate", "Toate"), ("fara-cafeina", "Fără cafeină"), ("rece", "Rece"), ("dulce", "Dulce"), ("preferat", "Preferata casei"))
+FILTERS = (("fara-cafeina", "Fără cafeină"), ("rece", "Rece"), ("dulce", "Dulce"), ("preferat", "Preferata casei"))
 DOODLES = {
     "cana": '<svg class="doodle doodle-cup" viewBox="0 0 120 100"><path pathLength="1" d="M22 40c20 2 40 2 58 0 1 10 1 18-2 26-6 14-48 14-54 0-3-8-3-16-2-26Z"/><path pathLength="1" d="M80 46c16-2 16 20-2 18"/><path pathLength="1" d="M8 84c30 8 74 8 104-1"/><path pathLength="1" d="M42 30c-7-8 7-12 0-21M58 30c-7-8 7-12 0-21"/></svg>',
     "lamaie": '<svg class="doodle doodle-lemon" viewBox="0 0 100 100"><path pathLength="1" d="M50 8a42 42 0 1 1-.1 0Z"/><path pathLength="1" d="M50 18a32 32 0 1 1-.1 0Z"/><path pathLength="1" d="M50 18v64M18 50h64M27 27l46 46M73 27 27 73"/></svg>',
@@ -191,7 +191,7 @@ def small_src(key):
 
 def menu_board():
     filters = "".join(
-        f'<button type="button" class="board-filter" data-filter="{key}" aria-pressed="{"true" if key == "toate" else "false"}">{label}</button>'
+        f'<button type="button" class="board-filter" data-filter="{key}" aria-pressed="false">{label}</button>'
         for key, label in FILTERS
     )
     groups = []
