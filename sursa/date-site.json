@@ -327,7 +327,7 @@
   },
   "extra": {
     "_nota": "Propuneri pentru patron. Apar doar pe demo.html (neindexat) până când CAF le aprobă; atunci pune \"activ\": true și apar și pe site.",
-    "activ": false,
+    "activ": true,
     "specialitati": {
       "titlu": "Specialitățile casei",
       "text": "Trei lucruri pe care le comandă oamenii din nou și din nou.",
