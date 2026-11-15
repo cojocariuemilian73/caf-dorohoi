@@ -58,6 +58,37 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
     });
   });
 
+  // 6. Derulare lină cu Lenis, doar pe dispozitivele cu mouse.
+  const desktop = gsap.matchMedia();
+  desktop.add("(pointer: fine) and (hover: hover)", () => {
+    const lenis = new Lenis({ lerp: .12, smoothWheel: true, autoRaf: false, stopInertiaOnNavigate: true, anchors: { offset: -80 } });
+    const tick = (time) => lenis.raf(time * 1000);
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+    return () => {
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+    };
+  });
+
+  addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+
+  return () => {
+    desktop.revert();
+    for (const { root, title, html } of roots) {
+      root.unmount();
+      title.innerHTML = html;
+    }
+    document.documentElement.classList.remove("has-depth");
+    gsap.set(".hero-media, .hero-media img, .hero-copy > *, .depth img", { clearProps: "all" });
+  };
+});
+
+// Efectele legate de derulare (Povestea și fereastra de la Atelier) merg și cu „animații reduse”:
+// se mișcă doar cât derulează omul, deci nu pornesc singure.
+const scrolly = gsap.matchMedia();
+scrolly.add("(min-width: 0px)", () => {
   // 5a. Povestea: textul se aprinde cuvânt cu cuvânt, iar pozele plutesc la viteze diferite.
   const storySection = document.querySelector(".story");
   const storyParagraphs = gsap.utils.toArray(".story-text .lead, .story-text .lead + p");
@@ -140,31 +171,9 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
     };
   });
 
-  // 6. Derulare lină cu Lenis, doar pe dispozitivele cu mouse.
-  const desktop = gsap.matchMedia();
-  desktop.add("(pointer: fine) and (hover: hover)", () => {
-    const lenis = new Lenis({ lerp: .12, smoothWheel: true, autoRaf: false, stopInertiaOnNavigate: true, anchors: { offset: -80 } });
-    const tick = (time) => lenis.raf(time * 1000);
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
-    return () => {
-      gsap.ticker.remove(tick);
-      lenis.destroy();
-    };
-  });
-
-  addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
-
+  ScrollTrigger.refresh();
   return () => {
-    desktop.revert();
     room.revert();
     storyParagraphs.forEach((p, i) => { p.innerHTML = storyOriginal[i]; });
-    for (const { root, title, html } of roots) {
-      root.unmount();
-      title.innerHTML = html;
-    }
-    document.documentElement.classList.remove("has-depth");
-    gsap.set(".hero-media, .hero-media img, .hero-copy > *, .depth img", { clearProps: "all" });
   };
 });

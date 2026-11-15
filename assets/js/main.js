@@ -194,7 +194,8 @@ function setupReviews() {
 function loadMotion() {
   const motion = matchMedia("(prefers-reduced-motion: no-preference)");
   function enableMotion() {
-    if (!motion.matches || select("[data-motion-script]")) return;
+    // Se încarcă mereu: efectele de derulare merg și cu animațiile reduse; restul verifică singur preferința.
+    if (select("[data-motion-script]")) return;
     const script = document.createElement("script");
     script.src = select("script[data-motion]")?.dataset.motion || "assets/js/motion.js";
     script.dataset.motionScript = "";
