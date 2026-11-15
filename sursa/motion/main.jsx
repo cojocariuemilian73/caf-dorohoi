@@ -89,13 +89,9 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
 // se mișcă doar cât derulează omul, deci nu pornesc singure.
 const scrolly = gsap.matchMedia();
 scrolly.add("(min-width: 0px)", () => {
-  // 5a. Povestea: bonul „se tipărește” o dată, când ajunge în ecran.
+  // 5a. (Secțiunea Poveste a fost scoasă; povestea stă acum în textul galeriei.)
   const storyParagraphs = [];
   const storyOriginal = [];
-  gsap.fromTo(".receipt", { clipPath: "inset(0 0 100% 0)" }, {
-    clipPath: "inset(0 0 0% 0)", duration: 1.6, ease: "steps(14)",
-    scrollTrigger: { trigger: ".receipt", start: "top 80%", once: true }
-  });
 
   // 5b. Atelierul: un carusel rotund. Pozele stau pe un cerc, ca pe o masă rotativă;
   // la derulare cercul se rotește, poza din față e mare și clară, celelalte stau în spate, mai mici și mai întunecate.
