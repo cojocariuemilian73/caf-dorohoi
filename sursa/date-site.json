@@ -483,6 +483,20 @@
         "mâinile",
         "noastre",
         "fibră"
+      ],
+      "inele": [
+        {
+          "titlu": "Atelierul",
+          "text": "ArtLegno Porte&Scale: uși, scări și parchet."
+        },
+        {
+          "titlu": "Prima cafenea",
+          "text": "Botoșani, lucrată cu mâinile noastre."
+        },
+        {
+          "titlu": "Dorohoi",
+          "text": "Deschisă pe 7 martie 2025."
+        }
       ]
     },
     "galerie": {

@@ -112,16 +112,19 @@ scrolly.add("(min-width: 0px)", () => {
     });
     gsap.fromTo(words, { opacity: .14 }, {
       opacity: 1, stagger: .06, ease: "none",
-      scrollTrigger: { trigger: ".story-text", start: "top 78%", end: "bottom 42%", scrub: true }
+      scrollTrigger: { trigger: ".story-text", start: "top 80%", end: "bottom 70%", scrub: true }
     });
-    const drift = (selector, from, to) => gsap.fromTo(selector, from, {
-      ...to, ease: "none",
-      scrollTrigger: { trigger: ".story", start: "top bottom", end: "bottom top", scrub: true }
+    // Inelele se desenează din miez spre margine, apoi apar momentele poveștii pe inelele lor.
+    const rings = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: { trigger: ".story-rings", start: "top 85%", end: "center 45%", scrub: .6 }
     });
-    drift(".story-large", { y: 70, rotate: -2.5 }, { y: -70, rotate: 1 });
-    drift(".story-small", { y: 150, rotate: 3 }, { y: -150, rotate: -3 });
-    drift(".story-third", { y: 240, rotate: 8 }, { y: -220, rotate: -2 });
-    drift(".story-year", { xPercent: -8, y: 90 }, { xPercent: 8, y: -90 });
+    rings.fromTo(".story-rings .ring", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1, stagger: .12 })
+      .fromTo(".ring-core", { scale: .6, opacity: 0 }, { scale: 1, opacity: 1, duration: .8 }, 0)
+      .fromTo(".ring-crack", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1 }, ">-1");
+    gsap.utils.toArray(".ring-dot, .ring-mark").forEach((mark, i) => {
+      rings.fromTo(mark, { opacity: 0 }, { opacity: 1, duration: .5 }, .35 + (i % 3) * .7);
+    });
   }
 
   // 5b. Atelierul: un carusel rotund. Pozele stau pe un cerc, ca pe o masă rotativă;

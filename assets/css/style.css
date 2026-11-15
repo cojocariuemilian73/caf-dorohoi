@@ -176,7 +176,7 @@ main [id], footer[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 /* 01 Povestea */
 .story-grid { display: grid; gap: clamp(48px, 7vw, 120px); align-items: center; }
 .story-text h2 { margin-bottom: clamp(24px, 3vw, 40px); }
-.story-text .lead { max-width: 30ch; font: 500 var(--fs-lg)/1.3 var(--serif); }
+.story-text .lead { max-width: 34ch; font: 500 var(--fs-md)/1.45 var(--serif); }
 .story-text .lead + p { max-width: 46ch; margin-top: 20px; color: var(--muted); }
 .story-text .text-link { margin-top: 34px; }
 .story-images { position: relative; padding-bottom: 18%; }
@@ -573,3 +573,29 @@ html.has-window .wood-pin.is-dragging { cursor: grabbing; }
 @media (hover: hover) { .board-filter[aria-pressed="false"]:hover { color: var(--chalk); } }
 .board-item p { margin-top: 4px; color: color-mix(in oklab, var(--chalk) 72%, transparent); font: 500 var(--fs-md)/1.3 "Caveat", var(--serif); letter-spacing: .01em; }
 @media (max-width: 899px) { .board-filters::before { flex-basis: 100%; margin: 0 0 4px; } .board-filter { padding-inline: 10px; } .board-filter + .board-filter::before { content: none; } .board-filter:first-of-type { padding-left: 0; } .board-filter:first-of-type::after { left: 0; } }
+
+/* Povestea ca inele de copac. */
+.story-rings { position: relative; width: min(100%, 640px); aspect-ratio: 1; margin-inline: auto; }
+.rings { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ring { fill: none; stroke: color-mix(in oklab, var(--oak) calc(30% + var(--k) * 3%), transparent); stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.ring-crack { fill: none; stroke: color-mix(in oklab, var(--paper) 80%, #000); stroke-width: 3; stroke-dasharray: 1; }
+.ring-core { position: absolute; left: 50%; top: 50%; width: 27%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; overflow: hidden; outline: 3px solid var(--oak); outline-offset: 6px; box-shadow: 0 20px 50px -10px #000c; }
+.ring-core picture, .ring-core img { width: 100%; height: 100%; object-fit: cover; }
+.ring-marks { position: absolute; inset: 0; list-style: none; margin: 0; padding: 0; }
+.ring-dots { position: absolute; inset: 0; }
+.ring-dot { position: absolute; left: var(--x); top: var(--y); translate: -50% -50%; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--oak); color: var(--paper); font: 700 var(--fs-xs)/1 var(--sans); box-shadow: 0 0 0 7px color-mix(in oklab, var(--oak) 22%, transparent); }
+.ring-label { display: grid; gap: 2px; }
+.ring-label strong { color: var(--ink); font: 600 var(--fs-md)/1.15 var(--serif); }
+.ring-label span { color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
+@media (min-width: 900px) {
+  .ring-label { position: absolute; top: var(--y); width: 19ch; translate: 0 -50%; padding: 8px 12px; border-radius: 10px; background: color-mix(in oklab, var(--paper) 88%, transparent); }
+  .ring-mark.is-right .ring-label { left: calc(var(--x) + 28px); }
+  .ring-mark.is-left .ring-label { right: calc(100% - var(--x) + 28px); text-align: right; }
+}
+@media (max-width: 899px) {
+  .story-rings { margin-bottom: 250px; }
+  .ring-marks { top: 100%; bottom: auto; display: grid; gap: 16px; padding-top: 28px; counter-reset: ring; }
+  .ring-mark { position: relative; padding-left: 44px; counter-increment: ring; }
+  .ring-mark::before { content: counter(ring); position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--oak); color: var(--paper); font: 700 var(--fs-xs)/1 var(--sans); }
+}
+
