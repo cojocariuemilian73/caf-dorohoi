@@ -417,6 +417,14 @@ values = {
     "storyLarge": frame(TEXT["poveste"]["imagineMare"], " story-large", "(min-width: 900px) 40vw, 80vw"),
     "storySmall": frame(TEXT["poveste"]["imagineMica"], " story-small", "(min-width: 900px) 24vw, 45vw"),
     "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(TEXT["galerie"]["imagini"])),
+    "woodWindow": (
+        '<div class="wood-window" aria-hidden="true">'
+        + "".join(f'<div class="ww-frame" style="--i:{i}">{image(key, sizes="100vw")}</div>' for i, key in enumerate(TEXT["galerie"]["imagini"]))
+        + '<div class="ww-shade"></div>'
+        + f'<div class="ww-copy"><p class="ww-title">{rich(TEXT["galerie"]["titlu"])}</p><p class="ww-text">{rich(TEXT["galerie"]["text"])}</p></div>'
+        + f'<p class="ww-count"><span class="ww-now">01</span> / {len(TEXT["galerie"]["imagini"]):02d}</p>'
+        + '</div>'
+    ),
     "menuTabs": "".join(menu_tab(row, i) for i, row in enumerate(DATA["meniu"])),
     "menuPanels": "".join(menu_panel(row) for row in DATA["meniu"]),
     "menuBoard": menu_board(),

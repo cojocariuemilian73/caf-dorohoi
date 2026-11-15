@@ -447,3 +447,25 @@ body {
   html.has-rail .wood-rail { overflow: hidden; scroll-snap-type: none; }
   html.has-rail .wood-figure img { scale: 1.14; }
 }
+
+/* 02 Atelierul ca o fereastră care se deschide (doar cu animații pornite). */
+.wood-window { display: none; }
+html.has-window .wood { padding-block: 0; }
+html.has-window .wood-pin { position: relative; height: 100vh; height: 100svh; overflow: hidden; }
+html.has-window .wood-layout { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+html.has-window .wood-window { display: block; position: absolute; inset: 0; }
+.ww-frame { position: absolute; inset: 0; overflow: hidden; clip-path: inset(50% 50% 50% 50% round 24px); will-change: clip-path; }
+.ww-frame picture, .ww-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ww-frame img { will-change: transform; }
+.ww-shade { position: absolute; inset: 0; z-index: 8; background: linear-gradient(90deg, #1f1612d9 0%, #1f161280 38%, #1f161200 70%), linear-gradient(0deg, #1f1612b3, #1f161200 40%); opacity: 0; pointer-events: none; }
+.ww-copy { position: absolute; z-index: 9; left: var(--edge); bottom: clamp(48px, 10vh, 110px); max-width: min(560px, 80vw); color: var(--cream); opacity: 0; }
+.ww-title { font: 600 clamp(3rem, 7vw, 6.4rem)/.95 var(--serif); letter-spacing: -.02em; text-wrap: balance; }
+.ww-title br { display: none; }
+.ww-text { margin-top: 18px; max-width: 42ch; color: color-mix(in oklab, var(--cream) 82%, transparent); font-size: clamp(1rem, 1.3vw, 1.15rem); }
+.ww-count { position: absolute; z-index: 9; right: var(--edge); bottom: clamp(48px, 10vh, 110px); color: var(--cream); font: 600 .95rem var(--sans); letter-spacing: .12em; opacity: 0; font-variant-numeric: tabular-nums; }
+.ww-now { font: 600 clamp(2.4rem, 4vw, 3.4rem)/1 var(--serif); letter-spacing: 0; }
+@media (max-width: 899px) {
+  .ww-copy { bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .ww-count { top: 88px; bottom: auto; }
+  .ww-shade { background: linear-gradient(0deg, #1f1612e6 0%, #1f161299 45%, #1f161200 75%); }
+}

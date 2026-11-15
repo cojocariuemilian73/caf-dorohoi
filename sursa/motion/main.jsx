@@ -58,31 +58,50 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
     });
   });
 
-  // 5b. Atelierul: secțiunea stă pe loc, iar fotografiile trec de la dreapta la stânga.
-  const wide = gsap.matchMedia();
-  wide.add("(min-width: 900px)", () => {
-    const rail = document.querySelector(".wood-rail");
-    const strip = document.querySelector(".wood-strip");
-    if (!rail || !strip) return;
-    document.documentElement.classList.add("has-rail");
-    const distance = () => Math.max(0, strip.scrollWidth - rail.clientWidth);
-    const slide = gsap.to(strip, {
-      x: () => -distance(), ease: "none",
+  // 5b. Atelierul: o fereastră mică în mijloc crește până umple ecranul, ca și cum intri pe ușă;
+  // apoi fiecare poză următoare se deschide din centru peste cea de dinainte.
+  const room = gsap.matchMedia();
+  room.add("(min-width: 0px)", () => {
+    const stage = document.querySelector(".wood-window");
+    const frames = gsap.utils.toArray(".ww-frame");
+    if (!stage || frames.length < 2) return;
+    document.documentElement.classList.add("has-window");
+    const now = stage.querySelector(".ww-now");
+    const wideScreen = innerWidth >= 900;
+    const start = wideScreen ? "inset(30% 35% 30% 35% round 24px)" : "inset(32% 18% 32% 18% round 20px)";
+    gsap.set(frames[0], { clipPath: start });
+    gsap.set(frames.slice(1), { clipPath: "inset(50% 50% 50% 50% round 24px)" });
+    gsap.set(frames.map((f) => f.querySelector("img")), { scale: 1.3 });
+
+    const steps = frames.length;
+    const story = gsap.timeline({
+      defaults: { ease: "none" },
       scrollTrigger: {
-        trigger: ".wood-pin", start: "top top", end: () => "+=" + distance() * 1.1,
-        pin: true, scrub: .6, invalidateOnRefresh: true
+        trigger: ".wood-pin", start: "top top", end: () => "+=" + innerHeight * (steps + 1),
+        pin: true, scrub: .7, invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const shown = Math.min(steps, 1 + Math.floor(Math.max(0, self.progress * (steps + 1) - 1.4)));
+          const label = String(Math.max(1, shown)).padStart(2, "0");
+          if (now.textContent !== label) now.textContent = label;
+        }
       }
     });
-    // Fiecare poză alunecă puțin în ramă, în sens invers, ca să pară adâncă.
-    strip.querySelectorAll(".wood-figure img").forEach((image) => {
-      gsap.fromTo(image, { xPercent: 5 }, {
-        xPercent: -5, ease: "none",
-        scrollTrigger: { trigger: image.closest(".wood-figure"), containerAnimation: slide, start: "left right", end: "right left", scrub: true }
-      });
+    // 1. Fereastra se deschide.
+    story.to(frames[0], { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 1.2, ease: "power2.inOut" })
+      .to(frames[0].querySelector("img"), { scale: 1, duration: 1.2, ease: "power2.inOut" }, "<")
+      .to(".ww-shade", { opacity: 1, duration: .4 }, "-=.4")
+      .fromTo(".ww-copy", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .4 }, "<")
+      .to(".ww-count", { opacity: 1, duration: .3 }, "<");
+    // 2. Pozele următoare cresc din centru, una câte una.
+    frames.slice(1).forEach((frame) => {
+      story.to(frame, { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 1, ease: "power2.inOut" }, "+=.15")
+        .to(frame.querySelector("img"), { scale: 1, duration: 1, ease: "power2.inOut" }, "<");
     });
+    story.to({}, { duration: .3 });
+
     return () => {
-      document.documentElement.classList.remove("has-rail");
-      gsap.set(".wood-strip, .wood-figure img", { clearProps: "all" });
+      document.documentElement.classList.remove("has-window");
+      gsap.set(".ww-frame, .ww-frame img, .ww-shade, .ww-copy, .ww-count", { clearProps: "all" });
     };
   });
 
@@ -104,7 +123,7 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
 
   return () => {
     desktop.revert();
-    wide.revert();
+    room.revert();
     for (const { root, title, html } of roots) {
       root.unmount();
       title.innerHTML = html;
