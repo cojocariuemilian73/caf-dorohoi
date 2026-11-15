@@ -216,13 +216,13 @@ function setupHeader() {
   addEventListener("scroll", update, { passive: true });
 }
 
-// Titlul de sus: rândurile apar pe rând, încet, apoi cuvintele-cheie se fac aurii.
+// Titlul de sus se scrie singur, literă cu literă, ca la mașina de scris; cuvintele-cheie se fac aurii când sunt gata.
 function setupSteamTitle() {
   const title = select(".hero h1");
   if (!title) return;
   const keys = (title.dataset.keys || "").toLowerCase().split(",").filter(Boolean);
   title.setAttribute("aria-label", title.textContent.replace(/\s+/g, " ").trim());
-  const words = [];
+  const letters = [];
   const split = (node) => {
     for (const child of [...node.childNodes]) {
       if (child.nodeType !== 3) { split(child); continue; }
@@ -235,25 +235,41 @@ function setupSteamTitle() {
         word.setAttribute("aria-hidden", "true");
         const bare = part.toLowerCase().replace(/[^\p{L}]/gu, "");
         if (keys.includes(bare)) word.classList.add("is-key");
-        word.textContent = part;
-        words.push(word);
+        for (const char of part) {
+          const letter = document.createElement("span");
+          letter.className = "tl";
+          letter.textContent = char;
+          word.append(letter);
+          letters.push(letter);
+        }
         frag.append(word);
       }
       child.replaceWith(frag);
     }
   };
   split(title);
-  // Fiecare cuvânt află pe ce rând a căzut, ca rândurile să apară pe rând.
-  const tops = [...new Set(words.map((w) => w.offsetTop))].sort((a, b) => a - b);
-  const seen = {};
-  words.forEach((w) => {
-    const line = tops.indexOf(w.offsetTop);
-    w.style.setProperty("--line", line);
-    w.style.setProperty("--word", seen[line] = (seen[line] ?? -1) + 1);
-  });
-  title.style.setProperty("--lines", tops.length);
-  title.parentElement.style.setProperty("--hero-lines", tops.length);
+  const cursor = document.createElement("span");
+  cursor.className = "type-cursor";
+  cursor.setAttribute("aria-hidden", "true");
   title.classList.add("is-steam");
+
+  // Ritmul: o literă la ~85 ms, cu o pauză scurtă după fiecare cuvânt și una mai lungă după virgulă.
+  let at = 700;
+  const plan = letters.map((letter) => {
+    const when = at;
+    const char = letter.textContent;
+    const endOfWord = !letter.nextSibling;
+    at += 85 + (endOfWord ? 110 : 0) + (/[,.]/.test(char) ? 260 : 0);
+    return { letter, when, endOfWord };
+  });
+  title.parentElement.style.setProperty("--type-end", at + "ms");
+  letters[0].before(cursor);
+  plan.forEach(({ letter, when, endOfWord }) => setTimeout(() => {
+    letter.classList.add("is-on");
+    letter.after(cursor);
+    if (endOfWord && letter.parentElement.classList.contains("is-key")) letter.parentElement.classList.add("is-gold");
+  }, when));
+  setTimeout(() => cursor.classList.add("is-done"), at + 2400);
 }
 
 setupSteamTitle();

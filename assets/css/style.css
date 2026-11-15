@@ -517,14 +517,18 @@ html.has-window .wood-window { display: block; position: absolute; inset: 0; }
   .ww-copy { bottom: calc(130px + env(safe-area-inset-bottom)); }
 }
 
-/* Titlul de sus: mai mic; apare încet, rând după rând și cuvânt după cuvânt, apoi butoanele. */
+/* Titlul de sus: mai mic; se scrie literă cu literă, cu un cursor care clipește, apoi apar butoanele. */
 .hero h1 { font-size: clamp(2.6rem, 6vw, 5.8rem); line-height: .95; }
 .hero h1.is-steam { animation: none; }
-.hero h1 .sw { --at: calc(.8s + var(--line, 0) * 1.5s + var(--word, 0) * .32s); display: inline-block; white-space: nowrap; opacity: 0; animation: line-in 2s cubic-bezier(.25, .1, .25, 1) var(--at) forwards; }
-.hero h1 .sw.is-key { animation: line-in 2s cubic-bezier(.25, .1, .25, 1) var(--at) forwards, gold-on 2s ease calc(1.6s + var(--lines, 1) * 1.5s) forwards; }
-.hero-copy:has(h1.is-steam) > :not(h1) { animation-delay: calc(1.4s + var(--hero-lines, 2) * 1.5s); }
-@keyframes line-in { 0% { opacity: 0; transform: translateY(22px); filter: blur(10px); } 100% { opacity: 1; transform: none; filter: blur(0); } }
-@keyframes gold-on { to { color: #e6bd7d; } }
+.hero h1 .sw { display: inline-block; white-space: nowrap; transition: color 1.2s ease; }
+.hero h1 .sw.is-gold { color: #e6bd7d; }
+.hero h1 .tl { visibility: hidden; }
+.hero h1 .tl.is-on { visibility: visible; }
+.type-cursor { display: inline-block; width: .055em; height: .82em; margin-left: .04em; vertical-align: -.04em; background: #e6bd7d; animation: caret 1s steps(1) infinite; }
+.type-cursor.is-done { animation: caret-out .6s ease forwards; }
+@keyframes caret { 50% { opacity: 0; } }
+@keyframes caret-out { to { opacity: 0; } }
+.hero-copy:has(h1.is-steam) > :not(h1) { animation-delay: calc(var(--type-end, 3s) + .2s); }
 /* Titlul stă ascuns până îl pregătește scriptul, ca să nu apară întreg o clipă. */
 .js .hero h1:not(.is-steam) { visibility: hidden; }
 
