@@ -484,20 +484,32 @@
         "noastre",
         "fibră"
       ],
-      "inele": [
-        {
-          "titlu": "Atelierul",
-          "text": "ArtLegno Porte&Scale: uși, scări și parchet."
-        },
-        {
-          "titlu": "Prima cafenea",
-          "text": "Botoșani, lucrată cu mâinile noastre."
-        },
-        {
-          "titlu": "Dorohoi",
-          "text": "Deschisă pe 7 martie 2025."
-        }
-      ]
+      "bon": {
+        "data": "07.03.2025",
+        "linii": [
+          [
+            "Atelier ArtLegno",
+            "uși, scări, parchet"
+          ],
+          [
+            "Prima cafenea",
+            "Botoșani"
+          ],
+          [
+            "Bar, mese, pereți",
+            "din atelier"
+          ],
+          [
+            "Lemnul",
+            "la vedere"
+          ]
+        ],
+        "total": [
+          "TOTAL",
+          "făcut cu mâna"
+        ],
+        "subsol": "Mulțumim! Vă mai așteptăm."
+      }
     },
     "galerie": {
       "titlu": "Fiecare masă|are o poveste.",

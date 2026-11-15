@@ -89,43 +89,13 @@ preferences.add("(prefers-reduced-motion: no-preference)", () => {
 // se mișcă doar cât derulează omul, deci nu pornesc singure.
 const scrolly = gsap.matchMedia();
 scrolly.add("(min-width: 0px)", () => {
-  // 5a. Povestea: textul se aprinde cuvânt cu cuvânt, iar pozele plutesc la viteze diferite.
-  const storySection = document.querySelector(".story");
-  const storyParagraphs = gsap.utils.toArray(".story-text .lead, .story-text .lead + p");
-  const storyOriginal = storyParagraphs.map((p) => p.innerHTML);
-  if (storySection && storyParagraphs.length) {
-    const keys = (storySection.dataset.keys || "").toLowerCase().split(",").filter(Boolean);
-    const words = [];
-    storyParagraphs.forEach((p) => {
-      const parts = p.textContent.split(/(\s+)/);
-      p.textContent = "";
-      for (const part of parts) {
-        if (!part.trim()) { p.append(part); continue; }
-        const span = document.createElement("span");
-        span.className = "w";
-        span.textContent = part;
-        const bare = part.toLowerCase().replace(/[^\p{L}]/gu, "");
-        if (keys.some((key) => bare === key.toLowerCase())) span.classList.add("is-key");
-        p.append(span);
-        words.push(span);
-      }
-    });
-    gsap.fromTo(words, { opacity: .14 }, {
-      opacity: 1, stagger: .06, ease: "none",
-      scrollTrigger: { trigger: ".story-text", start: "top 80%", end: "bottom 70%", scrub: true }
-    });
-    // Inelele se desenează din miez spre margine, apoi apar momentele poveștii pe inelele lor.
-    const rings = gsap.timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: { trigger: ".story-rings", start: "top 85%", end: "center 45%", scrub: .6 }
-    });
-    rings.fromTo(".story-rings .ring", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1, stagger: .12 })
-      .fromTo(".ring-core", { scale: .6, opacity: 0 }, { scale: 1, opacity: 1, duration: .8 }, 0)
-      .fromTo(".ring-crack", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1 }, ">-1");
-    gsap.utils.toArray(".ring-dot, .ring-mark").forEach((mark, i) => {
-      rings.fromTo(mark, { opacity: 0 }, { opacity: 1, duration: .5 }, .35 + (i % 3) * .7);
-    });
-  }
+  // 5a. Povestea: bonul „se tipărește” o dată, când ajunge în ecran.
+  const storyParagraphs = [];
+  const storyOriginal = [];
+  gsap.fromTo(".receipt", { clipPath: "inset(0 0 100% 0)" }, {
+    clipPath: "inset(0 0 0% 0)", duration: 1.6, ease: "steps(14)",
+    scrollTrigger: { trigger: ".receipt", start: "top 80%", once: true }
+  });
 
   // 5b. Atelierul: un carusel rotund. Pozele stau pe un cerc, ca pe o masă rotativă;
   // la derulare cercul se rotește, poza din față e mare și clară, celelalte stau în spate, mai mici și mai întunecate.

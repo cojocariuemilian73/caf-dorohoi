@@ -574,28 +574,25 @@ html.has-window .wood-pin.is-dragging { cursor: grabbing; }
 .board-item p { margin-top: 4px; color: color-mix(in oklab, var(--chalk) 72%, transparent); font: 500 var(--fs-md)/1.3 "Caveat", var(--serif); letter-spacing: .01em; }
 @media (max-width: 899px) { .board-filters::before { flex-basis: 100%; margin: 0 0 4px; } .board-filter { padding-inline: 10px; } .board-filter + .board-filter::before { content: none; } .board-filter:first-of-type { padding-left: 0; } .board-filter:first-of-type::after { left: 0; } }
 
-/* Povestea ca inele de copac. */
-.story-rings { position: relative; width: min(100%, 640px); aspect-ratio: 1; margin-inline: auto; }
-.rings { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.ring { fill: none; stroke: color-mix(in oklab, var(--oak) calc(30% + var(--k) * 3%), transparent); stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
-.ring-crack { fill: none; stroke: color-mix(in oklab, var(--paper) 80%, #000); stroke-width: 3; stroke-dasharray: 1; }
-.ring-core { position: absolute; left: 50%; top: 50%; width: 27%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; overflow: hidden; outline: 3px solid var(--oak); outline-offset: 6px; box-shadow: 0 20px 50px -10px #000c; }
-.ring-core picture, .ring-core img { width: 100%; height: 100%; object-fit: cover; }
-.ring-marks { position: absolute; inset: 0; list-style: none; margin: 0; padding: 0; }
-.ring-dots { position: absolute; inset: 0; }
-.ring-dot { position: absolute; left: var(--x); top: var(--y); translate: -50% -50%; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--oak); color: var(--paper); font: 700 var(--fs-xs)/1 var(--sans); box-shadow: 0 0 0 7px color-mix(in oklab, var(--oak) 22%, transparent); }
-.ring-label { display: grid; gap: 2px; }
-.ring-label strong { color: var(--ink); font: 600 var(--fs-md)/1.15 var(--serif); }
-.ring-label span { color: var(--muted); font-size: var(--fs-xs); line-height: 1.4; }
-@media (min-width: 900px) {
-  .ring-label { position: absolute; top: var(--y); width: 19ch; translate: 0 -50%; padding: 8px 12px; border-radius: 10px; background: color-mix(in oklab, var(--paper) 88%, transparent); }
-  .ring-mark.is-right .ring-label { left: calc(var(--x) + 28px); }
-  .ring-mark.is-left .ring-label { right: calc(100% - var(--x) + 28px); text-align: right; }
-}
-@media (max-width: 899px) {
-  .story-rings { margin-bottom: 250px; }
-  .ring-marks { top: 100%; bottom: auto; display: grid; gap: 16px; padding-top: 28px; counter-reset: ring; }
-  .ring-mark { position: relative; padding-left: 44px; counter-increment: ring; }
-  .ring-mark::before { content: counter(ring); position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--oak); color: var(--paper); font: 700 var(--fs-xs)/1 var(--sans); }
-}
+/* Povestea ca bon de casă: hârtie albă, scris de casă de marcat, margini zimțate. */
+.receipt { --rc-ink: #2a211c; position: relative; width: min(100%, 400px); margin: 0 auto; padding: 34px 30px 26px; background: #f4efe6; color: var(--rc-ink); font-family: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace; font-size: var(--fs-xs); line-height: 1.55; rotate: 2deg; box-shadow: 0 40px 70px -30px #000e;
+  --zig: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat, conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 7px repeat-x;
+  mask: linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat, conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 7px repeat-x; }
+.rc-brand { display: grid; justify-items: center; gap: 2px; text-align: center; }
+.rc-brand strong { font: 700 var(--fs-xl)/1 var(--sans); letter-spacing: -.06em; }
+.rc-brand span { font-size: var(--fs-xs); letter-spacing: .12em; }
+.rc-brand .wordmark-text, .receipt .wordmark { color: var(--rc-ink); }
+.rc-brand > * { color: var(--rc-ink); }
+.rc-head { margin-top: 10px; padding-bottom: 14px; border-bottom: 1.5px dashed #2a211c66; text-align: center; text-transform: uppercase; letter-spacing: .04em; }
+.rc-lines { display: grid; gap: 8px; margin: 16px 0 0; padding: 0 0 16px; list-style: none; border-bottom: 1.5px dashed #2a211c66; }
+.rc-line { display: flex; align-items: baseline; gap: 8px; }
+.rc-line i { flex: 1; border-bottom: 2px dotted #2a211c55; translate: 0 -4px; }
+.rc-line span:last-child { text-align: right; }
+.rc-total { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; font-size: var(--fs-sm); font-weight: 700; letter-spacing: .04em; }
+.rc-foot { margin-top: 18px; text-align: center; }
+.rc-bars { display: flex; justify-content: center; align-items: stretch; gap: 2px; height: 44px; margin-top: 16px; }
+.rc-bars span { width: var(--w); background: var(--rc-ink); }
+.story-text .lead { color: var(--ink); }
+@media (max-width: 899px) { .receipt { rotate: 0deg; padding-inline: 22px; } }
 

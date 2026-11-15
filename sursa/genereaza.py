@@ -182,40 +182,25 @@ DOODLES = {
 }
 
 
-def story_rings():
-    """Felia de trunchi: inele ușor neregulate (desenate determinist), miezul cu o poză și momentele poveștii."""
-    import math
-    rings, c = [], 400
-    for i in range(17):
-        base = 118 + i * 16.5
-        pts = []
-        for k in range(73):
-            t = k / 72 * 2 * math.pi
-            r = base * (1 + .022 * math.sin(3 * t + i * .7) + .014 * math.sin(5 * t + i * 1.9) + .008 * math.sin(9 * t + i))
-            pts.append(f"{c + r * math.cos(t):.1f},{c + r * math.sin(t):.1f}")
-        width = 2.6 if i % 4 == 3 else 1.2
-        rings.append(f'<path class="ring" pathLength="1" style="--k:{i}" stroke-width="{width}" d="M{" L".join(pts)}Z"/>')
-    cracks = '<path class="ring-crack" pathLength="1" d="M400 400 L708 330 M400 400 L250 690"/>'
-    marks, dots = [], []
-    for n, (moment, ring, angle) in enumerate(zip(TEXT["poveste"].get("inele", []), (6, 11, 16), (-55, 205, 100))):
-        r = 118 + ring * 16.5
-        x = 50 + r * math.cos(math.radians(angle)) / 8
-        y = 50 + r * math.sin(math.radians(angle)) / 8
-        dots.append(
-            f'<span class="ring-dot" style="--x:{x:.1f}%;--y:{y:.1f}%">{n + 1}</span>'
-        )
-        marks.append(
-            f'<li class="ring-mark {"is-right" if x >= 50 else "is-left"}" style="--x:{x:.1f}%;--y:{y:.1f}%">'
-            f'<span class="ring-label"><strong>{esc(moment["titlu"])}</strong><span>{esc(moment["text"])}</span></span></li>'
-        )
-    core = image(TEXT["poveste"]["imagineMare"], sizes="(min-width: 900px) 220px, 30vw")
+def story_receipt():
+    """Bonul de casă: antetul cafenelei, câteva rânduri din poveste cu puncte până la preț, totalul și un cod de bare."""
+    bon = TEXT["poveste"].get("bon")
+    if not bon:
+        return ""
+    place = DATA["locatii"][0]
+    line = lambda left, right, cls="": (
+        f'<li class="rc-line{cls}"><span>{esc(left)}</span><i aria-hidden="true"></i><span>{esc(right)}</span></li>'
+    )
+    bars = "".join(f'<span style="--w:{w}px"></span>' for w in (2, 1, 3, 1, 1, 2, 4, 1, 2, 1, 3, 2, 1, 1, 4, 2, 1, 3, 1, 2, 2, 1, 3, 1, 1, 2, 4, 1, 2, 1))
     return (
-        '<div class="story-rings">'
-        f'<svg class="rings" viewBox="0 0 800 800" aria-hidden="true">{"".join(rings)}{cracks}</svg>'
-        f'<div class="ring-core">{core}</div>'
-        f'<div class="ring-dots" aria-hidden="true">{"".join(dots)}</div>'
-        f'<ol class="ring-marks">{"".join(marks)}</ol>'
-        '</div>'
+        '<figure class="receipt" aria-label="Povestea CAF, ca un bon de casă">'
+        f'<p class="rc-brand"><strong>{esc(TEXT["logo"]["mare"])}</strong><span>{esc(TEXT["logo"]["mic"])}</span></p>'
+        f'<p class="rc-head">{esc(place["adresa"])}, {esc(place["oras"])}<br>Deschis: {esc(bon["data"])}</p>'
+        f'<ol class="rc-lines">{"".join(line(l, r) for l, r in bon["linii"])}</ol>'
+        f'<p class="rc-total"><span>{esc(bon["total"][0])}</span><span>{esc(bon["total"][1])}</span></p>'
+        f'<p class="rc-foot">{esc(bon["subsol"])}</p>'
+        f'<div class="rc-bars" aria-hidden="true">{bars}</div>'
+        '</figure>'
     )
 
 
@@ -452,7 +437,7 @@ values = {
     "mapD": esc(links["harta"] or map_embed(dorohoi)),
     "mapB": esc(map_embed(botosani)),
     "storyLarge": frame(TEXT["poveste"]["imagineMare"], " story-large", "(min-width: 900px) 40vw, 80vw"),
-    "storyRings": story_rings(),
+    "storyRings": story_receipt(),
     "storySmall": frame(TEXT["poveste"]["imagineMica"], " story-small", "(min-width: 900px) 24vw, 45vw"),
     "storyThird": frame(TEXT["poveste"]["imagineTrei"], " story-third", "(min-width: 900px) 16vw, 30vw") if TEXT["poveste"].get("imagineTrei") else "",
     "storyYear": f'<span class="story-year" aria-hidden="true">{esc(TEXT["poveste"].get("an", ""))}</span>' if TEXT["poveste"].get("an") else "",
