@@ -245,8 +245,14 @@ function setupSteamTitle() {
   split(title);
   // Fiecare cuvânt află pe ce rând a căzut, ca rândurile să apară pe rând.
   const tops = [...new Set(words.map((w) => w.offsetTop))].sort((a, b) => a - b);
-  words.forEach((w) => w.style.setProperty("--line", tops.indexOf(w.offsetTop)));
+  const seen = {};
+  words.forEach((w) => {
+    const line = tops.indexOf(w.offsetTop);
+    w.style.setProperty("--line", line);
+    w.style.setProperty("--word", seen[line] = (seen[line] ?? -1) + 1);
+  });
   title.style.setProperty("--lines", tops.length);
+  title.parentElement.style.setProperty("--hero-lines", tops.length);
   title.classList.add("is-steam");
 }
 
