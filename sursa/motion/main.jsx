@@ -124,7 +124,8 @@ scrolly.add("(min-width: 0px)", () => {
     drift(".story-year", { xPercent: -8, y: 90 }, { xPercent: 8, y: -90 });
   }
 
-  // 5b. Atelierul: printurile stau întinse pe masă; la derulare se strâng pe rând într-un teanc în dreapta.
+  // 5b. Atelierul: un carusel rotund. Pozele stau pe un cerc, ca pe o masă rotativă;
+  // la derulare cercul se rotește, poza din față e mare și clară, celelalte stau în spate, mai mici și mai întunecate.
   const room = gsap.matchMedia();
   room.add("(min-width: 0px)", () => {
     const stage = document.querySelector(".wood-window");
@@ -132,55 +133,43 @@ scrolly.add("(min-width: 0px)", () => {
     if (!stage || frames.length < 2) return;
     document.documentElement.classList.add("has-window");
     const wide = innerWidth >= 900;
-    // Unde stă fiecare print pe „masă”, față de locul lui din teanc.
-    const spots = wide
-      ? [{ x: -42, y: -6, r: -9 }, { x: -14, y: 8, r: 7 }, { x: 13, y: -4, r: -5 }]
-      : [{ x: -20, y: 0, r: -9 }, { x: 18, y: 16, r: 8 }, { x: -6, y: 32, r: -5 }];
-    const spot = (i) => spots[i % spots.length];
-    // Locul din teanc (ușor deplasat și înclinat) vine din variabilele CSS ale fiecărui print.
-    const rest = frames.map((frame) => {
-      const css = getComputedStyle(frame);
-      const k = wide ? 1 : 1 / 3;
-      return {
-        x: parseFloat(css.getPropertyValue("--dx")) * k || 0,
-        y: parseFloat(css.getPropertyValue("--dy")) * k || 0,
-        r: parseFloat(css.getPropertyValue("--rot")) * (wide ? 1 : .6) || 0
-      };
-    });
-    frames.forEach((frame, i) => gsap.set(frame, {
-      xPercent: -50, yPercent: wide ? -50 : 0, transformOrigin: "50% 50%",
-      x: () => rest[i].x + innerWidth * spot(i).x / 100, y: () => rest[i].y + innerHeight * spot(i).y / 100,
-      rotation: spot(i).r, scale: wide ? .5 : .52, filter: "brightness(1)"
-    }));
-    gsap.set(".ww-copy", { opacity: 0, y: 40 });
+    const count = frames.length;
+    const step = 360 / count;
+    const tilt = frames.map((frame) => parseFloat(getComputedStyle(frame).getPropertyValue("--rot")) * (wide ? .6 : .4) || 0);
+    const turn = { angle: 0 };
+    const render = () => {
+      const radius = wide ? Math.min(270, innerWidth * .14) : innerWidth * .3;
+      frames.forEach((frame, i) => {
+        const a = (i * step + turn.angle) * Math.PI / 180;
+        const front = (Math.cos(a) + 1) / 2;            // 1 = în față, 0 = în spate
+        gsap.set(frame, {
+          xPercent: -50, yPercent: wide ? -50 : 0,
+          x: Math.sin(a) * radius, y: (1 - front) * (wide ? -30 : -14),
+          rotationY: Math.sin(a) * -28, rotation: tilt[i] * front,
+          scale: .52 + .48 * front, zIndex: Math.round(front * 100),
+          filter: `brightness(${(.35 + .65 * front).toFixed(3)})`, transformPerspective: 1400
+        });
+      });
+    };
+    render();
+    gsap.set(".ww-copy", { opacity: 1, y: 0 });
 
-    const steps = frames.length;
     const story = gsap.timeline({
-      defaults: { ease: "power2.inOut" },
+      defaults: { ease: "none" },
       scrollTrigger: {
-        trigger: ".wood-pin", start: "top top", end: () => "+=" + innerHeight * (steps + .6),
-        pin: true, scrub: .7, invalidateOnRefresh: true
+        trigger: ".wood-pin", start: "top top", end: () => "+=" + innerHeight * count,
+        pin: true, scrub: .8, invalidateOnRefresh: true, onRefresh: render
       }
     });
-    story.to({}, { duration: .25 });
-    frames.forEach((frame, i) => {
-      story.to(frame, { x: rest[i].x, y: rest[i].y, rotation: rest[i].r, scale: 1, duration: 1 }, i ? "+=.1" : ">");
-      // Pozele de dinainte se retrag în spate: mai mici, mai sus și mai întunecate, ca să se vadă clar doar cea nouă.
-      frames.slice(0, i).forEach((back, j) => {
-        const depth = i - j;
-        story.to(back, {
-          x: rest[j].x + (wide ? 70 : 18) * depth, y: rest[j].y - (wide ? 34 : 14) * depth,
-          rotation: rest[j].r + 3 * depth, scale: 1 - .1 * depth,
-          filter: `brightness(${Math.max(.25, .55 - .15 * (depth - 1))})`, duration: 1
-        }, "<");
-      });
-      if (i === 0) story.to(".ww-copy", { opacity: 1, y: 0, duration: .5, ease: "power2.out" }, "<+=.3");
-    });
     story.to({}, { duration: .3 });
+    for (let i = 1; i < count; i++) {
+      story.to(turn, { angle: -step * i, duration: 1, ease: "power2.inOut", onUpdate: render });
+      story.to({}, { duration: .35 });
+    }
 
     return () => {
       document.documentElement.classList.remove("has-window");
-      gsap.set(".ww-frame", { clearProps: "transform,filter" });
+      gsap.set(".ww-frame", { clearProps: "transform,filter,zIndex" });
       gsap.set(".ww-shade, .ww-copy", { clearProps: "all" });
     };
   });

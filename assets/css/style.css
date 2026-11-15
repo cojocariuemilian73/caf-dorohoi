@@ -536,3 +536,6 @@ html.has-window .wood-window { display: block; position: absolute; inset: 0; }
 .ww-frame { clip-path: none; will-change: transform; }
 html.has-window .ww-frame { translate: none; rotate: none; }
 .ww-frame img { will-change: auto; }
+/* Textul galeriei stă mereu deasupra pozelor care se rotesc. */
+.ww-copy { z-index: 150; }
+@media (min-width: 900px) { .ww-frame { left: 67%; } }
