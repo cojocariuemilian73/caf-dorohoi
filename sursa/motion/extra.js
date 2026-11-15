@@ -332,8 +332,7 @@ function setupWheel() {
   button.addEventListener("click", spin);
 }
 
-// Specialitățile: produsele trec prin centru legate de derulare. Pe calculator vin de jos în sus,
-// pe telefon din dreapta spre stânga. Lumina din fundal ia culoarea produsului din centru.
+// Ecranele late și înalte pot arăta fotografia și descrierea în aceeași scenă fixă.
 function setupSpecials() {
   const section = document.querySelector(".specials");
   if (!section) return;
@@ -342,7 +341,7 @@ function setupSpecials() {
   const items = [...section.querySelectorAll(".special")];
   const dots = [...section.querySelectorAll(".specials-dots span")];
   if (items.length < 2) return;
-  section.classList.add("is-scrolly");
+  const roomy = matchMedia("(min-width: 900px) and (min-height: 760px) and (prefers-reduced-motion: no-preference)");
   const last = items.length - 1;
   const parts = items.map((item) => ({
     item,
@@ -365,9 +364,9 @@ function setupSpecials() {
 
   function draw() {
     queued = false;
-    const wide = innerWidth >= 900;
+    if (!roomy.matches) return;
     const box = track.getBoundingClientRect();
-    const progress = Math.min(1, Math.max(0, -box.top / (box.height - innerHeight)));
+    const progress = Math.min(1, Math.max(0, -box.top / (box.height - sticky.clientHeight)));
     const raw = progress * last;
     const base = Math.min(last - 1, Math.floor(raw));
     const focus = base + settle(raw - base);
@@ -375,11 +374,8 @@ function setupSpecials() {
     parts.forEach(({ item, visual, photo, copy, floaters, giant }, i) => {
       const d = i - focus;
       const far = Math.min(Math.abs(d), 1.6);
-      const move = wide
-        ? `translateY(${d * size * 1.02}px) scale(${1 - far * .42})`
-        : `translateX(${d * Math.min(innerWidth * .62, 380)}px) translateY(${far * 30}px) scale(${1 - far * .4})`;
-      visual.style.transform = move;
-      visual.style.opacity = String(Math.max(0, 1 - far * (wide ? .85 : .55)));
+      visual.style.transform = `translateY(${d * size * 1.02}px) scale(${1 - far * .42})`;
+      visual.style.opacity = String(Math.max(0, 1 - far * .85));
       visual.style.filter = !calm && far > .05 ? `blur(${(far * 2.5).toFixed(1)}px)` : "none";
       item.style.zIndex = String(10 - Math.round(far * 4));
       photo.style.rotate = calm ? "0deg" : `${d * -24}deg`;
@@ -394,21 +390,33 @@ function setupSpecials() {
         giant.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 1.6));
       }
       copy.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 2.4));
-      copy.style.transform = wide ? `translateY(${d * -40}px)` : `translateX(${d * Math.min(innerWidth * .62, 380)}px)`;
+      copy.style.transform = `translateY(${d * -40}px)`;
       copy.style.pointerEvents = Math.abs(d) < .5 ? "auto" : "none";
     });
     // Culoarea luminii: amestec între produsele vecine.
     const lo = Math.floor(focus), hi = Math.min(last, lo + 1), t = focus - lo;
     const mix = parts[lo].tint.map((c, k) => Math.round(c + (parts[hi].tint[k] - c) * t));
     section.style.setProperty("--tint", `rgb(${mix.join(" ")})`);
-    sticky.style.setProperty("--glow-x", wide ? "30%" : "50%");
+    sticky.style.setProperty("--glow-x", "30%");
     const active = Math.round(focus);
     dots.forEach((dot, i) => dot.classList.toggle("is-on", i === active));
   }
-  const request = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
+  const request = () => { if (roomy.matches && !queued) { queued = true; requestAnimationFrame(draw); } };
+  function updateLayout() {
+    section.classList.toggle("is-scrolly", roomy.matches);
+    if (roomy.matches) {
+      request();
+      return;
+    }
+    for (const { item, visual, photo, copy, giant } of parts) {
+      item.style.removeProperty("z-index");
+      [visual, photo, copy, giant].forEach((element) => element?.removeAttribute("style"));
+    }
+  }
+  roomy.addEventListener("change", updateLayout);
   addEventListener("scroll", request, { passive: true });
   addEventListener("resize", request);
-  draw();
+  updateLayout();
 }
 
 setupWelcome();

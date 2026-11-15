@@ -101,20 +101,21 @@ scrolly.add("(min-width: 0px)", () => {
     const frames = gsap.utils.toArray(".ww-frame");
     if (!stage || frames.length < 2) return;
     document.documentElement.classList.add("has-window");
-    const wide = innerWidth >= 900;
+    const wide = matchMedia("(min-width: 900px)");
     const count = frames.length;
     const step = 360 / count;
-    const tilt = frames.map((frame) => parseFloat(getComputedStyle(frame).getPropertyValue("--rot")) * (wide ? .6 : .4) || 0);
+    const tilt = frames.map((frame) => parseFloat(getComputedStyle(frame).getPropertyValue("--rot")) || 0);
     const turn = { angle: 0 };
     const render = () => {
-      const radius = wide ? Math.min(270, innerWidth * .14) : innerWidth * .3;
+      const desktop = wide.matches;
+      const radius = desktop ? Math.min(270, innerWidth * .14) : innerWidth * .3;
       frames.forEach((frame, i) => {
         const a = (i * step + turn.angle) * Math.PI / 180;
         const front = (Math.cos(a) + 1) / 2;            // 1 = în față, 0 = în spate
         gsap.set(frame, {
-          xPercent: -50, yPercent: wide ? -50 : 0,
-          x: Math.sin(a) * radius, y: (1 - front) * (wide ? -30 : -14),
-          rotationY: Math.sin(a) * -28, rotation: tilt[i] * front,
+          xPercent: -50, yPercent: desktop ? -50 : 0,
+          x: Math.sin(a) * radius, y: (1 - front) * (desktop ? -30 : -10),
+          rotationY: Math.sin(a) * -28, rotation: tilt[i] * front * (desktop ? .6 : .4),
           scale: .52 + .48 * front, zIndex: Math.round(front * 100),
           filter: `brightness(${(.35 + .65 * front).toFixed(3)})`, transformPerspective: 1400
         });
@@ -126,6 +127,7 @@ scrolly.add("(min-width: 0px)", () => {
     // Caruselul se rotește pe orizontal: glisare cu degetul/mouse-ul, rotița orizontală, săgeți și tastatură.
     // Derularea în jos a paginii rămâne normală.
     const pin = stage.closest(".wood-pin");
+    const photos = stage.querySelector(".ww-photos");
     const snapTo = (angle) => gsap.to(turn, { angle: Math.round(angle / step) * step, duration: .7, ease: "power3.out", onUpdate: render, overwrite: true });
     const go = (dir) => snapTo(Math.round(turn.angle / step) * step - dir * step);
     const nav = document.createElement("div");
@@ -137,12 +139,16 @@ scrolly.add("(min-width: 0px)", () => {
     next.addEventListener("click", () => go(1));
 
     let drag = null;
-    const down = (e) => { drag = { x: e.clientX, angle: turn.angle, id: e.pointerId }; gsap.killTweensOf(turn); };
+    const down = (e) => {
+      if (e.target.closest("button") || (!wide.matches && !photos.contains(e.target))) return;
+      drag = { x: e.clientX, angle: turn.angle, id: e.pointerId };
+      gsap.killTweensOf(turn);
+    };
     const move = (e) => {
       if (!drag || e.pointerId !== drag.id) return;
       const dx = e.clientX - drag.x;
       if (Math.abs(dx) > 6) pin.classList.add("is-dragging");
-      turn.angle = drag.angle + dx * (wide ? .22 : .45);
+      turn.angle = drag.angle + dx * (wide.matches ? .22 : .45);
       render();
     };
     const up = () => { if (!drag) return; drag = null; pin.classList.remove("is-dragging"); snapTo(turn.angle); };
@@ -150,6 +156,7 @@ scrolly.add("(min-width: 0px)", () => {
     addEventListener("pointermove", move);
     addEventListener("pointerup", up);
     addEventListener("pointercancel", up);
+    addEventListener("resize", render);
 
     let wheelTimer;
     const wheel = (e) => {
@@ -171,7 +178,10 @@ scrolly.add("(min-width: 0px)", () => {
       removeEventListener("pointermove", move);
       removeEventListener("pointerup", up);
       removeEventListener("pointercancel", up);
+      removeEventListener("resize", render);
       pin.removeEventListener("wheel", wheel);
+      clearTimeout(wheelTimer);
+      gsap.killTweensOf(turn);
       document.documentElement.classList.remove("has-window");
       gsap.set(".ww-frame", { clearProps: "transform,filter,zIndex" });
       gsap.set(".ww-shade, .ww-copy", { clearProps: "all" });

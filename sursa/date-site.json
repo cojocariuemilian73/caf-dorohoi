@@ -203,6 +203,13 @@
     }
   ],
   "imagini": {
+    "mojitoIlustrativ": {
+      "fisier": "mojito-ilustrativ.webp",
+      "latime": 680,
+      "inaltime": 680,
+      "alt": "Imagine ilustrativă a unui mojito fără alcool, cu mentă și lime",
+      "ilustrativa": true
+    },
     "hero": {
       "fisier": "caf-coperta.webp",
       "latime": 1600,
@@ -336,6 +343,9 @@
         "Mojito fără alcool",
         "Croissant"
       ],
+      "imagini": {
+        "Mojito fără alcool": "mojitoIlustrativ"
+      },
       "tente": {
         "Cappuccino": "#c08a5e",
         "Mojito fără alcool": "#6fa86a",

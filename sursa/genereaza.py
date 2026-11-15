@@ -444,14 +444,14 @@ values = {
     "storyKeys": esc(",".join(TEXT["poveste"].get("cuvinteCheie", []))),
     "woodImages": "".join(figure(key, f" w{i}") for i, key in enumerate(TEXT["galerie"]["imagini"])),
     "woodWindow": (
-        '<div class="wood-window" aria-hidden="true">'
+        '<div class="wood-window" aria-hidden="true"><div class="ww-photos">'
         + "".join(
             f'<div class="ww-frame" style="--i:{i};--w:{DATA["imagini"][key]["latime"]};--h:{DATA["imagini"][key]["inaltime"]};'
             f'--rot:{(-2.2, 1.8, -1.2, 2.6, -1.6)[i % 5]}deg;--dx:{(0, 26, -22, 18, -10)[i % 5]}px;--dy:{(0, -14, 12, -8, 16)[i % 5]}px">'
             f'<div class="ww-photo">{image(key, sizes="(min-width: 900px) 800px, 90vw")}</div>'
             f'<p class="ww-cap">{esc(DATA["imagini"][key].get("titlu", ""))}</p></div>'
             for i, key in enumerate(TEXT["galerie"]["imagini"]))
-        + '<div class="ww-shade"></div>'
+        + '</div><div class="ww-shade"></div>'
         + f'<div class="ww-copy"><p class="ww-title">{rich(TEXT["galerie"]["titlu"])}</p><p class="ww-text">{rich(TEXT["galerie"]["text"])}</p></div>'
         + '</div>'
     ),

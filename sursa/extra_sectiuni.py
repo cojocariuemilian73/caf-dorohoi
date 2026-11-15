@@ -29,9 +29,12 @@ def build(data, esc, image, frame):
         product = products.get(name)
         if not product:
             continue
-        key = product.get("imagine")
+        key = spec.get("imagini", {}).get(name) or product.get("imagine")
+        illustration = ""
         if key in data["imagini"]:
             photo = f'<div class="special-photo">{image(key, sizes="(min-width: 900px) 46vw, 80vw")}</div>'
+            if data["imagini"][key].get("ilustrativa"):
+                illustration = '<small class="special-caption">Imagine ilustrativă</small>'
         else:
             photo = f'<div class="special-photo is-type" aria-hidden="true"><span>{esc(product["nume"])}</span></div>'
         floaters = "".join(
@@ -44,7 +47,7 @@ def build(data, esc, image, frame):
         cards.append(
             f'<li class="special" style="--i:{i};--tint-own:{esc(tint)}" data-tint="{esc(tint)}">'
             f'<div class="special-visual">{photo}'
-            '</div>'  # fără ingrediente zburătoare: păstrăm un singur stil vizual
+            f'{illustration}</div>'
             f'<div class="special-copy">{kicker}<h3>{esc(product["nume"])}</h3>'
             f'<p>{esc(story.get("text") or product["descriere"])}</p><span class="price">{price(product)}</span></div></li>'
         )

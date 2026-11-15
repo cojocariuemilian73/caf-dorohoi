@@ -554,11 +554,18 @@ html.has-window .wood-pin.is-dragging { cursor: grabbing; }
 .ww-frame img { -webkit-user-drag: none; pointer-events: none; }
 .ww-nav { position: absolute; z-index: 160; left: 67%; bottom: clamp(20px, 4vh, 44px); translate: -50% 0; display: flex; align-items: center; gap: 18px; }
 .ww-arrow { width: 52px; height: 52px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--cream) 40%, transparent); background: transparent; color: var(--cream); font-size: var(--fs-md); cursor: pointer; transition: background-color .2s ease, color .2s ease; }
-.ww-arrow:hover, .ww-arrow:focus-visible { background: var(--cream); color: var(--ink); }
+.ww-arrow:hover, .ww-arrow:focus-visible { background: var(--cream); color: var(--paper); }
 .ww-hint { color: color-mix(in oklab, var(--cream) 60%, transparent); font: 600 var(--fs-xs) var(--sans); letter-spacing: .2em; text-transform: uppercase; }
 @media (max-width: 899px) {
-  .ww-nav { display: none; }
-  .ww-copy { bottom: calc(150px + env(safe-area-inset-bottom)); }
+  html.has-window .wood-pin { height: auto; padding-block: 52px 38px; cursor: auto; }
+  html.has-window .wood-window { position: relative; inset: auto; }
+  .ww-photos { position: relative; height: calc(clamp(215px, 73vw, 430px) + 64px); overflow: hidden; cursor: grab; }
+  .ww-frame {
+    --pw: min(calc(var(--w) * 1px), calc(100vw - 2 * var(--edge) - 28px), calc(clamp(215px, 73vw, 430px) * var(--w) / var(--h)));
+    top: 12px;
+  }
+  .ww-copy { position: relative; inset: auto; max-width: none; margin: 8px var(--edge) 24px; }
+  .ww-nav { position: static; justify-content: center; gap: 14px; translate: none; }
 }
 
 /* Filtrele tablei: cuvinte scrise cu creta, fără butoane-pastilă; cel ales e subliniat cu o linie de cretă.
