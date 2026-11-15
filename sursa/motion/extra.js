@@ -139,7 +139,15 @@ function setupWelcome() {
   }
   // Fereastra apare singură la intrare; dacă a închis-o, nu mai insistăm o săptămână.
   const later = store.get("caf-voucher-amanat");
-  if (!later || Date.now() - later > 7 * 864e5) setTimeout(open, 1800);
+  // Fereastra apare abia după ce omul a derulat cât un ecran, ca să vadă întâi prima pagină.
+  if (!later || Date.now() - later > 7 * 864e5) {
+    const onScroll = () => {
+      if (scrollY < innerHeight * .9) return;
+      removeEventListener("scroll", onScroll);
+      setTimeout(open, 600);
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+  }
 }
 
 function setupWheel() {

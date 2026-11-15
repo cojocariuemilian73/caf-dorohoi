@@ -68,6 +68,16 @@
 
     {{extraAfterMenu}}
 
+    <section class="section menu-section" id="meniu" aria-labelledby="menu-title">
+      <div class="shell">
+        <div class="section-intro">
+          <h2 id="menu-title">{{menuTitle}}</h2>
+          {{menuNotice}}
+        </div>
+        {{menuBoard}}
+      </div>
+    </section>
+
     <section class="section story" id="poveste" aria-labelledby="story-title" data-keys="{{storyKeys}}">
       <div class="shell story-grid">
         <div class="story-text">
@@ -84,7 +94,6 @@
       </div>
     </section>
 
-    {{extraOffers}}
 
     <section class="section wood" id="atelier" aria-labelledby="wood-title">
       <div class="wood-pin">
@@ -98,16 +107,6 @@
             <ul class="wood-strip">{{woodImages}}</ul>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section menu-section" id="meniu" aria-labelledby="menu-title">
-      <div class="shell">
-        <div class="section-intro">
-          <h2 id="menu-title">{{menuTitle}}</h2>
-          {{menuNotice}}
-        </div>
-        {{menuBoard}}
       </div>
     </section>
 
@@ -127,6 +126,8 @@
       </div>
       <div class="reviews-track" id="reviews-track" role="region" aria-label="Recenzii, derulează spre dreapta" tabindex="0" data-lenis-prevent-wheel>{{reviews}}</div>
     </section>
+
+    {{extraOffers}}
 
     <section class="section locations" id="locatii" aria-labelledby="locations-title">
       <div class="shell">

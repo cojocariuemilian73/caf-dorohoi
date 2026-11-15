@@ -341,7 +341,7 @@ profiles = [links[key] for key in ("instagram", "facebook") if links.get(key)]
 if profiles:
     main_shop["sameAs"] = profiles
 
-nav = (("poveste", "Poveste"), ("meniu", "Meniu"), ("locatii", "Locații"), ("contact", "Contact"))
+nav = (("meniu", "Meniu"), ("poveste", "Poveste"), ("locatii", "Locații"), ("contact", "Contact"))
 values = {
     "title": esc(TEXT["titluPagina"]),
     "logo": logo(),
