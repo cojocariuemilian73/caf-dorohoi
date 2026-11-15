@@ -366,6 +366,20 @@
           "firimitura",
           "firimitura"
         ]
+      },
+      "povesti": {
+        "Cappuccino": {
+          "eticheta": "Ritualul de dimineață",
+          "text": "Spumă catifelată peste un espresso cu corp, desenată cu grijă în fiecare ceașcă. Prima înghițitură te trezește, a doua te convinge să mai rămâi puțin."
+        },
+        "Mojito fără alcool": {
+          "eticheta": "Răcoritorul verii",
+          "text": "Mentă, lime și gheață pisată, într-un pahar care aburește pe margini. Acrișor, proaspăt și fără grabă, ca o vacanță mică în mijlocul zilei."
+        },
+        "Croissant": {
+          "eticheta": "Perechea perfectă",
+          "text": "Foi aurii care se rup crocant și un miez pufos. Cel mai bun prieten al unui cappuccino, mai ales când afară e frig."
+        }
       }
     },
     "voucher": {

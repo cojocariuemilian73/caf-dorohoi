@@ -29,7 +29,7 @@
 .specials.is-scrolly .specials-sticky::before { content: ""; position: absolute; inset: -20%; z-index: -1; background: radial-gradient(circle at var(--glow-x, 50%) 55%, color-mix(in oklab, var(--tint) 34%, transparent), transparent 45%); pointer-events: none; }
 .specials.is-scrolly .specials-inner { padding-block: 84px calc(70px + env(safe-area-inset-bottom)); gap: 10px; }
 .specials.is-scrolly .specials-head h2 { font-size: clamp(2.2rem, 7vw, 3.4rem); }
-.specials.is-scrolly .specials-stage { height: calc(min(66vw, 320px) + 220px); }
+.specials.is-scrolly .specials-stage { height: calc(min(66vw, 320px) + 270px); }
 .specials.is-scrolly .special-list { display: block; height: 100%; }
 .specials.is-scrolly .special { position: absolute; left: 50%; top: 0; width: min(90vw, 520px); margin-left: calc(min(90vw, 520px) / -2); gap: 16px; }
 .specials.is-scrolly { --photo: min(66vw, 320px); }
@@ -71,6 +71,14 @@
   .specials.is-scrolly .special-giant { left: 50%; top: 50%; font-size: clamp(5rem, 10vw, 10rem); }
   .specials.is-scrolly .special-copy h3 { font-size: clamp(2.6rem, 4vw, 4rem); }
   .specials.is-scrolly .special-copy p { max-width: 30ch; }
+}
+/* Textul specialităților: eticheta mică, descrierea mare în serif italic, totul în dreapta sus. */
+.special-kicker { font: 700 .78rem var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--tint-own, var(--oak)); }
+.specials.is-scrolly .special-copy p { font: italic 400 clamp(1.15rem, 4.4vw, 1.4rem)/1.35 var(--serif); color: color-mix(in oklab, var(--cream, #f3e9dc) 86%, transparent); max-width: 32ch; }
+@media (min-width: 900px) {
+  .specials.is-scrolly .special-copy { align-self: start; justify-self: end; justify-items: end; text-align: right; margin-top: clamp(8px, 3vh, 32px); margin-right: clamp(24px, 4vw, 72px); max-width: 30ch; gap: 18px; }
+  .specials.is-scrolly .special-copy p { font-size: clamp(1.5rem, 1.9vw, 2rem); max-width: 26ch; }
+  .special-kicker { font-size: .85rem; }
 }
 @media (prefers-reduced-motion: reduce) { .steam path, .floater svg { animation: none; } }
 
